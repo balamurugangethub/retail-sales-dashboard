@@ -81,7 +81,8 @@
 <footer>Data is sample data generated for demonstration. Upload your own CSV with columns:
   <code>date, store, category, product, orders, units, revenue, cost</code>.</footer>
 
-<script src="/static/vendor/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>window.Chart || document.write('<script src="/static/vendor/chart.umd.min.js"><\/script>');</script>
 <script src="/static/app.js"></script>
 </body>
 </html>
