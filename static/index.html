@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retail Sales Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <h1>Retail Sales Dashboard</h1>
+    <p>5-store chain &middot; one live source of truth <span class="badge" id="data-badge">Sample data</span></p>
+  </div>
+  <div class="actions">
+    <a class="btn" id="export-btn" href="#">Export CSV</a>
+    <label class="btn">Upload CSV<input type="file" id="upload-input" accept=".csv" hidden></label>
+    <button class="btn ghost" id="reset-btn" title="Restore the sample data">Reset</button>
+  </div>
+</header>
+
+<section class="filters" aria-label="Filters">
+  <label>Period
+    <select id="f-preset">
+      <option value="6m">Last 6 months</option>
+      <option value="3m">Last 3 months</option>
+      <option value="30d">Last 30 days</option>
+      <option value="all">All time</option>
+      <option value="custom">Custom&hellip;</option>
+    </select>
+  </label>
+  <label>From <input type="date" id="f-start"></label>
+  <label>To <input type="date" id="f-end"></label>
+  <label>Store <select id="f-store"><option value="">All stores</option></select></label>
+  <label>Category <select id="f-category"><option value="">All categories</option></select></label>
+  <button class="btn ghost" id="clear-btn">Clear filters</button>
+</section>
+<div id="notice" class="notice" role="status" hidden></div>
+
+<main>
+  <section class="kpis" id="kpis" aria-label="Key figures"></section>
+
+  <section class="grid two">
+    <article class="card">
+      <div class="card-head"><h2>By store</h2>
+        <div class="seg" data-target="store"></div></div>
+      <p class="hint">Click a bar to filter the whole dashboard.</p>
+      <div class="chart"><canvas id="chart-store"></canvas></div>
+    </article>
+    <article class="card">
+      <div class="card-head"><h2>Trend</h2>
+        <div class="seg" data-target="trend"></div>
+        <select id="grain" aria-label="Time grain"><option value="month">Monthly</option><option value="week">Weekly</option><option value="day">Daily</option></select></div>
+      <div class="chart"><canvas id="chart-trend"></canvas></div>
+    </article>
+  </section>
+
+  <section class="grid two">
+    <article class="card">
+      <div class="card-head"><h2>Sales by category</h2></div>
+      <div class="chart small"><canvas id="chart-cat"></canvas></div>
+    </article>
+    <article class="card">
+      <div class="card-head"><h2>Insights</h2></div>
+      <ul id="insights" class="insights"></ul>
+    </article>
+  </section>
+
+  <section class="grid two">
+    <article class="card">
+      <div class="card-head"><h2>Store &times; month heatmap</h2></div>
+      <div class="table-wrap"><table id="heatmap" class="heat"></table></div>
+    </article>
+    <article class="card">
+      <div class="card-head"><h2>Top products</h2></div>
+      <div class="table-wrap"><table id="products"></table></div>
+    </article>
+  </section>
+</main>
+
+<footer>Data is sample data generated for demonstration. Upload your own CSV with columns:
+  <code>date, store, category, product, orders, units, revenue, cost</code>.</footer>
+
+<script src="/static/vendor/chart.umd.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
