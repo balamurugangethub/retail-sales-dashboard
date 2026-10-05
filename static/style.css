@@ -9,6 +9,7 @@
   }
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 "Segoe UI", Calibri, Arial, sans-serif; }
 .top { background: var(--navy); color: #fff; padding: 18px 28px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
 .top h1 { margin: 0; font-size: 24px; }
