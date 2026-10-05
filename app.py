@@ -45,9 +45,12 @@ def seed_database(db_path):
     con.close()
 
 
-def create_app(db_path=None, seed_if_missing=True):
+def create_app(db_path=None, seed_if_missing=True, read_only=None):
+    """read_only=True disables upload/reset (used for the public hosted demo).
+    Defaults to the READ_ONLY=1 environment variable."""
     app = Flask(__name__, static_folder=os.path.join(HERE, "static"), static_url_path="/static")
     app.config["DB_PATH"] = db_path or os.path.join(HERE, "retail.db")
+    app.config["READ_ONLY"] = (os.environ.get("READ_ONLY") == "1") if read_only is None else read_only
     app.config["MAX_CONTENT_LENGTH"] = MAX_UPLOAD_BYTES
 
     if seed_if_missing and not os.path.exists(app.config["DB_PATH"]):
@@ -146,6 +149,7 @@ def create_app(db_path=None, seed_if_missing=True):
             "stores": [r[0] for r in d.execute("SELECT DISTINCT store FROM sales ORDER BY store")],
             "categories": [r[0] for r in d.execute("SELECT DISTINCT category FROM sales ORDER BY category")],
             "rows": d.execute("SELECT COUNT(*) FROM sales").fetchone()[0],
+            "read_only": app.config["READ_ONLY"],
         })
 
     @app.get("/api/kpis")
@@ -276,6 +280,11 @@ def create_app(db_path=None, seed_if_missing=True):
         return Response(buf.getvalue(), mimetype="text/csv",
                         headers={"Content-Disposition": "attachment; filename=retail_sales_export.csv"})
 
+    @app.before_request
+    def block_writes_when_read_only():
+        if app.config["READ_ONLY"] and request.method == "POST":
+            return jsonify({"error": "This public demo is read-only. Run it locally to upload data."}), 403
+
     @app.post("/api/upload")
     def upload():
         f = request.files.get("file")
@@ -340,6 +349,11 @@ def create_app(db_path=None, seed_if_missing=True):
 class ApiError(Exception):
     pass
 
+
+if os.environ.get("VERCEL"):
+    # Hosted on Vercel: the filesystem is read-only except /tmp, so the sample
+    # database is built there on cold start and the public demo is read-only.
+    app = create_app(db_path="/tmp/retail.db", read_only=True)
 
 if __name__ == "__main__":
     create_app().run(host="127.0.0.1", port=5000, debug=False)

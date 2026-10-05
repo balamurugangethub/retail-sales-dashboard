@@ -87,6 +87,14 @@ def post_csv(client, text, mode="replace"):
                        content_type="multipart/form-data")
 
 
+def test_read_only_mode_blocks_writes(tmp_path):
+    c = create_app(db_path=str(tmp_path / "ro.db"), read_only=True).test_client()
+    assert get(c, "/api/meta")["read_only"] is True
+    assert c.post("/api/reset").status_code == 403
+    assert post_csv(c, "date,store,category,product,orders,units,revenue,cost\n").status_code == 403
+    assert get(c, "/api/kpis")["current"]["sales"] > 0          # reads still work
+
+
 def test_upload_validates_then_replaces_then_resets(tmp_path):
     c = create_app(db_path=str(tmp_path / "u.db")).test_client()
     bad = post_csv(c, "date,store,category,product,orders,units,revenue,cost\n2026-01-01,S,C,P,x,1,5,3\n")

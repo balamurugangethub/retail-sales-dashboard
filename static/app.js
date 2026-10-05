@@ -227,6 +227,8 @@ async function loadMeta() {
   $("f-store").value = state.store; $("f-category").value = state.category;
   $("f-start").min = $("f-end").min = meta.min_date; $("f-start").max = $("f-end").max = meta.max_date;
   applyPreset();
+  // Public demo: hide the buttons that would change data
+  if (meta.read_only) document.querySelectorAll("label.btn, #reset-btn").forEach((b) => (b.hidden = true));
 }
 
 async function init() {
