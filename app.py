@@ -353,7 +353,12 @@ class ApiError(Exception):
 if os.environ.get("VERCEL"):
     # Hosted on Vercel: the filesystem is read-only except /tmp, so the sample
     # database is built there on cold start and the public demo is read-only.
-    app = create_app(db_path="/tmp/retail.db", read_only=True)
+    _db_path, _read_only = "/tmp/retail.db", True
+else:
+    _db_path, _read_only = None, None            # local: ./retail.db, READ_ONLY env var
+
+# Top-level WSGI app (Vercel and gunicorn look for this name)
+app = create_app(db_path=_db_path, read_only=_read_only)
 
 if __name__ == "__main__":
-    create_app().run(host="127.0.0.1", port=5000, debug=False)
+    app.run(host="127.0.0.1", port=5000, debug=False)
