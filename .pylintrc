@@ -1,0 +1,16 @@
+[MAIN]
+# Tests import the app modules from the repo root
+init-hook="import sys; sys.path.insert(0, '.')"
+# Older files predate this config; CI fails only if the overall score drops below this.
+fail-under=9.5
+
+[FORMAT]
+max-line-length=130
+
+[MESSAGES CONTROL]
+# Docstrings are written where they explain something; short helpers and tests don't need one.
+disable=missing-module-docstring,missing-function-docstring,missing-class-docstring,
+        too-many-locals,too-many-statements,too-many-arguments,too-many-positional-arguments,
+        too-many-return-statements,too-many-branches,too-few-public-methods,
+        import-outside-toplevel,wrong-import-position,invalid-name,multiple-statements,
+        too-many-lines,duplicate-code,redefined-outer-name,use-implicit-booleaness-not-comparison

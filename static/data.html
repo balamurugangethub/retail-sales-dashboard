@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data · Retail Sales</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <h1>Retail Sales</h1>
+    <nav class="nav"><a href="/">Overview</a><a href="/builder">Dashboard builder</a><a href="/data" class="on">Data</a></nav>
+  </div>
+  <div class="actions">
+    <a class="btn ghost" id="export-btn" href="/api/export.csv">Export CSV</a>
+    <button class="btn ghost" id="reset-btn" title="Restore the sample data">Restore sample data</button>
+  </div>
+</header>
+<div id="notice" class="notice" role="status" hidden></div>
+<div id="ro-banner" class="notice warn-banner" hidden>This public demo is read-only. You can try the cleaning preview,
+  but importing and editing only work when you run the app on your own computer.</div>
+
+<main>
+  <article class="card">
+    <div class="card-head"><h2>1. Bring in your sales data</h2></div>
+    <p class="hint">CSV, TSV or Excel (.xlsx) from your till, POS or spreadsheet. Column names don't need to match:
+      the app recognises things like "Branch", "Amount", "Qty" and fixes dates, currency symbols and spelling.
+      Nothing is saved until you click Import.</p>
+    <label class="drop-zone" id="drop-zone">
+      <input type="file" id="file-input" accept=".csv,.tsv,.txt,.xlsx,.xlsm" hidden>
+      <strong>Drop a file here</strong> or click to choose one
+    </label>
+
+    <div id="preview" hidden>
+      <div class="summary" id="summary"></div>
+      <div class="grid two">
+        <div>
+          <h3>Which column is which?</h3>
+          <p class="hint">Change a choice if the guess is wrong, then click Re-check.</p>
+          <table id="mapping" class="mapping"></table>
+          <label class="check"><input type="checkbox" id="dedupe" checked> Remove exact duplicate rows</label>
+          <button class="btn ghost" id="recheck-btn">Re-check</button>
+        </div>
+        <div>
+          <h3>What was cleaned</h3>
+          <ul id="fixes" class="report"></ul>
+          <ul id="warnings" class="report"></ul>
+          <h3 id="problems-title" hidden>Rows that will be skipped</h3>
+          <ul id="problems" class="report bad"></ul>
+        </div>
+      </div>
+      <h3>Cleaned preview</h3>
+      <div class="table-wrap"><table id="sample" class="rows"></table></div>
+      <div class="import-bar">
+        <label class="check"><input type="radio" name="mode" value="replace" checked> Replace all current data</label>
+        <label class="check"><input type="radio" name="mode" value="append"> Add to current data</label>
+        <button class="btn" id="import-btn">Import</button>
+      </div>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card-head"><h2>2. Your data</h2><span class="muted" id="row-count"></span></div>
+    <p class="hint">Double-click a cell to edit it. Press Enter to save or Esc to cancel.</p>
+    <div class="filters inline">
+      <label>Search <input type="search" id="q" placeholder="store, category or product"></label>
+      <label>Store <select id="r-store"><option value="">All stores</option></select></label>
+      <label>Category <select id="r-category"><option value="">All categories</option></select></label>
+    </div>
+    <div class="table-wrap"><table id="rows" class="rows"></table></div>
+    <div class="pager">
+      <button class="btn ghost" id="prev-btn">‹ Previous</button>
+      <span id="page-info"></span>
+      <button class="btn ghost" id="next-btn">Next ›</button>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card-head"><h2>3. Fix things in bulk</h2></div>
+    <div class="grid three">
+      <div class="tool">
+        <h3>Tidy everything</h3>
+        <p class="hint">Trims spaces, merges names that only differ in capitals or spacing ("store a" and "Store A"), and removes exact duplicate rows.</p>
+        <button class="btn" id="tidy-btn">Tidy data</button>
+      </div>
+      <div class="tool">
+        <h3>Rename or merge</h3>
+        <p class="hint">Renaming to a name that already exists merges the two.</p>
+        <div class="row-form">
+          <select id="ren-field"><option value="store">Store</option><option value="category">Category</option><option value="product">Product</option></select>
+          <select id="ren-from" aria-label="Current name"></select>
+          <input id="ren-to" placeholder="New name" maxlength="120" aria-label="New name">
+          <button class="btn" id="ren-btn">Rename</button>
+        </div>
+      </div>
+      <div class="tool">
+        <h3>Delete everything for…</h3>
+        <p class="hint">For example a closed store or a test product. This cannot be undone.</p>
+        <div class="row-form">
+          <select id="del-field"><option value="store">Store</option><option value="category">Category</option><option value="product">Product</option></select>
+          <select id="del-value" aria-label="Value to delete"></select>
+          <button class="btn danger" id="del-btn">Delete rows</button>
+        </div>
+      </div>
+    </div>
+  </article>
+</main>
+<script src="/static/common.js"></script>
+<script src="/static/data.js"></script>
+</body>
+</html>

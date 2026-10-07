@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Builder · Retail Sales</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="app">
+<header class="top">
+  <div class="brand">
+    <h1>Retail Sales</h1>
+    <nav class="nav"><a href="/">Overview</a><a href="/builder" class="on">Dashboard builder</a><a href="/data">Data</a></nav>
+  </div>
+  <div class="actions">
+    <select id="dash-select" aria-label="Saved dashboards"><option value="">Saved dashboards…</option></select>
+    <input id="dash-name" class="name-input" aria-label="Dashboard name" value="Untitled dashboard" maxlength="80">
+    <button class="btn" id="save-btn">Save</button>
+    <button class="btn ghost" id="new-btn">New</button>
+    <button class="btn ghost" id="delete-btn" hidden>Delete</button>
+    <button class="btn ghost" id="ai-toggle" aria-expanded="true">AI assistant</button>
+  </div>
+</header>
+
+<section class="filters" aria-label="Dashboard filters">
+  <label>Period
+    <select id="f-preset">
+      <option value="all">All time</option>
+      <option value="12m">Last 12 months</option>
+      <option value="6m">Last 6 months</option>
+      <option value="3m">Last 3 months</option>
+      <option value="30d">Last 30 days</option>
+      <option value="custom">Custom…</option>
+    </select>
+  </label>
+  <label>From <input type="date" id="f-start"></label>
+  <label>To <input type="date" id="f-end"></label>
+  <label>Store <select id="f-store"><option value="">All stores</option></select></label>
+  <label>Category <select id="f-category"><option value="">All categories</option></select></label>
+</section>
+<div id="notice" class="notice" role="status" hidden></div>
+
+<div class="workspace">
+  <aside class="panel fields" aria-label="Data fields">
+    <h2>Data</h2>
+    <p class="hint">Drag a field onto the canvas, or double-click it to add it to the selected chart.</p>
+    <h3>Measures <span class="sym">#</span></h3>
+    <ul id="measure-list" class="field-list"></ul>
+    <h3>Dimensions <span class="sym">≡</span></h3>
+    <ul id="dim-list" class="field-list"></ul>
+  </aside>
+
+  <main id="canvas" class="canvas" aria-label="Dashboard canvas">
+    <div id="empty" class="empty">
+      <h2>Start your dashboard</h2>
+      <p>Drag <b>Sales</b> from the left onto this area, or double-click any field.<br>
+         Or let the assistant build a starter dashboard for you.</p>
+      <button class="btn" id="starter-btn">Build a starter dashboard</button>
+    </div>
+  </main>
+
+  <aside class="panel assistant" id="assistant" aria-label="AI assistant">
+    <div class="assist-head">
+      <h2>AI assistant</h2>
+      <span id="ai-badge" class="pill"></span>
+    </div>
+    <div id="chat" class="chat" aria-live="polite"></div>
+    <div id="suggestions" class="suggestions"></div>
+    <form id="chat-form" class="chat-form">
+      <input id="chat-input" autocomplete="off" placeholder="e.g. top 5 products by profit" aria-label="Ask the assistant" maxlength="1000">
+      <button class="btn" type="submit">Send</button>
+    </form>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>window.Chart || document.write('<script src="/static/vendor/chart.umd.min.js"><\/script>');</script>
+<script src="/static/common.js"></script>
+<script src="/static/builder.js"></script>
+</body>
+</html>
