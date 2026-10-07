@@ -11,9 +11,14 @@ from decimal import Decimal, InvalidOperation
 
 from flask import Flask, Response, g, jsonify, request, send_from_directory
 
+import workspace
+from ai import Assistant, WatsonxClient
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 REQUIRED_COLUMNS = ["date", "store", "category", "product", "orders", "units", "revenue", "cost"]
-MAX_UPLOAD_BYTES = 5 * 1024 * 1024
+MAX_UPLOAD_BYTES = 10 * 1024 * 1024
+# Requests that never change stored data, so the public read-only demo still allows them
+READ_ONLY_ALLOWED = {"/api/assistant", "/api/import/preview"}
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS sales (
@@ -45,9 +50,10 @@ def seed_database(db_path):
     con.close()
 
 
-def create_app(db_path=None, seed_if_missing=True, read_only=None):
+def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=None):
     """read_only=True disables upload/reset (used for the public hosted demo).
-    Defaults to the READ_ONLY=1 environment variable."""
+    Defaults to the READ_ONLY=1 environment variable. assistant overrides the
+    AI assistant (tests pass a fake watsonx client)."""
     app = Flask(__name__, static_folder=os.path.join(HERE, "static"), static_url_path="/static")
     app.config["DB_PATH"] = db_path or os.path.join(HERE, "retail.db")
     app.config["READ_ONLY"] = (os.environ.get("READ_ONLY") == "1") if read_only is None else read_only
@@ -85,13 +91,14 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None):
             return None, None
         return date.fromisoformat(row["lo"]), date.fromisoformat(row["hi"])
 
-    def filters(with_dates=True, override=None):
-        """Returns (where_sql, params, start, end) from the query string."""
+    def filters(with_dates=True, override=None, source=None):
+        """Returns (where_sql, params, start, end) from the query string (or another dict)."""
+        args = request.args if source is None else source
         lo, hi = bounds()
         if lo is None:
             return "1=0", [], date.today(), date.today()
-        start = parse_date(request.args.get("start"), lo)
-        end = parse_date(request.args.get("end"), hi)
+        start = parse_date(args.get("start"), lo)
+        end = parse_date(args.get("end"), hi)
         if override:
             start, end = override
         if start > end:
@@ -100,11 +107,11 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None):
         if with_dates:
             where += ["day >= ?", "day <= ?"]
             params += [start.isoformat(), end.isoformat()]
-        for col, arg in (("store", "store"), ("category", "category")):
-            v = request.args.get(arg)
+        for col in ("store", "category", "product"):
+            v = args.get(col)
             if v:
                 where.append(f"{col} = ?")
-                params.append(v)
+                params.append(str(v))
         return " AND ".join(where) or "1=1", params, start, end
 
     def money(cents):
@@ -220,14 +227,17 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None):
 
     @app.get("/api/insights")
     def insights():
-        where, params, start, end = filters()
+        return jsonify(compute_insights())
+
+    def compute_insights(source=None):
+        where, params, start, end = filters(source=source)
         d = db()
         out = []
         stores = d.execute(
             f"SELECT store, SUM(revenue_cents) rev FROM sales WHERE {where} GROUP BY store ORDER BY rev DESC",
             params).fetchall()
         if not stores:
-            return jsonify([])
+            return []
         total = sum(r["rev"] for r in stores)
         if len(stores) > 1:
             top, low = stores[0], stores[-1]
@@ -243,7 +253,7 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None):
                                 f"(${r['rev']/100000:.1f}K vs ${avg/100000:.1f}K). Review staffing and promotions."})
         # growth vs previous period, per store
         prev_start, prev_end = prev_period(start, end)
-        pw, pp, _, _ = filters(override=(prev_start, prev_end))
+        pw, pp, _, _ = filters(override=(prev_start, prev_end), source=source)
         prev = {r["store"]: r["rev"] for r in d.execute(
             f"SELECT store, SUM(revenue_cents) rev FROM sales WHERE {pw} GROUP BY store", pp)}
         growth = [(r["store"], pct_change(r["rev"], prev.get(r["store"]))) for r in stores]
@@ -263,7 +273,7 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None):
             f" GROUP BY p ORDER BY rev DESC LIMIT 1", params).fetchone()
         if peak:
             out.append({"level": "info", "text": f"Peak month: {peak['p']} with ${peak['rev']/100000:.1f}K in sales."})
-        return jsonify(out)
+        return out
 
     @app.get("/api/export.csv")
     def export_csv():
@@ -282,7 +292,8 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None):
 
     @app.before_request
     def block_writes_when_read_only():
-        if app.config["READ_ONLY"] and request.method == "POST":
+        if app.config["READ_ONLY"] and request.method in ("POST", "PUT", "PATCH", "DELETE") \
+                and request.path not in READ_ONLY_ALLOWED:
             return jsonify({"error": "This public demo is read-only. Run it locally to upload data."}), 403
 
     @app.post("/api/upload")
@@ -337,12 +348,14 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None):
 
     @app.errorhandler(413)
     def too_large(_e):
-        return jsonify({"error": "File too large (max 5 MB)"}), 413
+        return jsonify({"error": "File too large (max 10 MB)"}), 413
 
     @app.errorhandler(ApiError)
     def api_error(e):
         return jsonify({"error": str(e)}), 400
 
+    workspace.register(app, db=db, filters=filters, insights=compute_insights, error_cls=ApiError,
+                       assistant=assistant or Assistant(WatsonxClient.from_env()))
     return app
 
 
