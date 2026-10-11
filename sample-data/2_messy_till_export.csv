@@ -1,0 +1,1734 @@
+Day,Branch,Dept,Item,Qty,Amount
+18/04/2026,North Branch,Dairy,Cheddar Cheese,10,$68.00
+27/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,11,$132.00
+23/05/2026,north branch,Home,Detergent 2kg,2,
+29/04/2026,SOUTH BRANCH ,,Cheddar Cheese,11,$74.80
+15/05/2026,North Branch,Grocery,Basmati Rice 5kg,3,$36.00
+21/05/2026,north branch,Dairy,Fresh Milk 2L,3,$9.60
+02/05/2026,north branch,Grocery,Cooking Oil 1L,8,$36.00
+13/05/2026,South Branch,Home,Detergent 2kg,12,$118.80
+13/05/2026,South Branch,Dairy,Fresh Milk 2L,6,$19.20
+20/04/2026,north branch,Beauty,Shampoo 400ml,13,$97.50
+19/05/2026,north branch,Dairy,Fresh Milk 2L,14,$44.80
+25/04/2026,South Branch,Electronics,Phone Charger,7,$98.00
+10/04/2026,North Branch,Electronics,Phone Charger,10,$140.00
+11/04/2026,north branch,Dairy,CHEDDAR CHEESE,10,$68.00
+12/05/2026,north branch,Home,Detergent 2kg,4,$39.60
+01/04/2026,North Branch,,Basmati Rice 5kg,8,$96.00
+16/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,11,$35.20
+12/05/2026,SOUTH BRANCH ,Beauty,SHAMPOO 400ML,10,$75.00
+19/05/2026,north branch,Electronics,Phone Charger,7,$98.00
+14/05/2026,SOUTH BRANCH ,,Cheddar Cheese,2,$13.60
+14/04/2026,North Branch,Home,Detergent 2kg,8,$79.20
+08/04/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+29/04/2026,north branch,,Phone Charger,12,$168.00
+24/04/2026,north branch,Dairy,Cheddar Cheese,2,
+01/05/2026,North Branch,Beauty,Shampoo 400ml,10,$75.00
+04/05/2026,north branch,Home,Detergent 2kg,2,$19.80
+11/04/2026,South Branch,Grocery,Basmati Rice 5kg,13,$156.00
+25/05/2026,SOUTH BRANCH ,Beauty,SHAMPOO 400ML,8,$60.00
+18/05/2026,South Branch,Grocery,Cooking Oil 1L,4,$18.00
+10/04/2026,South Branch,Dairy,Cheddar Cheese,9,$61.20
+01/04/2026,SOUTH BRANCH ,Dairy,CHEDDAR CHEESE,11,$74.80
+24/05/2026,north branch,Dairy,FRESH MILK 2L,12,$38.40
+22/05/2026,north branch,Dairy,Fresh Milk 2L,4,$12.80
+01/04/2026,South Branch,Home,DETERGENT 2KG,10,$99.00
+26/05/2026,South Branch,Grocery,Cooking Oil 1L,13,$58.50
+19/04/2026,North Branch,Dairy,Fresh Milk 2L,13,$41.60
+10/04/2026,North Branch,Home,DETERGENT 2KG,13,$128.70
+26/04/2026,North Branch,Grocery,Basmati Rice 5kg,12,$144.00
+16/05/2026,North Branch,,Cooking Oil 1L,8,$36.00
+03/04/2026,South Branch,Grocery,Basmati Rice 5kg,5,$60.00
+03/05/2026,north branch,Dairy,CHEDDAR CHEESE,6,$40.80
+29/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,12,$118.80
+26/05/2026,South Branch,Beauty,Shampoo 400ml,3,$22.50
+15/05/2026,South Branch,Beauty,Shampoo 400ml,13,$97.50
+08/05/2026,South Branch,Grocery,Cooking Oil 1L,5,$22.50
+12/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,3,$22.50
+04/04/2026,north branch,Grocery,Basmati Rice 5kg,3,$36.00
+17/04/2026,South Branch,,Detergent 2kg,9,$89.10
+03/05/2026,North Branch,Dairy,Cheddar Cheese,7,$47.60
+20/04/2026,north branch,Dairy,Cheddar Cheese,11,$74.80
+03/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,2,$28.00
+19/05/2026,North Branch,Home,Detergent 2kg,3,$29.70
+16/05/2026,South Branch,Grocery,Cooking Oil 1L,5,$22.50
+11/04/2026,north branch,Grocery,Cooking Oil 1L,5,$22.50
+28/05/2026,north branch,Dairy,FRESH MILK 2L,14,$44.80
+11/05/2026,North Branch,Dairy,Fresh Milk 2L,8,$25.60
+19/04/2026,North Branch,Grocery,BASMATI RICE 5KG,8,$96.00
+10/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,6,$84.00
+12/04/2026,South Branch,,Detergent 2kg,4,$39.60
+17/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,10,$75.00
+24/05/2026,north branch,Grocery,Basmati Rice 5kg,10,$120.00
+27/04/2026,South Branch,Home,Detergent 2kg,1,$9.90
+26/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,12,$90.00
+06/05/2026,SOUTH BRANCH ,Beauty,SHAMPOO 400ML,10,$75.00
+16/04/2026,SOUTH BRANCH ,Dairy,CHEDDAR CHEESE,1,$6.80
+17/04/2026,South Branch,Grocery,Basmati Rice 5kg,10,$120.00
+09/04/2026,north branch,Grocery,Cooking Oil 1L,4,$18.00
+18/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,11,$35.20
+22/05/2026,North Branch,Grocery,Cooking Oil 1L,14,$63.00
+29/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,10,$120.00
+01/05/2026,north branch,Electronics,Phone Charger,12,$168.00
+02/04/2026,north branch,Dairy,Fresh Milk 2L,8,$25.60
+04/04/2026,North Branch,Grocery,Basmati Rice 5kg,8,$96.00
+03/05/2026,North Branch,Grocery,Cooking Oil 1L,10,$45.00
+03/04/2026,South Branch,Home,Detergent 2kg,11,$108.90
+30/04/2026,north branch,Electronics,Phone Charger,12,$168.00
+18/05/2026,north branch,Dairy,Fresh Milk 2L,2,$6.40
+24/04/2026,South Branch,Dairy,Fresh Milk 2L,13,$41.60
+12/04/2026,north branch,Dairy,Cheddar Cheese,8,$54.40
+11/04/2026,North Branch,Beauty,Shampoo 400ml,1,$7.50
+14/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,9,
+26/04/2026,North Branch,Home,Detergent 2kg,13,$128.70
+27/05/2026,North Branch,Home,Detergent 2kg,7,$69.30
+15/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,14,$44.80
+21/04/2026,north branch,Electronics,Phone Charger,14,$196.00
+06/04/2026,north branch,Grocery,Cooking Oil 1L,5,$22.50
+27/04/2026,North Branch,Dairy,Fresh Milk 2L,12,$38.40
+08/05/2026,South Branch,Electronics,Phone Charger,6,$84.00
+24/04/2026,north branch,Beauty,Shampoo 400ml,1,$7.50
+21/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,10,$120.00
+30/04/2026,north branch,Grocery,Cooking Oil 1L,11,$49.50
+30/05/2026,north branch,Home,Detergent 2kg,8,$79.20
+19/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,11,$154.00
+10/05/2026,north branch,Grocery,Cooking Oil 1L,9,$40.50
+05/05/2026,North Branch,Dairy,Cheddar Cheese,1,$6.80
+11/05/2026,north branch,Grocery,Basmati Rice 5kg,9,$108.00
+22/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,5,$60.00
+30/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,13,$88.40
+04/04/2026,South Branch,Beauty,Shampoo 400ml,12,$90.00
+06/04/2026,South Branch,Electronics,PHONE CHARGER,1,$14.00
+08/04/2026,South Branch,Dairy,Cheddar Cheese,9,$61.20
+04/04/2026,North Branch,Beauty,Shampoo 400ml,4,$30.00
+02/05/2026,north branch,Electronics,Phone Charger,12,
+20/05/2026,South Branch,Grocery,Basmati Rice 5kg,13,$156.00
+26/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,12,$118.80
+08/04/2026,north branch,Dairy,Fresh Milk 2L,9,$28.80
+27/04/2026,South Branch,Grocery,Cooking Oil 1L,10,$45.00
+15/04/2026,North Branch,,Shampoo 400ml,8,$60.00
+23/05/2026,north branch,Electronics,Phone Charger,6,$84.00
+31/05/2026,north branch,Dairy,Cheddar Cheese,4,$27.20
+24/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,1,$4.50
+16/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,10,$32.00
+01/04/2026,North Branch,Home,Detergent 2kg,11,$108.90
+23/05/2026,North Branch,Dairy,Cheddar Cheese,1,$6.80
+09/05/2026,north branch,Dairy,Cheddar Cheese,14,$95.20
+07/04/2026,North Branch,Home,Detergent 2kg,3,$29.70
+06/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,11,$108.90
+20/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,12,
+28/04/2026,North Branch,,Cooking Oil 1L,13,
+26/05/2026,South Branch,Dairy,Cheddar Cheese,6,$40.80
+14/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,11,$154.00
+16/04/2026,north branch,Dairy,Cheddar Cheese,8,$54.40
+05/04/2026,north branch,Electronics,PHONE CHARGER,12,$168.00
+18/05/2026,North Branch,Dairy,Cheddar Cheese,10,$68.00
+22/05/2026,north branch,Dairy,CHEDDAR CHEESE,6,$40.80
+19/05/2026,South Branch,Electronics,Phone Charger,12,$168.00
+13/04/2026,SOUTH BRANCH ,Home,DETERGENT 2KG,3,$29.70
+10/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,10,$32.00
+03/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,1,$9.90
+05/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,5,$60.00
+20/04/2026,North Branch,Grocery,Basmati Rice 5kg,13,$156.00
+01/04/2026,north branch,Beauty,Shampoo 400ml,11,$82.50
+23/05/2026,South Branch,Home,Detergent 2kg,3,$29.70
+29/04/2026,North Branch,Electronics,Phone Charger,2,$28.00
+16/05/2026,north branch,Dairy,Cheddar Cheese,6,$40.80
+17/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,7,$84.00
+13/04/2026,north branch,Dairy,Fresh Milk 2L,2,$6.40
+19/05/2026,South Branch,Home,Detergent 2kg,10,$99.00
+26/04/2026,North Branch,Dairy,Fresh Milk 2L,1,$3.20
+24/05/2026,SOUTH BRANCH ,,FRESH MILK 2L,6,$19.20
+21/04/2026,North Branch,Grocery,Cooking Oil 1L,1,$4.50
+16/05/2026,north branch,Grocery,Cooking Oil 1L,4,$18.00
+23/05/2026,north branch,Beauty,Shampoo 400ml,13,$97.50
+21/04/2026,north branch,Dairy,Cheddar Cheese,4,$27.20
+21/05/2026,North Branch,Electronics,Phone Charger,3,$42.00
+23/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,14,$168.00
+06/04/2026,South Branch,Grocery,Cooking Oil 1L,12,$54.00
+18/05/2026,North Branch,Electronics,Phone Charger,11,$154.00
+02/04/2026,South Branch,Dairy,Cheddar Cheese,3,$20.40
+24/05/2026,North Branch,Grocery,Cooking Oil 1L,10,$45.00
+14/04/2026,north branch,Grocery,Cooking Oil 1L,4,$18.00
+14/04/2026,North Branch,Dairy,CHEDDAR CHEESE,3,$20.40
+26/04/2026,north branch,Home,Detergent 2kg,3,$29.70
+09/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,12,$168.00
+01/05/2026,North Branch,Electronics,Phone Charger,3,$42.00
+11/04/2026,North Branch,Grocery,Cooking Oil 1L,14,$63.00
+02/04/2026,North Branch,Grocery,Basmati Rice 5kg,13,$156.00
+23/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,14,$105.00
+06/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,13,$182.00
+23/04/2026,North Branch,Grocery,Basmati Rice 5kg,2,$24.00
+05/04/2026,South Branch,Dairy,FRESH MILK 2L,11,$35.20
+21/05/2026,north branch,Beauty,Shampoo 400ml,5,$37.50
+27/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,11,$74.80
+01/05/2026,South Branch,Electronics,Phone Charger,9,$126.00
+05/05/2026,South Branch,Grocery,Cooking Oil 1L,5,$22.50
+10/05/2026,South Branch,Grocery,Basmati Rice 5kg,7,$84.00
+30/04/2026,SOUTH BRANCH ,Dairy,FRESH MILK 2L,11,$35.20
+27/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,1,$4.50
+27/04/2026,north branch,Electronics,Phone Charger,10,$140.00
+16/04/2026,South Branch,Dairy,Fresh Milk 2L,9,$28.80
+26/05/2026,North Branch,Electronics,Phone Charger,4,$56.00
+17/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,2,$19.80
+28/04/2026,north branch,Grocery,Cooking Oil 1L,14,$63.00
+21/05/2026,South Branch,Grocery,Cooking Oil 1L,12,$54.00
+25/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,13,$156.00
+01/04/2026,North Branch,Dairy,Cheddar Cheese,9,$61.20
+11/04/2026,North Branch,Electronics,Phone Charger,5,$70.00
+12/05/2026,South Branch,Dairy,Fresh Milk 2L,1,$3.20
+28/05/2026,South Branch,Grocery,Cooking Oil 1L,3,$13.50
+13/05/2026,north branch,Electronics,Phone Charger,6,$84.00
+08/05/2026,South Branch,Dairy,Fresh Milk 2L,12,$38.40
+25/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,3,$22.50
+26/04/2026,North Branch,Electronics,PHONE CHARGER,2,$28.00
+09/05/2026,north branch,Home,Detergent 2kg,8,$79.20
+15/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,1,$9.90
+24/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,3,$20.40
+11/05/2026,north branch,Electronics,PHONE CHARGER,1,$14.00
+30/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,4,$27.20
+18/04/2026,north branch,Grocery,Cooking Oil 1L,2,$9.00
+10/04/2026,North Branch,Dairy,Fresh Milk 2L,13,$41.60
+02/04/2026,South Branch,Grocery,Basmati Rice 5kg,6,$72.00
+26/04/2026,north branch,,Basmati Rice 5kg,4,$48.00
+18/05/2026,North Branch,Grocery,Cooking Oil 1L,8,$36.00
+30/05/2026,north branch,Dairy,Fresh Milk 2L,7,$22.40
+15/04/2026,north branch,Dairy,Fresh Milk 2L,1,$3.20
+17/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,8,$54.40
+05/05/2026,North Branch,Grocery,Basmati Rice 5kg,6,$72.00
+08/04/2026,north branch,Grocery,Cooking Oil 1L,3,$13.50
+17/04/2026,North Branch,,Phone Charger,6,$84.00
+10/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,7,$47.60
+29/05/2026,North Branch,Dairy,Fresh Milk 2L,12,$38.40
+24/04/2026,North Branch,Beauty,Shampoo 400ml,12,$90.00
+22/04/2026,North Branch,Dairy,Cheddar Cheese,12,$81.60
+02/04/2026,North Branch,Home,Detergent 2kg,2,$19.80
+24/05/2026,South Branch,Home,Detergent 2kg,12,$118.80
+04/04/2026,South Branch,Dairy,Fresh Milk 2L,12,$38.40
+11/04/2026,South Branch,Electronics,Phone Charger,3,$42.00
+03/05/2026,North Branch,,Basmati Rice 5kg,11,$132.00
+15/05/2026,north branch,Electronics,Phone Charger,10,$140.00
+21/05/2026,South Branch,,Shampoo 400ml,1,
+30/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,12,$54.00
+25/04/2026,north branch,Electronics,Phone Charger,9,$126.00
+15/04/2026,north branch,Electronics,Phone Charger,3,$42.00
+05/04/2026,South Branch,Grocery,Cooking Oil 1L,11,$49.50
+21/05/2026,South Branch,Home,Detergent 2kg,5,$49.50
+14/04/2026,North Branch,Grocery,Basmati Rice 5kg,1,$12.00
+14/05/2026,North Branch,Dairy,Fresh Milk 2L,8,$25.60
+27/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,10,$99.00
+03/04/2026,north branch,Dairy,Fresh Milk 2L,7,$22.40
+17/05/2026,north branch,Beauty,Shampoo 400ml,1,$7.50
+30/04/2026,South Branch,Dairy,Fresh Milk 2L,10,$32.00
+30/05/2026,North Branch,Grocery,Cooking Oil 1L,11,$49.50
+27/04/2026,north branch,Dairy,Cheddar Cheese,9,$61.20
+20/05/2026,South Branch,Home,Detergent 2kg,8,$79.20
+04/05/2026,North Branch,Dairy,Fresh Milk 2L,9,$28.80
+07/04/2026,north branch,Electronics,Phone Charger,13,$182.00
+02/05/2026,South Branch,Home,Detergent 2kg,13,$128.70
+04/05/2026,North Branch,Electronics,Phone Charger,2,$28.00
+25/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,1,$9.90
+31/05/2026,north branch,Grocery,Cooking Oil 1L,1,$4.50
+18/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,5,$16.00
+21/04/2026,North Branch,Grocery,Basmati Rice 5kg,4,$48.00
+16/04/2026,North Branch,Home,Detergent 2kg,9,$89.10
+15/04/2026,SOUTH BRANCH ,Electronics,PHONE CHARGER,8,$112.00
+09/05/2026,north branch,Grocery,Cooking Oil 1L,7,$31.50
+20/05/2026,north branch,Dairy,CHEDDAR CHEESE,13,$88.40
+27/05/2026,North Branch,Beauty,Shampoo 400ml,8,$60.00
+16/05/2026,North Branch,Beauty,Shampoo 400ml,11,$82.50
+03/05/2026,north branch,,Cooking Oil 1L,9,$40.50
+06/05/2026,North Branch,Beauty,Shampoo 400ml,6,$45.00
+31/05/2026,South Branch,Dairy,Fresh Milk 2L,2,$6.40
+07/05/2026,South Branch,Dairy,Fresh Milk 2L,13,$41.60
+28/04/2026,north branch,Home,Detergent 2kg,9,$89.10
+08/04/2026,North Branch,Grocery,Basmati Rice 5kg,8,$96.00
+29/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,13,$97.50
+28/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,12,$118.80
+11/04/2026,North Branch,Dairy,Fresh Milk 2L,10,$32.00
+23/04/2026,South Branch,Dairy,Cheddar Cheese,5,$34.00
+14/05/2026,South Branch,Grocery,Cooking Oil 1L,10,$45.00
+29/04/2026,North Branch,Home,DETERGENT 2KG,13,$128.70
+01/04/2026,north branch,Dairy,Cheddar Cheese,10,$68.00
+19/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,3,$29.70
+02/04/2026,North Branch,Beauty,Shampoo 400ml,1,$7.50
+08/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,1,$14.00
+11/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,6,$19.20
+29/04/2026,South Branch,Grocery,Cooking Oil 1L,13,$58.50
+20/04/2026,South Branch,Beauty,Shampoo 400ml,4,$30.00
+27/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,14,$168.00
+29/05/2026,South Branch,Dairy,Fresh Milk 2L,6,$19.20
+05/04/2026,SOUTH BRANCH ,Home,DETERGENT 2KG,13,$128.70
+17/05/2026,north branch,Electronics,Phone Charger,11,$154.00
+15/04/2026,north branch,Dairy,Cheddar Cheese,3,$20.40
+16/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,4,
+13/04/2026,North Branch,Dairy,Fresh Milk 2L,2,$6.40
+20/04/2026,North Branch,Dairy,Fresh Milk 2L,4,$12.80
+11/05/2026,South Branch,Electronics,Phone Charger,9,$126.00
+14/05/2026,north branch,Dairy,Cheddar Cheese,8,$54.40
+25/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,7,$47.60
+15/05/2026,North Branch,Electronics,PHONE CHARGER,3,$42.00
+22/05/2026,South Branch,Beauty,Shampoo 400ml,1,$7.50
+03/05/2026,north branch,Beauty,Shampoo 400ml,3,$22.50
+28/05/2026,South Branch,Grocery,Basmati Rice 5kg,1,$12.00
+10/05/2026,South Branch,Dairy,Fresh Milk 2L,9,$28.80
+11/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,9,$40.50
+17/05/2026,north branch,Grocery,Cooking Oil 1L,9,$40.50
+21/05/2026,North Branch,Dairy,Cheddar Cheese,11,$74.80
+10/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,8,$60.00
+12/05/2026,South Branch,Home,Detergent 2kg,4,$39.60
+25/05/2026,North Branch,Dairy,Cheddar Cheese,9,$61.20
+03/04/2026,North Branch,Home,Detergent 2kg,7,$69.30
+13/05/2026,North Branch,Dairy,Cheddar Cheese,3,$20.40
+18/04/2026,north branch,Electronics,PHONE CHARGER,7,$98.00
+15/04/2026,South Branch,Grocery,Basmati Rice 5kg,1,$12.00
+08/05/2026,North Branch,Dairy,Fresh Milk 2L,8,$25.60
+24/05/2026,north branch,Beauty,Shampoo 400ml,11,$82.50
+03/04/2026,South Branch,Beauty,Shampoo 400ml,7,$52.50
+21/05/2026,north branch,Grocery,Basmati Rice 5kg,6,$72.00
+08/04/2026,South Branch,Electronics,Phone Charger,12,$168.00
+22/05/2026,South Branch,Grocery,Basmati Rice 5kg,4,$48.00
+22/05/2026,SOUTH BRANCH ,Electronics,PHONE CHARGER,8,$112.00
+22/04/2026,South Branch,Electronics,Phone Charger,14,$196.00
+05/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,4,$27.20
+06/05/2026,North Branch,Home,Detergent 2kg,9,
+06/05/2026,South Branch,Home,Detergent 2kg,9,$89.10
+28/05/2026,North Branch,Electronics,Phone Charger,10,$140.00
+17/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,4,$18.00
+04/05/2026,north branch,Grocery,Basmati Rice 5kg,9,$108.00
+17/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,8,$60.00
+28/05/2026,North Branch,Dairy,Cheddar Cheese,6,$40.80
+23/04/2026,north branch,Dairy,FRESH MILK 2L,14,$44.80
+27/05/2026,North Branch,Grocery,Basmati Rice 5kg,13,$156.00
+19/05/2026,South Branch,Grocery,Cooking Oil 1L,2,$9.00
+20/04/2026,North Branch,Beauty,Shampoo 400ml,6,$45.00
+25/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,7,$22.40
+18/05/2026,north branch,Grocery,BASMATI RICE 5KG,4,$48.00
+27/04/2026,north branch,Grocery,Basmati Rice 5kg,10,$120.00
+25/05/2026,north branch,Dairy,Fresh Milk 2L,13,$41.60
+16/04/2026,north branch,Beauty,Shampoo 400ml,3,
+05/04/2026,North Branch,Dairy,Fresh Milk 2L,5,$16.00
+12/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,3,$42.00
+12/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,3,$22.50
+05/05/2026,north branch,Beauty,Shampoo 400ml,12,$90.00
+31/05/2026,north branch,Grocery,Basmati Rice 5kg,11,$132.00
+17/05/2026,north branch,Home,Detergent 2kg,1,$9.90
+05/05/2026,North Branch,Electronics,Phone Charger,13,$182.00
+30/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,1,
+28/04/2026,South Branch,Electronics,Phone Charger,13,$182.00
+08/04/2026,north branch,Home,Detergent 2kg,5,$49.50
+27/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,14,$105.00
+30/05/2026,north branch,Grocery,Basmati Rice 5kg,4,$48.00
+16/05/2026,north branch,Electronics,Phone Charger,5,$70.00
+26/04/2026,South Branch,Grocery,Basmati Rice 5kg,2,$24.00
+20/04/2026,South Branch,Home,Detergent 2kg,4,$39.60
+17/05/2026,South Branch,Grocery,Cooking Oil 1L,4,$18.00
+10/05/2026,North Branch,Electronics,PHONE CHARGER,11,$154.00
+24/04/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+19/05/2026,north branch,Beauty,Shampoo 400ml,2,$15.00
+30/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,9,$40.50
+23/05/2026,SOUTH BRANCH ,,PHONE CHARGER,9,$126.00
+06/04/2026,South Branch,Grocery,Basmati Rice 5kg,10,$120.00
+19/05/2026,South Branch,Dairy,Fresh Milk 2L,1,$3.20
+13/04/2026,South Branch,Dairy,Cheddar Cheese,1,$6.80
+29/05/2026,north branch,Grocery,Basmati Rice 5kg,3,$36.00
+27/05/2026,South Branch,Electronics,PHONE CHARGER,6,$84.00
+05/04/2026,north branch,Beauty,Shampoo 400ml,10,$75.00
+14/04/2026,North Branch,Electronics,Phone Charger,3,$42.00
+05/04/2026,north branch,Home,Detergent 2kg,6,$59.40
+21/04/2026,South Branch,Dairy,Fresh Milk 2L,2,$6.40
+23/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,5,$34.00
+02/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,3,$20.40
+18/05/2026,north branch,Home,Detergent 2kg,5,$49.50
+27/05/2026,North Branch,Dairy,Cheddar Cheese,13,$88.40
+06/05/2026,north branch,Home,Detergent 2kg,11,$108.90
+15/05/2026,South Branch,Dairy,Fresh Milk 2L,4,$12.80
+05/04/2026,north branch,Dairy,Cheddar Cheese,9,$61.20
+14/04/2026,SOUTH BRANCH ,Grocery,BASMATI RICE 5KG,1,$12.00
+07/04/2026,South Branch,Grocery,Cooking Oil 1L,3,$13.50
+02/05/2026,South Branch,Grocery,Cooking Oil 1L,11,$49.50
+18/05/2026,SOUTH BRANCH ,Electronics,PHONE CHARGER,4,$56.00
+09/04/2026,North Branch,Beauty,Shampoo 400ml,12,$90.00
+14/04/2026,South Branch,Grocery,Basmati Rice 5kg,4,$48.00
+18/04/2026,South Branch,Grocery,Cooking Oil 1L,2,$9.00
+21/04/2026,South Branch,Beauty,Shampoo 400ml,10,$75.00
+19/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,2,$6.40
+21/04/2026,North Branch,Electronics,Phone Charger,5,$70.00
+14/05/2026,South Branch,Dairy,Fresh Milk 2L,7,$22.40
+27/05/2026,South Branch,Dairy,Fresh Milk 2L,8,$25.60
+04/04/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+19/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,3,$20.40
+09/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,9,$61.20
+09/04/2026,North Branch,Grocery,COOKING OIL 1L,3,
+17/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,8,$25.60
+16/05/2026,South Branch,Dairy,Cheddar Cheese,9,$61.20
+20/05/2026,North Branch,Grocery,Basmati Rice 5kg,12,$144.00
+18/05/2026,South Branch,Beauty,Shampoo 400ml,5,$37.50
+31/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,13,$156.00
+13/04/2026,South Branch,Grocery,Basmati Rice 5kg,4,$48.00
+25/05/2026,South Branch,Grocery,Cooking Oil 1L,3,$13.50
+25/05/2026,North Branch,Dairy,Fresh Milk 2L,1,$3.20
+20/04/2026,north branch,Home,Detergent 2kg,11,$108.90
+10/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,8,$36.00
+02/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,4,$39.60
+28/04/2026,North Branch,Grocery,BASMATI RICE 5KG,1,$12.00
+28/05/2026,South Branch,Dairy,Cheddar Cheese,13,$88.40
+22/04/2026,South Branch,Dairy,Fresh Milk 2L,9,$28.80
+23/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,11,$132.00
+12/05/2026,SOUTH BRANCH ,Home,DETERGENT 2KG,12,$118.80
+28/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,12,$90.00
+05/05/2026,South Branch,Electronics,Phone Charger,10,$140.00
+17/04/2026,SOUTH BRANCH ,Dairy,CHEDDAR CHEESE,1,$6.80
+01/05/2026,north branch,Beauty,SHAMPOO 400ML,5,$37.50
+14/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,10,$75.00
+30/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,9,$126.00
+28/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,2,$19.80
+10/04/2026,North Branch,Grocery,Basmati Rice 5kg,4,$48.00
+25/05/2026,North Branch,,PHONE CHARGER,10,$140.00
+04/05/2026,North Branch,Dairy,Cheddar Cheese,11,$74.80
+01/05/2026,north branch,Grocery,Basmati Rice 5kg,11,$132.00
+23/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,5,$37.50
+21/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,2,$24.00
+03/05/2026,North Branch,,Fresh Milk 2L,7,$22.40
+20/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,8,$25.60
+08/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,2,$6.40
+19/05/2026,North Branch,Dairy,Cheddar Cheese,1,$6.80
+13/05/2026,North Branch,Grocery,Basmati Rice 5kg,5,$60.00
+07/04/2026,North Branch,Electronics,Phone Charger,2,$28.00
+06/04/2026,South Branch,Beauty,Shampoo 400ml,11,$82.50
+03/05/2026,South Branch,Dairy,Fresh Milk 2L,9,$28.80
+10/05/2026,north branch,Electronics,Phone Charger,8,$112.00
+20/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,11,$108.90
+13/04/2026,South Branch,Electronics,Phone Charger,4,$56.00
+23/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,2,$6.40
+11/04/2026,North Branch,,Detergent 2kg,6,$59.40
+07/05/2026,North Branch,Grocery,Basmati Rice 5kg,7,$84.00
+16/04/2026,South Branch,Grocery,Basmati Rice 5kg,1,$12.00
+25/04/2026,north branch,Dairy,Cheddar Cheese,8,$54.40
+14/05/2026,North Branch,Beauty,Shampoo 400ml,3,$22.50
+04/04/2026,north branch,Dairy,Fresh Milk 2L,13,$41.60
+14/05/2026,North Branch,Home,Detergent 2kg,7,$69.30
+04/05/2026,SOUTH BRANCH ,,Detergent 2kg,9,$89.10
+30/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,14,$138.60
+01/04/2026,North Branch,Dairy,FRESH MILK 2L,8,$25.60
+24/04/2026,South Branch,Dairy,Cheddar Cheese,12,$81.60
+26/04/2026,north branch,,Shampoo 400ml,6,$45.00
+19/05/2026,North Branch,Grocery,Cooking Oil 1L,5,$22.50
+12/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,10,$68.00
+07/04/2026,north branch,Home,Detergent 2kg,8,$79.20
+25/04/2026,South Branch,Home,Detergent 2kg,6,$59.40
+14/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,10,$45.00
+05/05/2026,South Branch,Dairy,Cheddar Cheese,3,$20.40
+06/05/2026,north branch,Dairy,Cheddar Cheese,13,$88.40
+21/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,13,$128.70
+04/05/2026,South Branch,Electronics,Phone Charger,6,$84.00
+19/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,12,$144.00
+16/05/2026,north branch,Home,Detergent 2kg,13,$128.70
+30/05/2026,North Branch,Home,Detergent 2kg,6,$59.40
+09/04/2026,South Branch,Beauty,Shampoo 400ml,12,$90.00
+21/04/2026,South Branch,Grocery,Cooking Oil 1L,12,$54.00
+13/04/2026,South Branch,Grocery,Cooking Oil 1L,10,$45.00
+04/04/2026,South Branch,Dairy,Cheddar Cheese,1,$6.80
+28/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,6,$40.80
+03/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,1,$7.50
+13/05/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+03/05/2026,north branch,Home,Detergent 2kg,14,$138.60
+23/05/2026,South Branch,Dairy,Cheddar Cheese,11,$74.80
+15/05/2026,South Branch,Grocery,Cooking Oil 1L,5,$22.50
+16/04/2026,North Branch,Dairy,Fresh Milk 2L,5,$16.00
+29/04/2026,South Branch,Dairy,Cheddar Cheese,11,$74.80
+19/04/2026,South Branch,Grocery,Cooking Oil 1L,6,$27.00
+04/04/2026,North Branch,Electronics,Phone Charger,8,$112.00
+30/04/2026,North Branch,Grocery,Basmati Rice 5kg,11,$132.00
+10/04/2026,South Branch,Grocery,Cooking Oil 1L,14,$63.00
+20/05/2026,north branch,Grocery,Cooking Oil 1L,5,$22.50
+26/04/2026,South Branch,Home,Detergent 2kg,11,$108.90
+17/04/2026,North Branch,Home,Detergent 2kg,10,$99.00
+29/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,10,$120.00
+05/05/2026,north branch,Grocery,Basmati Rice 5kg,7,$84.00
+21/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,12,$81.60
+01/05/2026,North Branch,Grocery,Cooking Oil 1L,5,$22.50
+27/05/2026,North Branch,Grocery,Cooking Oil 1L,10,$45.00
+11/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,1,$9.90
+28/04/2026,South Branch,Grocery,Basmati Rice 5kg,13,$156.00
+23/05/2026,South Branch,Dairy,Fresh Milk 2L,13,$41.60
+19/04/2026,South Branch,Grocery,Basmati Rice 5kg,9,$108.00
+16/05/2026,north branch,Grocery,Basmati Rice 5kg,12,$144.00
+06/05/2026,South Branch,Grocery,Cooking Oil 1L,2,$9.00
+31/05/2026,South Branch,Grocery,Cooking Oil 1L,2,$9.00
+30/05/2026,North Branch,Home,Detergent 2kg,6,$59.40
+23/04/2026,North Branch,Home,Detergent 2kg,2,$19.80
+29/05/2026,north branch,Home,DETERGENT 2KG,2,$19.80
+27/04/2026,South Branch,Electronics,Phone Charger,9,$126.00
+28/05/2026,North Branch,Grocery,Basmati Rice 5kg,5,$60.00
+18/04/2026,South Branch,Dairy,Cheddar Cheese,13,$88.40
+14/05/2026,north branch,Beauty,SHAMPOO 400ML,13,$97.50
+14/04/2026,South Branch,Grocery,Cooking Oil 1L,9,$40.50
+04/05/2026,South Branch,Home,Detergent 2kg,3,$29.70
+11/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,10,$120.00
+05/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,13,$182.00
+15/05/2026,North Branch,Grocery,Cooking Oil 1L,1,$4.50
+20/05/2026,north branch,Dairy,Fresh Milk 2L,10,$32.00
+04/04/2026,North Branch,Home,Detergent 2kg,14,$138.60
+02/05/2026,north branch,Dairy,CHEDDAR CHEESE,13,$88.40
+22/05/2026,South Branch,Electronics,PHONE CHARGER,5,$70.00
+13/04/2026,north branch,Electronics,Phone Charger,7,$98.00
+22/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,3,$9.60
+09/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,3,$22.50
+30/04/2026,north branch,Beauty,Shampoo 400ml,13,$97.50
+17/05/2026,north branch,Dairy,Fresh Milk 2L,4,$12.80
+24/04/2026,north branch,Electronics,Phone Charger,6,$84.00
+09/05/2026,north branch,Beauty,Shampoo 400ml,2,$15.00
+16/04/2026,North Branch,Grocery,Basmati Rice 5kg,12,$144.00
+23/04/2026,North Branch,Electronics,Phone Charger,2,$28.00
+20/04/2026,north branch,Grocery,Cooking Oil 1L,11,$49.50
+29/04/2026,north branch,Beauty,Shampoo 400ml,4,$30.00
+13/04/2026,South Branch,Beauty,Shampoo 400ml,1,$7.50
+04/05/2026,north branch,Beauty,Shampoo 400ml,3,$22.50
+11/04/2026,North Branch,Grocery,Basmati Rice 5kg,14,$168.00
+05/05/2026,North Branch,Beauty,SHAMPOO 400ML,13,$97.50
+20/05/2026,North Branch,Electronics,Phone Charger,3,$42.00
+01/04/2026,South Branch,Dairy,Fresh Milk 2L,7,$22.40
+27/04/2026,South Branch,Dairy,Cheddar Cheese,9,$61.20
+02/05/2026,South Branch,Dairy,Cheddar Cheese,5,$34.00
+15/05/2026,north branch,Dairy,Cheddar Cheese,1,$6.80
+02/04/2026,South Branch,Home,Detergent 2kg,4,$39.60
+14/04/2026,South Branch,Electronics,Phone Charger,2,$28.00
+18/04/2026,South Branch,Dairy,Fresh Milk 2L,1,$3.20
+09/05/2026,North Branch,Beauty,Shampoo 400ml,6,$45.00
+15/05/2026,North Branch,Beauty,Shampoo 400ml,8,$60.00
+26/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,13,$156.00
+05/05/2026,SOUTH BRANCH ,Beauty,SHAMPOO 400ML,11,$82.50
+26/04/2026,North Branch,Dairy,Cheddar Cheese,7,$47.60
+28/05/2026,SOUTH BRANCH ,Grocery,BASMATI RICE 5KG,11,$132.00
+10/05/2026,South Branch,Electronics,Phone Charger,5,$70.00
+22/04/2026,South Branch,Home,Detergent 2kg,9,$89.10
+07/04/2026,North Branch,Grocery,Basmati Rice 5kg,11,$132.00
+03/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,14,$63.00
+01/04/2026,north branch,Home,Detergent 2kg,9,$89.10
+02/04/2026,North Branch,Grocery,Cooking Oil 1L,13,$58.50
+13/05/2026,north branch,Dairy,Fresh Milk 2L,4,$12.80
+05/05/2026,North Branch,Grocery,Cooking Oil 1L,9,$40.50
+17/05/2026,South Branch,Electronics,Phone Charger,5,$70.00
+28/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,11,$82.50
+03/05/2026,North Branch,Electronics,Phone Charger,14,$196.00
+20/04/2026,North Branch,,Cheddar Cheese,4,$27.20
+05/04/2026,North Branch,Home,Detergent 2kg,13,$128.70
+16/04/2026,South Branch,Electronics,Phone Charger,6,$84.00
+24/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,9,$108.00
+14/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,8,$36.00
+25/04/2026,North Branch,Home,Detergent 2kg,1,$9.90
+21/04/2026,South Branch,Grocery,BASMATI RICE 5KG,13,$156.00
+06/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,12,$81.60
+26/05/2026,North Branch,Home,Detergent 2kg,3,$29.70
+21/04/2026,north branch,Dairy,Fresh Milk 2L,10,$32.00
+26/04/2026,North Branch,Beauty,SHAMPOO 400ML,11,$82.50
+03/04/2026,north branch,Dairy,Cheddar Cheese,5,$34.00
+08/05/2026,North Branch,Grocery,Cooking Oil 1L,11,$49.50
+29/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,7,$69.30
+24/05/2026,north branch,Dairy,Cheddar Cheese,13,$88.40
+13/04/2026,South Branch,Dairy,FRESH MILK 2L,2,$6.40
+31/05/2026,SOUTH BRANCH ,Beauty,SHAMPOO 400ML,11,$82.50
+29/05/2026,north branch,Electronics,Phone Charger,7,$98.00
+08/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,10,$45.00
+24/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,5,$49.50
+07/04/2026,South Branch,Dairy,Cheddar Cheese,13,$88.40
+12/04/2026,South Branch,Dairy,Cheddar Cheese,13,$88.40
+03/04/2026,South Branch,Home,Detergent 2kg,11,$108.90
+11/04/2026,South Branch,Beauty,Shampoo 400ml,14,$105.00
+09/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,9,$67.50
+01/05/2026,North Branch,Dairy,Fresh Milk 2L,10,$32.00
+07/05/2026,north branch,Dairy,Fresh Milk 2L,5,$16.00
+04/04/2026,South Branch,Home,Detergent 2kg,4,$39.60
+20/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,11,$82.50
+05/05/2026,north branch,Home,DETERGENT 2KG,11,$108.90
+18/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,2,$9.00
+17/05/2026,North Branch,Electronics,Phone Charger,10,$140.00
+14/04/2026,north branch,Beauty,Shampoo 400ml,3,$22.50
+15/05/2026,north branch,Beauty,Shampoo 400ml,11,$82.50
+29/04/2026,north branch,Home,DETERGENT 2KG,1,$9.90
+19/04/2026,South Branch,Dairy,Cheddar Cheese,11,$74.80
+29/05/2026,South Branch,Dairy,CHEDDAR CHEESE,8,$54.40
+20/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,7,$31.50
+23/04/2026,north branch,,CHEDDAR CHEESE,12,$81.60
+01/05/2026,SOUTH BRANCH ,,Basmati Rice 5kg,5,$60.00
+12/04/2026,South Branch,Beauty,Shampoo 400ml,6,$45.00
+07/04/2026,north branch,Grocery,Basmati Rice 5kg,8,$96.00
+21/04/2026,north branch,Beauty,Shampoo 400ml,11,$82.50
+13/05/2026,South Branch,Beauty,Shampoo 400ml,1,$7.50
+25/04/2026,South Branch,Dairy,Fresh Milk 2L,2,$6.40
+06/05/2026,North Branch,Dairy,Cheddar Cheese,7,$47.60
+05/05/2026,north branch,Dairy,FRESH MILK 2L,11,$35.20
+21/04/2026,South Branch,Home,Detergent 2kg,1,$9.90
+31/05/2026,North Branch,Dairy,Cheddar Cheese,5,$34.00
+03/04/2026,North Branch,Grocery,Cooking Oil 1L,2,$9.00
+18/04/2026,north branch,Grocery,Basmati Rice 5kg,14,$168.00
+04/05/2026,North Branch,,Basmati Rice 5kg,5,$60.00
+28/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,6,$19.20
+23/04/2026,South Branch,Electronics,Phone Charger,13,$182.00
+13/05/2026,north branch,Grocery,Cooking Oil 1L,6,$27.00
+22/05/2026,North Branch,Dairy,Cheddar Cheese,3,$20.40
+28/05/2026,South Branch,Dairy,Fresh Milk 2L,11,$35.20
+21/04/2026,South Branch,Electronics,PHONE CHARGER,14,$196.00
+05/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,14,$105.00
+26/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,13,$88.40
+18/05/2026,North Branch,Beauty,Shampoo 400ml,8,$60.00
+28/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,4,$18.00
+12/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,11,$132.00
+02/04/2026,north branch,Home,Detergent 2kg,14,$138.60
+23/05/2026,South Branch,Grocery,Cooking Oil 1L,4,$18.00
+15/05/2026,South Branch,Grocery,Basmati Rice 5kg,14,$168.00
+21/04/2026,SOUTH BRANCH ,Dairy,CHEDDAR CHEESE,3,$20.40
+27/04/2026,North Branch,Grocery,Cooking Oil 1L,10,$45.00
+15/04/2026,North Branch,Electronics,Phone Charger,5,$70.00
+06/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,4,$12.80
+04/05/2026,South Branch,Grocery,Basmati Rice 5kg,13,$156.00
+15/05/2026,North Branch,Dairy,Cheddar Cheese,7,$47.60
+12/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,12,$118.80
+09/04/2026,North Branch,,Fresh Milk 2L,6,$19.20
+09/04/2026,South Branch,Grocery,Basmati Rice 5kg,7,$84.00
+30/04/2026,South Branch,Electronics,Phone Charger,4,$56.00
+25/05/2026,South Branch,Electronics,Phone Charger,6,$84.00
+21/05/2026,north branch,Dairy,Cheddar Cheese,13,$88.40
+28/05/2026,South Branch,Home,Detergent 2kg,6,$59.40
+03/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,6,$27.00
+11/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,3,$13.50
+14/04/2026,north branch,Dairy,Cheddar Cheese,14,$95.20
+12/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,4,$12.80
+15/05/2026,north branch,Home,Detergent 2kg,5,$49.50
+25/05/2026,North Branch,Home,Detergent 2kg,9,$89.10
+16/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,13,$156.00
+12/05/2026,north branch,Dairy,Fresh Milk 2L,8,$25.60
+20/05/2026,North Branch,Dairy,Fresh Milk 2L,13,$41.60
+04/05/2026,north branch,Electronics,Phone Charger,8,$112.00
+24/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,9,$89.10
+17/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,12,$38.40
+21/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,11,$49.50
+18/05/2026,South Branch,Electronics,Phone Charger,3,$42.00
+23/04/2026,north branch,Grocery,Basmati Rice 5kg,4,$48.00
+13/04/2026,North Branch,Grocery,BASMATI RICE 5KG,6,$72.00
+18/04/2026,South Branch,Home,Detergent 2kg,2,$19.80
+08/05/2026,north branch,Electronics,PHONE CHARGER,5,$70.00
+17/04/2026,North Branch,Dairy,Cheddar Cheese,10,$68.00
+29/04/2026,North Branch,Dairy,Cheddar Cheese,2,$13.60
+08/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,9,$108.00
+13/04/2026,North Branch,Home,Detergent 2kg,4,$39.60
+16/04/2026,South Branch,Beauty,SHAMPOO 400ML,12,$90.00
+25/04/2026,South Branch,Beauty,Shampoo 400ml,12,$90.00
+07/05/2026,north branch,Grocery,Cooking Oil 1L,6,$27.00
+11/04/2026,north branch,Electronics,Phone Charger,12,$168.00
+10/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,10,$32.00
+25/05/2026,South Branch,Dairy,Cheddar Cheese,9,$61.20
+13/04/2026,South Branch,Home,Detergent 2kg,10,$99.00
+02/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,9,$126.00
+12/05/2026,South Branch,Grocery,Basmati Rice 5kg,14,$168.00
+28/04/2026,North Branch,Electronics,Phone Charger,10,$140.00
+23/05/2026,South Branch,Beauty,Shampoo 400ml,5,$37.50
+31/05/2026,North Branch,Dairy,Fresh Milk 2L,4,$12.80
+22/04/2026,North Branch,Home,Detergent 2kg,4,$39.60
+16/04/2026,North Branch,Dairy,Cheddar Cheese,3,$20.40
+30/04/2026,North Branch,Home,DETERGENT 2KG,8,$79.20
+07/04/2026,North Branch,Beauty,Shampoo 400ml,7,$52.50
+12/04/2026,South Branch,Grocery,Basmati Rice 5kg,11,$132.00
+16/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,10,$45.00
+14/04/2026,South Branch,Home,Detergent 2kg,8,$79.20
+21/05/2026,north branch,Home,Detergent 2kg,11,$108.90
+01/05/2026,South Branch,Grocery,Basmati Rice 5kg,13,$156.00
+03/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,14,$105.00
+12/05/2026,South Branch,Grocery,Cooking Oil 1L,3,$13.50
+30/05/2026,South Branch,Grocery,Basmati Rice 5kg,14,$168.00
+03/04/2026,North Branch,Dairy,Fresh Milk 2L,14,$44.80
+01/04/2026,SOUTH BRANCH ,Grocery,BASMATI RICE 5KG,11,$132.00
+31/05/2026,South Branch,,Phone Charger,4,$56.00
+06/04/2026,north branch,Dairy,FRESH MILK 2L,9,$28.80
+02/04/2026,SOUTH BRANCH ,Dairy,FRESH MILK 2L,13,$41.60
+07/05/2026,North Branch,Beauty,Shampoo 400ml,13,$97.50
+21/05/2026,South Branch,Dairy,Fresh Milk 2L,2,$6.40
+11/05/2026,north branch,Home,Detergent 2kg,14,$138.60
+28/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,13,$182.00
+01/04/2026,north branch,Grocery,Cooking Oil 1L,2,$9.00
+23/04/2026,South Branch,Grocery,Cooking Oil 1L,1,$4.50
+03/05/2026,South Branch,Electronics,Phone Charger,11,$154.00
+07/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,10,$75.00
+29/05/2026,South Branch,,Cooking Oil 1L,13,$58.50
+04/05/2026,north branch,Dairy,Cheddar Cheese,12,$81.60
+29/05/2026,SOUTH BRANCH ,Grocery,COOKING OIL 1L,12,$54.00
+28/05/2026,north branch,Electronics,Phone Charger,3,$42.00
+13/05/2026,South Branch,Dairy,Cheddar Cheese,12,
+01/04/2026,north branch,Electronics,Phone Charger,11,$154.00
+21/04/2026,north branch,Grocery,Cooking Oil 1L,4,$18.00
+29/05/2026,North Branch,Home,Detergent 2kg,7,$69.30
+16/04/2026,north branch,Home,Detergent 2kg,10,$99.00
+04/04/2026,North Branch,Dairy,CHEDDAR CHEESE,6,$40.80
+30/05/2026,North Branch,Dairy,Cheddar Cheese,9,$61.20
+19/05/2026,South Branch,Dairy,Cheddar Cheese,7,$47.60
+10/04/2026,north branch,,Cheddar Cheese,6,$40.80
+02/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,13,$156.00
+28/05/2026,north branch,Dairy,Cheddar Cheese,3,$20.40
+09/05/2026,South Branch,Beauty,Shampoo 400ml,8,$60.00
+09/05/2026,South Branch,Dairy,Fresh Milk 2L,5,$16.00
+12/04/2026,north branch,Home,Detergent 2kg,4,$39.60
+07/04/2026,South Branch,Electronics,PHONE CHARGER,6,$84.00
+02/04/2026,South Branch,Electronics,Phone Charger,2,$28.00
+10/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,1,$9.90
+06/05/2026,North Branch,Dairy,Fresh Milk 2L,9,$28.80
+22/04/2026,SOUTH BRANCH ,Electronics,PHONE CHARGER,5,$70.00
+26/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,8,$96.00
+30/05/2026,north branch,Grocery,Cooking Oil 1L,5,$22.50
+07/04/2026,north branch,Dairy,Fresh Milk 2L,12,$38.40
+16/05/2026,North Branch,Grocery,BASMATI RICE 5KG,4,$48.00
+28/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,3,$13.50
+15/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,2,$15.00
+12/04/2026,South Branch,Electronics,Phone Charger,6,$84.00
+12/05/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+04/04/2026,South Branch,Grocery,Basmati Rice 5kg,10,$120.00
+08/04/2026,North Branch,Grocery,Cooking Oil 1L,8,$36.00
+25/05/2026,north branch,Grocery,Basmati Rice 5kg,1,$12.00
+13/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,4,$27.20
+19/04/2026,South Branch,Electronics,Phone Charger,8,$112.00
+28/04/2026,North Branch,Dairy,Cheddar Cheese,10,$68.00
+05/04/2026,North Branch,Electronics,Phone Charger,14,$196.00
+09/04/2026,north branch,Dairy,Fresh Milk 2L,6,$19.20
+13/05/2026,north branch,Dairy,Cheddar Cheese,4,$27.20
+15/05/2026,SOUTH BRANCH ,Grocery,COOKING OIL 1L,3,$13.50
+10/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,10,
+08/04/2026,South Branch,Electronics,Phone Charger,12,$168.00
+20/04/2026,South Branch,,Phone Charger,3,$42.00
+12/05/2026,South Branch,Dairy,Cheddar Cheese,7,$47.60
+07/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,2,$9.00
+13/05/2026,north branch,,Shampoo 400ml,13,$97.50
+05/04/2026,north branch,Dairy,Fresh Milk 2L,10,$32.00
+06/04/2026,North Branch,Home,Detergent 2kg,2,$19.80
+24/05/2026,South Branch,Dairy,Fresh Milk 2L,5,$16.00
+07/05/2026,North Branch,Grocery,COOKING OIL 1L,5,$22.50
+30/04/2026,South Branch,Grocery,Cooking Oil 1L,14,$63.00
+29/05/2026,north branch,Dairy,Cheddar Cheese,14,$95.20
+07/04/2026,North Branch,Grocery,Cooking Oil 1L,3,$13.50
+08/04/2026,North Branch,Electronics,Phone Charger,14,$196.00
+06/04/2026,North Branch,Beauty,Shampoo 400ml,11,$82.50
+20/05/2026,SOUTH BRANCH ,Grocery,BASMATI RICE 5KG,1,$12.00
+05/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,13,$58.50
+11/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,8,$79.20
+24/05/2026,north branch,Grocery,Cooking Oil 1L,6,$27.00
+02/04/2026,South Branch,,Shampoo 400ml,4,$30.00
+04/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,4,$48.00
+18/04/2026,South Branch,Electronics,Phone Charger,8,$112.00
+23/05/2026,north branch,Dairy,Cheddar Cheese,14,$95.20
+02/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,7,$52.50
+03/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,8,$25.60
+27/04/2026,North Branch,Grocery,Basmati Rice 5kg,13,$156.00
+07/05/2026,north branch,Dairy,Cheddar Cheese,7,$47.60
+25/05/2026,north branch,Dairy,Cheddar Cheese,12,$81.60
+15/04/2026,South Branch,Beauty,Shampoo 400ml,6,$45.00
+03/05/2026,SOUTH BRANCH ,Dairy,CHEDDAR CHEESE,8,$54.40
+06/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,7,$84.00
+14/05/2026,north branch,Electronics,Phone Charger,7,$98.00
+01/04/2026,north branch,Grocery,Basmati Rice 5kg,7,
+01/05/2026,north branch,Dairy,Fresh Milk 2L,5,$16.00
+19/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,5,$37.50
+23/04/2026,north branch,Electronics,Phone Charger,3,$42.00
+05/05/2026,South Branch,Beauty,Shampoo 400ml,14,$105.00
+10/04/2026,north branch,Grocery,Cooking Oil 1L,12,$54.00
+03/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,4,$48.00
+15/04/2026,north branch,Beauty,Shampoo 400ml,8,$60.00
+29/04/2026,SOUTH BRANCH ,Dairy,FRESH MILK 2L,13,$41.60
+31/05/2026,North Branch,Home,Detergent 2kg,13,$128.70
+19/04/2026,South Branch,Home,Detergent 2kg,5,$49.50
+23/04/2026,north branch,Beauty,Shampoo 400ml,9,$67.50
+01/04/2026,North Branch,Grocery,Cooking Oil 1L,14,$63.00
+02/05/2026,north branch,Grocery,Basmati Rice 5kg,10,$120.00
+24/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,14,$168.00
+29/04/2026,South Branch,Home,Detergent 2kg,12,
+04/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,5,$16.00
+19/05/2026,North Branch,Electronics,Phone Charger,14,$196.00
+25/04/2026,North Branch,Grocery,Cooking Oil 1L,14,$63.00
+22/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,1,$9.90
+01/05/2026,South Branch,Home,Detergent 2kg,14,$138.60
+18/05/2026,South Branch,Dairy,Fresh Milk 2L,4,$12.80
+25/05/2026,North Branch,Grocery,Basmati Rice 5kg,3,$36.00
+28/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,1,$12.00
+20/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,6,$45.00
+24/05/2026,North Branch,Grocery,Basmati Rice 5kg,12,$144.00
+23/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,4,$39.60
+29/04/2026,North Branch,Grocery,Basmati Rice 5kg,1,$12.00
+02/05/2026,SOUTH BRANCH ,,Detergent 2kg,11,$108.90
+30/05/2026,North Branch,Dairy,Fresh Milk 2L,1,$3.20
+23/04/2026,North Branch,Beauty,Shampoo 400ml,4,$30.00
+11/04/2026,South Branch,Dairy,Cheddar Cheese,10,$68.00
+28/05/2026,North Branch,Dairy,Fresh Milk 2L,2,$6.40
+24/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,10,$140.00
+29/04/2026,North Branch,Grocery,Cooking Oil 1L,3,$13.50
+05/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,8,$54.40
+10/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,8,$60.00
+04/04/2026,north branch,Dairy,Cheddar Cheese,6,$40.80
+09/05/2026,North Branch,Electronics,Phone Charger,4,$56.00
+21/05/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+11/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,11,
+11/05/2026,South Branch,Grocery,Cooking Oil 1L,3,$13.50
+08/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,5,$22.50
+29/05/2026,north branch,Dairy,Fresh Milk 2L,8,$25.60
+18/04/2026,North Branch,Home,Detergent 2kg,8,$79.20
+26/04/2026,north branch,Grocery,Cooking Oil 1L,2,$9.00
+13/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,3,$29.70
+18/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,14,$105.00
+21/05/2026,North Branch,Grocery,Cooking Oil 1L,6,
+07/05/2026,North Branch,Dairy,Fresh Milk 2L,8,$25.60
+02/04/2026,north branch,Dairy,Cheddar Cheese,14,$95.20
+08/05/2026,South Branch,Home,Detergent 2kg,11,$108.90
+19/04/2026,north branch,Beauty,Shampoo 400ml,12,$90.00
+09/04/2026,South Branch,Home,Detergent 2kg,6,$59.40
+25/04/2026,north branch,Grocery,Cooking Oil 1L,11,$49.50
+08/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,14,$196.00
+29/04/2026,north branch,Dairy,Cheddar Cheese,11,$74.80
+19/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,4,$18.00
+12/05/2026,north branch,Grocery,Basmati Rice 5kg,11,$132.00
+09/04/2026,North Branch,Electronics,Phone Charger,3,$42.00
+20/05/2026,North Branch,Grocery,Cooking Oil 1L,12,$54.00
+07/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,8,$112.00
+10/05/2026,north branch,Home,Detergent 2kg,9,$89.10
+11/05/2026,South Branch,Home,DETERGENT 2KG,3,$29.70
+10/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,2,$6.40
+09/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,7,$31.50
+24/05/2026,South Branch,Dairy,Cheddar Cheese,2,$13.60
+18/04/2026,north branch,Dairy,Cheddar Cheese,6,$40.80
+24/05/2026,South Branch,Grocery,Basmati Rice 5kg,4,$48.00
+24/04/2026,South Branch,Electronics,Phone Charger,10,$140.00
+18/05/2026,north branch,,Cheddar Cheese,10,$68.00
+16/05/2026,North Branch,Home,Detergent 2kg,12,$118.80
+30/04/2026,South Branch,Home,Detergent 2kg,4,$39.60
+27/05/2026,South Branch,Grocery,Basmati Rice 5kg,10,$120.00
+02/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,3,$20.40
+26/05/2026,North Branch,Dairy,Cheddar Cheese,4,$27.20
+14/04/2026,north branch,Dairy,Fresh Milk 2L,2,$6.40
+20/04/2026,north branch,Grocery,Basmati Rice 5kg,4,$48.00
+19/05/2026,north branch,Grocery,Basmati Rice 5kg,5,$60.00
+26/05/2026,South Branch,Grocery,Basmati Rice 5kg,10,$120.00
+08/05/2026,North Branch,Beauty,Shampoo 400ml,6,$45.00
+03/04/2026,north branch,Electronics,PHONE CHARGER,14,$196.00
+27/05/2026,North Branch,Electronics,Phone Charger,9,$126.00
+14/05/2026,SOUTH BRANCH ,Dairy,FRESH MILK 2L,6,$19.20
+15/04/2026,North Branch,Dairy,Cheddar Cheese,7,$47.60
+25/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,12,$144.00
+29/05/2026,North Branch,Beauty,Shampoo 400ml,10,$75.00
+29/05/2026,North Branch,Grocery,Basmati Rice 5kg,7,$84.00
+04/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,2,$13.60
+17/04/2026,north branch,Beauty,Shampoo 400ml,6,$45.00
+18/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,13,$97.50
+08/05/2026,South Branch,,Shampoo 400ml,12,$90.00
+23/05/2026,north branch,Dairy,Fresh Milk 2L,5,$16.00
+04/05/2026,North Branch,Grocery,Cooking Oil 1L,12,$54.00
+08/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,3,$29.70
+15/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,9,$61.20
+29/04/2026,north branch,,Cooking Oil 1L,13,$58.50
+14/04/2026,North Branch,Beauty,Shampoo 400ml,8,$60.00
+18/04/2026,SOUTH BRANCH ,,Basmati Rice 5kg,11,$132.00
+06/05/2026,South Branch,Grocery,Basmati Rice 5kg,9,
+20/04/2026,North Branch,Home,Detergent 2kg,4,$39.60
+07/05/2026,north branch,Home,Detergent 2kg,2,$19.80
+30/04/2026,north branch,Dairy,Cheddar Cheese,12,$81.60
+13/04/2026,SOUTH BRANCH ,Beauty,SHAMPOO 400ML,11,$82.50
+27/04/2026,north branch,Beauty,SHAMPOO 400ML,13,$97.50
+11/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,1,$7.50
+09/05/2026,north branch,Grocery,Basmati Rice 5kg,13,$156.00
+14/05/2026,North Branch,Grocery,Cooking Oil 1L,8,$36.00
+30/04/2026,South Branch,Beauty,Shampoo 400ml,5,$37.50
+09/04/2026,north branch,Grocery,Basmati Rice 5kg,3,$36.00
+21/05/2026,north branch,Electronics,Phone Charger,8,$112.00
+10/04/2026,South Branch,,Detergent 2kg,5,$49.50
+27/04/2026,North Branch,Electronics,PHONE CHARGER,11,$154.00
+16/04/2026,North Branch,Electronics,Phone Charger,1,$14.00
+18/04/2026,South Branch,Grocery,Basmati Rice 5kg,5,$60.00
+01/05/2026,South Branch,Dairy,Cheddar Cheese,4,$27.20
+31/05/2026,north branch,Home,Detergent 2kg,14,$138.60
+23/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,6,$27.00
+03/05/2026,north branch,Electronics,Phone Charger,13,$182.00
+13/04/2026,north branch,,Detergent 2kg,12,$118.80
+11/05/2026,North Branch,Grocery,Basmati Rice 5kg,12,$144.00
+22/04/2026,North Branch,Grocery,Basmati Rice 5kg,3,$36.00
+14/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,12,$118.80
+13/04/2026,North Branch,Beauty,Shampoo 400ml,2,$15.00
+04/05/2026,South Branch,Beauty,Shampoo 400ml,3,$22.50
+13/05/2026,SOUTH BRANCH ,Grocery,BASMATI RICE 5KG,1,$12.00
+12/05/2026,north branch,Beauty,Shampoo 400ml,11,$82.50
+06/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,13,$128.70
+22/04/2026,South Branch,Grocery,Cooking Oil 1L,11,$49.50
+03/04/2026,north branch,Grocery,Basmati Rice 5kg,7,$84.00
+12/05/2026,North Branch,Grocery,Basmati Rice 5kg,1,$12.00
+24/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,1,$6.80
+06/05/2026,North Branch,Electronics,Phone Charger,2,$28.00
+27/05/2026,South Branch,Beauty,Shampoo 400ml,3,$22.50
+26/04/2026,north branch,Dairy,FRESH MILK 2L,3,$9.60
+25/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,11,$108.90
+23/04/2026,South Branch,Beauty,Shampoo 400ml,3,$22.50
+15/05/2026,north branch,Grocery,Basmati Rice 5kg,10,$120.00
+16/05/2026,north branch,Dairy,Fresh Milk 2L,5,$16.00
+07/04/2026,South Branch,Dairy,Fresh Milk 2L,12,$38.40
+12/04/2026,North Branch,Grocery,Basmati Rice 5kg,2,$24.00
+30/05/2026,north branch,Beauty,Shampoo 400ml,7,$52.50
+02/05/2026,north branch,Beauty,Shampoo 400ml,11,$82.50
+22/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,1,$7.50
+16/04/2026,north branch,Grocery,Basmati Rice 5kg,7,$84.00
+08/05/2026,north branch,Grocery,Basmati Rice 5kg,13,$156.00
+26/05/2026,north branch,Grocery,Cooking Oil 1L,8,$36.00
+06/04/2026,North Branch,Dairy,Fresh Milk 2L,13,$41.60
+25/04/2026,north branch,Grocery,Basmati Rice 5kg,8,$96.00
+17/04/2026,north branch,Home,Detergent 2kg,6,$59.40
+13/05/2026,North Branch,Electronics,Phone Charger,7,$98.00
+31/05/2026,North Branch,Grocery,Basmati Rice 5kg,9,$108.00
+29/04/2026,north branch,Dairy,Fresh Milk 2L,8,$25.60
+12/05/2026,north branch,Dairy,Cheddar Cheese,5,$34.00
+21/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,2,$24.00
+07/05/2026,South Branch,Beauty,Shampoo 400ml,9,$67.50
+08/04/2026,South Branch,Grocery,Basmati Rice 5kg,11,$132.00
+23/04/2026,South Branch,Dairy,Fresh Milk 2L,12,$38.40
+18/04/2026,North Branch,Electronics,Phone Charger,4,$56.00
+28/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,6,$84.00
+06/05/2026,north branch,Dairy,FRESH MILK 2L,3,$9.60
+24/05/2026,North Branch,Home,Detergent 2kg,5,$49.50
+29/04/2026,South Branch,Beauty,Shampoo 400ml,1,$7.50
+09/05/2026,North Branch,Home,Detergent 2kg,7,$69.30
+01/04/2026,South Branch,Dairy,Cheddar Cheese,14,$95.20
+10/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,7,$84.00
+16/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,7,$52.50
+23/04/2026,South Branch,Grocery,Basmati Rice 5kg,1,$12.00
+07/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,9,$28.80
+07/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,2,$9.00
+06/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,8,$36.00
+17/04/2026,North Branch,Beauty,Shampoo 400ml,1,$7.50
+07/05/2026,South Branch,Dairy,Cheddar Cheese,10,$68.00
+05/05/2026,north branch,Home,DETERGENT 2KG,11,$108.90
+23/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,5,$22.50
+21/05/2026,north branch,Grocery,Cooking Oil 1L,2,$9.00
+08/04/2026,north branch,Grocery,Basmati Rice 5kg,12,$144.00
+08/04/2026,north branch,Dairy,CHEDDAR CHEESE,3,$20.40
+02/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,13,$182.00
+25/05/2026,South Branch,Home,Detergent 2kg,8,$79.20
+24/05/2026,North Branch,Electronics,Phone Charger,8,$112.00
+22/05/2026,North Branch,Home,Detergent 2kg,10,$99.00
+01/05/2026,North Branch,Grocery,BASMATI RICE 5KG,6,$72.00
+28/04/2026,North Branch,Home,Detergent 2kg,7,$69.30
+14/05/2026,north branch,Grocery,Cooking Oil 1L,6,$27.00
+30/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,2,$24.00
+29/05/2026,North Branch,Dairy,Cheddar Cheese,1,$6.80
+21/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,9,$126.00
+19/04/2026,north branch,Grocery,Basmati Rice 5kg,10,$120.00
+02/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,12,$90.00
+18/05/2026,North Branch,Home,Detergent 2kg,11,$108.90
+26/04/2026,South Branch,Beauty,Shampoo 400ml,10,$75.00
+22/04/2026,north branch,Beauty,Shampoo 400ml,2,$15.00
+31/05/2026,North Branch,Beauty,Shampoo 400ml,7,$52.50
+08/04/2026,South Branch,Home,Detergent 2kg,11,$108.90
+03/05/2026,South Branch,Home,Detergent 2kg,10,$99.00
+07/04/2026,SOUTH BRANCH ,Dairy,CHEDDAR CHEESE,14,$95.20
+21/04/2026,north branch,Grocery,Basmati Rice 5kg,13,$156.00
+26/05/2026,north branch,Dairy,CHEDDAR CHEESE,5,$34.00
+01/05/2026,north branch,Home,Detergent 2kg,6,$59.40
+22/04/2026,North Branch,Beauty,Shampoo 400ml,13,$97.50
+15/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,2,$9.00
+22/04/2026,North Branch,Dairy,Fresh Milk 2L,2,$6.40
+07/05/2026,South Branch,Home,Detergent 2kg,12,$118.80
+01/04/2026,north branch,Dairy,Fresh Milk 2L,8,$25.60
+16/04/2026,South Branch,Grocery,Cooking Oil 1L,9,$40.50
+29/05/2026,South Branch,Beauty,Shampoo 400ml,10,$75.00
+22/04/2026,north branch,Dairy,FRESH MILK 2L,13,$41.60
+12/05/2026,north branch,Grocery,COOKING OIL 1L,8,$36.00
+06/05/2026,North Branch,Grocery,Cooking Oil 1L,9,$40.50
+09/05/2026,north branch,Electronics,Phone Charger,4,$56.00
+10/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,13,$156.00
+05/05/2026,North Branch,Dairy,Fresh Milk 2L,9,$28.80
+21/05/2026,South Branch,Grocery,Basmati Rice 5kg,12,$144.00
+03/05/2026,South Branch,Grocery,Cooking Oil 1L,14,$63.00
+07/05/2026,North Branch,Home,Detergent 2kg,10,$99.00
+24/05/2026,north branch,Electronics,Phone Charger,14,$196.00
+19/04/2026,north branch,Dairy,Cheddar Cheese,6,$40.80
+18/05/2026,North Branch,Dairy,Fresh Milk 2L,6,$19.20
+07/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,7,$22.40
+29/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,1,$3.20
+12/05/2026,North Branch,Beauty,Shampoo 400ml,3,$22.50
+24/05/2026,South Branch,Grocery,Cooking Oil 1L,4,$18.00
+29/04/2026,North Branch,Beauty,Shampoo 400ml,11,$82.50
+30/04/2026,South Branch,Grocery,Basmati Rice 5kg,1,$12.00
+03/04/2026,North Branch,Electronics,Phone Charger,3,
+18/05/2026,north branch,Beauty,Shampoo 400ml,11,$82.50
+08/05/2026,North Branch,Electronics,Phone Charger,1,$14.00
+11/04/2026,north branch,Beauty,SHAMPOO 400ML,8,$60.00
+27/05/2026,north branch,Home,Detergent 2kg,7,$69.30
+22/04/2026,South Branch,Dairy,Cheddar Cheese,3,$20.40
+01/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,12,$90.00
+28/05/2026,north branch,Beauty,SHAMPOO 400ML,8,$60.00
+11/04/2026,north branch,Dairy,Fresh Milk 2L,1,$3.20
+03/04/2026,South Branch,Grocery,Cooking Oil 1L,14,$63.00
+21/04/2026,South Branch,Dairy,CHEDDAR CHEESE,11,$74.80
+07/04/2026,north branch,Grocery,Cooking Oil 1L,4,$18.00
+05/05/2026,South Branch,,Fresh Milk 2L,1,$3.20
+03/04/2026,North Branch,Beauty,Shampoo 400ml,10,$75.00
+04/05/2026,north branch,Grocery,Cooking Oil 1L,4,$18.00
+06/05/2026,South Branch,Beauty,SHAMPOO 400ML,12,$90.00
+01/04/2026,South Branch,Grocery,Cooking Oil 1L,13,$58.50
+26/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,9,$28.80
+15/05/2026,SOUTH BRANCH ,Grocery,BASMATI RICE 5KG,7,$84.00
+06/04/2026,North Branch,Dairy,Cheddar Cheese,4,$27.20
+18/04/2026,north branch,Dairy,Fresh Milk 2L,14,$44.80
+26/05/2026,north branch,Dairy,Fresh Milk 2L,1,$3.20
+24/04/2026,SOUTH BRANCH ,Dairy,FRESH MILK 2L,14,$44.80
+26/04/2026,South Branch,Grocery,Cooking Oil 1L,8,$36.00
+09/05/2026,SOUTH BRANCH ,,Basmati Rice 5kg,14,$168.00
+07/04/2026,North Branch,Dairy,Cheddar Cheese,1,$6.80
+14/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,14,$105.00
+31/05/2026,North Branch,Electronics,Phone Charger,6,$84.00
+22/04/2026,SOUTH BRANCH ,Grocery,COOKING OIL 1L,8,$36.00
+28/05/2026,North Branch,Grocery,Cooking Oil 1L,2,$9.00
+15/04/2026,North Branch,Grocery,Basmati Rice 5kg,8,$96.00
+01/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,12,$54.00
+09/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,5,$60.00
+20/05/2026,North Branch,Dairy,CHEDDAR CHEESE,6,$40.80
+29/04/2026,South Branch,Grocery,Basmati Rice 5kg,5,$60.00
+13/05/2026,north branch,Grocery,Basmati Rice 5kg,12,$144.00
+04/05/2026,South Branch,Dairy,Fresh Milk 2L,13,$41.60
+28/05/2026,north branch,Home,Detergent 2kg,3,$29.70
+20/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,10,$68.00
+02/05/2026,North Branch,Grocery,Cooking Oil 1L,12,$54.00
+14/05/2026,North Branch,Grocery,Basmati Rice 5kg,5,$60.00
+16/05/2026,North Branch,Electronics,Phone Charger,14,$196.00
+03/04/2026,north branch,Grocery,Cooking Oil 1L,11,$49.50
+03/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,12,$168.00
+30/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,6,$84.00
+22/05/2026,north branch,Beauty,Shampoo 400ml,14,$105.00
+30/05/2026,north branch,Dairy,Cheddar Cheese,11,$74.80
+27/05/2026,north branch,Dairy,Cheddar Cheese,10,$68.00
+16/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,8,$36.00
+14/05/2026,South Branch,Electronics,Phone Charger,2,$28.00
+28/04/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+25/04/2026,north branch,Home,Detergent 2kg,9,$89.10
+29/04/2026,South Branch,Dairy,FRESH MILK 2L,6,$19.20
+22/05/2026,North Branch,Beauty,Shampoo 400ml,4,$30.00
+15/05/2026,north branch,Dairy,Fresh Milk 2L,9,$28.80
+21/04/2026,North Branch,Dairy,Fresh Milk 2L,2,$6.40
+18/05/2026,north branch,Electronics,Phone Charger,13,$182.00
+01/04/2026,South Branch,Electronics,Phone Charger,14,$196.00
+25/04/2026,North Branch,Beauty,Shampoo 400ml,6,$45.00
+06/04/2026,North Branch,Electronics,PHONE CHARGER,12,$168.00
+26/05/2026,North Branch,Dairy,Fresh Milk 2L,3,$9.60
+29/05/2026,South Branch,Home,Detergent 2kg,9,$89.10
+14/05/2026,north branch,Grocery,Basmati Rice 5kg,1,$12.00
+27/04/2026,North Branch,Dairy,Cheddar Cheese,8,$54.40
+08/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,11,$74.80
+28/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,14,$95.20
+17/05/2026,North Branch,Dairy,Cheddar Cheese,5,$34.00
+03/04/2026,North Branch,Grocery,BASMATI RICE 5KG,7,$84.00
+13/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,6,$45.00
+26/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,5,$70.00
+06/04/2026,north branch,Grocery,Basmati Rice 5kg,8,$96.00
+21/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,1,$14.00
+24/04/2026,North Branch,,Cheddar Cheese,9,$61.20
+07/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,3,$42.00
+08/04/2026,South Branch,Beauty,Shampoo 400ml,5,$37.50
+31/05/2026,South Branch,Grocery,Cooking Oil 1L,2,$9.00
+27/05/2026,north branch,Grocery,Cooking Oil 1L,1,$4.50
+09/05/2026,North Branch,Grocery,Cooking Oil 1L,11,$49.50
+04/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,5,$22.50
+30/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,4,$48.00
+04/04/2026,north branch,Home,DETERGENT 2KG,6,$59.40
+16/05/2026,South Branch,Grocery,Basmati Rice 5kg,4,$48.00
+12/05/2026,North Branch,Grocery,Cooking Oil 1L,7,$31.50
+18/05/2026,South Branch,Dairy,Cheddar Cheese,9,$61.20
+25/05/2026,South Branch,Beauty,Shampoo 400ml,8,$60.00
+01/04/2026,North Branch,Beauty,SHAMPOO 400ML,13,$97.50
+02/04/2026,north branch,Electronics,Phone Charger,8,$112.00
+20/05/2026,South Branch,Electronics,Phone Charger,9,$126.00
+05/04/2026,north branch,Grocery,Cooking Oil 1L,6,$27.00
+24/05/2026,North Branch,Dairy,Cheddar Cheese,3,$20.40
+10/05/2026,North Branch,Grocery,Basmati Rice 5kg,4,$48.00
+06/04/2026,North Branch,Grocery,Basmati Rice 5kg,2,$24.00
+10/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,9,$40.50
+04/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,5,$34.00
+27/05/2026,north branch,Dairy,Fresh Milk 2L,5,$16.00
+09/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,1,$9.90
+20/05/2026,South Branch,Dairy,Fresh Milk 2L,9,$28.80
+19/04/2026,North Branch,Dairy,Cheddar Cheese,12,$81.60
+14/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,5,$70.00
+14/04/2026,South Branch,Dairy,Fresh Milk 2L,11,$35.20
+17/04/2026,North Branch,Grocery,Cooking Oil 1L,2,$9.00
+03/04/2026,north branch,Home,Detergent 2kg,10,$99.00
+22/04/2026,North Branch,Grocery,Cooking Oil 1L,11,$49.50
+18/05/2026,SOUTH BRANCH ,Grocery,COOKING OIL 1L,1,$4.50
+27/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,1,$3.20
+26/04/2026,north branch,Home,Detergent 2kg,3,$29.70
+26/04/2026,north branch,Dairy,Cheddar Cheese,14,$95.20
+17/05/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+14/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,10,$32.00
+30/04/2026,North Branch,Dairy,FRESH MILK 2L,12,$38.40
+14/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,5,$49.50
+22/05/2026,north branch,Grocery,Cooking Oil 1L,1,$4.50
+21/05/2026,North Branch,Grocery,Basmati Rice 5kg,3,$36.00
+05/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,8,$36.00
+05/04/2026,North Branch,Beauty,Shampoo 400ml,1,$7.50
+24/04/2026,north branch,,Basmati Rice 5kg,2,$24.00
+17/05/2026,South Branch,Dairy,Cheddar Cheese,8,$54.40
+04/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,2,$28.00
+22/04/2026,north branch,Dairy,Cheddar Cheese,9,$61.20
+04/04/2026,North Branch,Grocery,COOKING OIL 1L,12,$54.00
+24/05/2026,North Branch,Dairy,Fresh Milk 2L,9,$28.80
+08/04/2026,North Branch,Dairy,Cheddar Cheese,7,$47.60
+07/04/2026,North Branch,Dairy,FRESH MILK 2L,10,$32.00
+26/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,5,$37.50
+19/04/2026,North Branch,Grocery,COOKING OIL 1L,9,$40.50
+13/04/2026,North Branch,Dairy,Cheddar Cheese,2,
+20/05/2026,north branch,Electronics,Phone Charger,12,$168.00
+12/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,1,$6.80
+27/04/2026,South Branch,Grocery,Basmati Rice 5kg,2,$24.00
+24/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,4,$30.00
+18/04/2026,North Branch,Grocery,Basmati Rice 5kg,5,$60.00
+21/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,4,$18.00
+06/04/2026,South Branch,Home,Detergent 2kg,9,$89.10
+09/04/2026,North Branch,Dairy,Cheddar Cheese,3,$20.40
+02/04/2026,north branch,Grocery,COOKING OIL 1L,12,$54.00
+03/04/2026,South Branch,Dairy,CHEDDAR CHEESE,2,$13.60
+11/05/2026,South Branch,Grocery,Basmati Rice 5kg,5,$60.00
+02/05/2026,north branch,Dairy,Fresh Milk 2L,4,$12.80
+20/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,3,$42.00
+22/04/2026,South Branch,Beauty,SHAMPOO 400ML,3,$22.50
+08/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,10,$120.00
+18/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,7,$69.30
+03/05/2026,South Branch,Beauty,Shampoo 400ml,12,$90.00
+08/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,7,$47.60
+06/04/2026,South Branch,Dairy,Fresh Milk 2L,13,$41.60
+26/05/2026,north branch,Electronics,Phone Charger,3,$42.00
+12/05/2026,North Branch,Home,Detergent 2kg,4,$39.60
+10/04/2026,North Branch,Beauty,Shampoo 400ml,6,$45.00
+19/04/2026,South Branch,Dairy,Fresh Milk 2L,12,$38.40
+28/04/2026,South Branch,,Cooking Oil 1L,10,$45.00
+05/05/2026,South Branch,Grocery,Basmati Rice 5kg,5,$60.00
+27/04/2026,North Branch,Beauty,Shampoo 400ml,2,$15.00
+20/05/2026,north branch,Beauty,Shampoo 400ml,4,$30.00
+26/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,1,$3.20
+10/04/2026,North Branch,Dairy,CHEDDAR CHEESE,5,$34.00
+11/05/2026,North Branch,Dairy,CHEDDAR CHEESE,12,$81.60
+12/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,14,$44.80
+23/04/2026,North Branch,Dairy,Cheddar Cheese,11,$74.80
+29/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,8,$54.40
+02/04/2026,South Branch,Grocery,Cooking Oil 1L,12,$54.00
+02/05/2026,South Branch,Grocery,Basmati Rice 5kg,1,$12.00
+26/05/2026,South Branch,Electronics,Phone Charger,13,$182.00
+27/05/2026,South Branch,,Cheddar Cheese,3,$20.40
+23/04/2026,north branch,Home,Detergent 2kg,5,$49.50
+27/05/2026,North Branch,Dairy,Fresh Milk 2L,4,$12.80
+11/04/2026,north branch,Grocery,Basmati Rice 5kg,9,$108.00
+21/04/2026,North Branch,Dairy,Cheddar Cheese,9,$61.20
+21/05/2026,North Branch,Home,Detergent 2kg,2,$19.80
+30/04/2026,North Branch,Grocery,Cooking Oil 1L,5,$22.50
+19/05/2026,north branch,Home,Detergent 2kg,9,$89.10
+17/05/2026,South Branch,Home,Detergent 2kg,7,$69.30
+06/05/2026,South Branch,Dairy,Cheddar Cheese,5,$34.00
+17/05/2026,north branch,Grocery,Basmati Rice 5kg,9,$108.00
+29/05/2026,north branch,,Cooking Oil 1L,11,$49.50
+20/04/2026,South Branch,Dairy,Fresh Milk 2L,2,$6.40
+12/05/2026,South Branch,Electronics,Phone Charger,1,$14.00
+30/04/2026,north branch,Dairy,Fresh Milk 2L,2,$6.40
+21/05/2026,SOUTH BRANCH ,Home,DETERGENT 2KG,10,$99.00
+19/05/2026,North Branch,Grocery,BASMATI RICE 5KG,7,$84.00
+12/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,2,$9.00
+20/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,7,$31.50
+19/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,6,$72.00
+10/05/2026,north branch,Grocery,Basmati Rice 5kg,1,$12.00
+10/04/2026,north branch,Beauty,Shampoo 400ml,2,$15.00
+22/04/2026,north branch,Grocery,Cooking Oil 1L,12,$54.00
+29/05/2026,South Branch,Grocery,Basmati Rice 5kg,4,$48.00
+14/04/2026,South Branch,Beauty,Shampoo 400ml,3,$22.50
+06/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,8,$112.00
+04/04/2026,north branch,Electronics,Phone Charger,13,$182.00
+19/04/2026,North Branch,Beauty,SHAMPOO 400ML,2,$15.00
+29/04/2026,north branch,,Phone Charger,12,$168.00
+10/05/2026,north branch,Dairy,Fresh Milk 2L,13,$41.60
+06/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,4,$27.20
+15/04/2026,South Branch,Electronics,Phone Charger,2,$28.00
+20/04/2026,north branch,Electronics,Phone Charger,2,$28.00
+02/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,1,$6.80
+26/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,12,$54.00
+20/05/2026,South Branch,Dairy,Cheddar Cheese,9,$61.20
+23/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,11,$108.90
+20/05/2026,South Branch,Beauty,Shampoo 400ml,8,$60.00
+23/05/2026,South Branch,Electronics,Phone Charger,9,$126.00
+09/05/2026,South Branch,Electronics,Phone Charger,13,$182.00
+28/05/2026,South Branch,Beauty,SHAMPOO 400ML,14,$105.00
+11/05/2026,north branch,Dairy,Cheddar Cheese,9,$61.20
+31/05/2026,South Branch,Dairy,Cheddar Cheese,11,$74.80
+05/04/2026,North Branch,Grocery,Basmati Rice 5kg,10,$120.00
+25/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,6,$40.80
+06/04/2026,north branch,Electronics,PHONE CHARGER,12,$168.00
+09/04/2026,North Branch,Grocery,Basmati Rice 5kg,9,$108.00
+16/04/2026,South Branch,Dairy,Cheddar Cheese,12,$81.60
+16/05/2026,South Branch,Beauty,Shampoo 400ml,6,$45.00
+02/05/2026,South Branch,Electronics,Phone Charger,13,$182.00
+19/04/2026,north branch,Electronics,Phone Charger,4,$56.00
+16/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,1,$14.00
+25/04/2026,North Branch,Dairy,Fresh Milk 2L,13,$41.60
+17/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,2,$24.00
+02/04/2026,north branch,Grocery,Basmati Rice 5kg,2,$24.00
+30/04/2026,North Branch,,Cheddar Cheese,3,$20.40
+20/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,6,$72.00
+06/05/2026,South Branch,Electronics,Phone Charger,7,$98.00
+22/04/2026,South Branch,Grocery,Basmati Rice 5kg,8,$96.00
+05/05/2026,North Branch,Home,Detergent 2kg,2,$19.80
+15/04/2026,north branch,Home,Detergent 2kg,4,$39.60
+10/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,7,$98.00
+30/05/2026,South Branch,Home,Detergent 2kg,5,$49.50
+11/05/2026,South Branch,Dairy,Cheddar Cheese,6,$40.80
+03/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,11,$35.20
+09/04/2026,north branch,Beauty,Shampoo 400ml,10,$75.00
+18/05/2026,North Branch,Grocery,Basmati Rice 5kg,6,$72.00
+10/05/2026,North Branch,Beauty,Shampoo 400ml,2,$15.00
+23/04/2026,North Branch,Dairy,Fresh Milk 2L,3,$9.60
+26/05/2026,North Branch,Grocery,Basmati Rice 5kg,9,$108.00
+08/05/2026,north branch,Dairy,Fresh Milk 2L,14,$44.80
+02/04/2026,South Branch,Dairy,Fresh Milk 2L,10,$32.00
+27/04/2026,SOUTH BRANCH ,Home,DETERGENT 2KG,2,$19.80
+28/04/2026,north branch,Dairy,FRESH MILK 2L,4,$12.80
+30/05/2026,South Branch,Electronics,Phone Charger,8,
+14/05/2026,North Branch,Electronics,Phone Charger,6,$84.00
+16/04/2026,north branch,Grocery,Cooking Oil 1L,14,$63.00
+31/05/2026,South Branch,Grocery,Basmati Rice 5kg,10,$120.00
+15/05/2026,north branch,Grocery,Cooking Oil 1L,12,$54.00
+23/04/2026,North Branch,Grocery,Cooking Oil 1L,2,$9.00
+12/04/2026,North Branch,Grocery,Cooking Oil 1L,3,$13.50
+05/05/2026,South Branch,Home,Detergent 2kg,9,$89.10
+28/04/2026,North Branch,Beauty,Shampoo 400ml,6,$45.00
+15/05/2026,South Branch,Home,Detergent 2kg,11,$108.90
+19/05/2026,SOUTH BRANCH ,Grocery,COOKING OIL 1L,1,$4.50
+31/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,2,$6.40
+17/05/2026,South Branch,Grocery,Basmati Rice 5kg,10,$120.00
+29/04/2026,South Branch,Electronics,Phone Charger,2,$28.00
+18/04/2026,North Branch,Dairy,FRESH MILK 2L,2,$6.40
+21/05/2026,North Branch,Beauty,Shampoo 400ml,5,$37.50
+23/05/2026,North Branch,Beauty,Shampoo 400ml,4,$30.00
+12/04/2026,North Branch,Beauty,Shampoo 400ml,2,$15.00
+13/04/2026,north branch,Grocery,Cooking Oil 1L,9,$40.50
+09/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,11,$35.20
+11/05/2026,North Branch,Beauty,SHAMPOO 400ML,9,$67.50
+01/05/2026,north branch,Grocery,Cooking Oil 1L,3,$13.50
+15/05/2026,North Branch,Home,Detergent 2kg,1,$9.90
+26/04/2026,SOUTH BRANCH ,Home,DETERGENT 2KG,2,$19.80
+13/05/2026,north branch,Home,Detergent 2kg,6,$59.40
+24/04/2026,South Branch,Beauty,Shampoo 400ml,5,$37.50
+25/05/2026,north branch,Electronics,Phone Charger,14,$196.00
+23/05/2026,North Branch,Grocery,COOKING OIL 1L,1,$4.50
+11/04/2026,South Branch,Home,Detergent 2kg,1,$9.90
+20/04/2026,North Branch,Grocery,Cooking Oil 1L,13,$58.50
+28/05/2026,North Branch,Beauty,Shampoo 400ml,14,$105.00
+13/04/2026,SOUTH BRANCH ,,Phone Charger,11,$154.00
+17/04/2026,South Branch,Beauty,Shampoo 400ml,8,$60.00
+06/05/2026,north branch,,Shampoo 400ml,12,$90.00
+12/04/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+19/04/2026,North Branch,Home,Detergent 2kg,2,$19.80
+27/04/2026,SOUTH BRANCH ,Electronics,PHONE CHARGER,14,$196.00
+28/04/2026,north branch,Electronics,Phone Charger,9,$126.00
+26/04/2026,South Branch,Electronics,Phone Charger,1,$14.00
+25/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,6,$84.00
+17/04/2026,North Branch,Grocery,Basmati Rice 5kg,1,$12.00
+30/04/2026,North Branch,Home,DETERGENT 2KG,8,$79.20
+08/04/2026,north branch,Beauty,Shampoo 400ml,14,$105.00
+07/04/2026,South Branch,Grocery,Basmati Rice 5kg,10,$120.00
+06/04/2026,North Branch,Grocery,Cooking Oil 1L,11,$49.50
+10/05/2026,South Branch,Grocery,Cooking Oil 1L,14,$63.00
+08/04/2026,North Branch,Beauty,Shampoo 400ml,14,$105.00
+16/04/2026,north branch,Electronics,Phone Charger,3,$42.00
+08/04/2026,north branch,Electronics,Phone Charger,12,$168.00
+16/05/2026,North Branch,Dairy,Cheddar Cheese,14,$95.20
+09/04/2026,South Branch,Dairy,Fresh Milk 2L,6,$19.20
+13/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,9,$40.50
+24/04/2026,North Branch,Grocery,Cooking Oil 1L,10,$45.00
+25/04/2026,South Branch,Grocery,Basmati Rice 5kg,8,$96.00
+31/05/2026,north branch,Electronics,Phone Charger,4,$56.00
+26/05/2026,North Branch,Beauty,Shampoo 400ml,4,$30.00
+26/04/2026,North Branch,,Cooking Oil 1L,12,$54.00
+27/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,4,$56.00
+05/05/2026,north branch,Electronics,Phone Charger,7,$98.00
+30/04/2026,north branch,Home,Detergent 2kg,1,$9.90
+04/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,3,$42.00
+29/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,10,$75.00
+16/05/2026,South Branch,Electronics,Phone Charger,13,$182.00
+25/05/2026,north branch,Beauty,Shampoo 400ml,12,$90.00
+28/05/2026,South Branch,Home,Detergent 2kg,6,$59.40
+07/05/2026,north branch,Beauty,Shampoo 400ml,8,$60.00
+17/04/2026,South Branch,Dairy,Fresh Milk 2L,13,$41.60
+14/05/2026,South Branch,Dairy,Cheddar Cheese,11,$74.80
+10/05/2026,North Branch,Grocery,Cooking Oil 1L,8,$36.00
+27/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,10,$68.00
+17/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,7,$98.00
+07/05/2026,north branch,Grocery,Basmati Rice 5kg,6,$72.00
+01/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,4,$56.00
+11/04/2026,SOUTH BRANCH ,Grocery,BASMATI RICE 5KG,4,$48.00
+25/05/2026,north branch,,Cooking Oil 1L,14,$63.00
+01/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,8,$54.40
+12/04/2026,north branch,Electronics,Phone Charger,2,$28.00
+10/04/2026,north branch,Home,Detergent 2kg,4,$39.60
+13/04/2026,north branch,Grocery,Basmati Rice 5kg,13,$156.00
+06/05/2026,North Branch,Grocery,Basmati Rice 5kg,4,$48.00
+16/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,9,$61.20
+19/05/2026,north branch,Dairy,CHEDDAR CHEESE,8,$54.40
+22/04/2026,north branch,Electronics,Phone Charger,6,$84.00
+11/05/2026,north branch,Grocery,Cooking Oil 1L,12,$54.00
+08/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,14,$105.00
+19/04/2026,North Branch,Electronics,Phone Charger,5,$70.00
+01/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,13,$41.60
+05/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,12,$144.00
+10/04/2026,South Branch,Dairy,Fresh Milk 2L,2,$6.40
+06/04/2026,SOUTH BRANCH ,,Basmati Rice 5kg,1,$12.00
+10/05/2026,South Branch,Beauty,SHAMPOO 400ML,8,$60.00
+03/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,5,$34.00
+13/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,11,$74.80
+30/05/2026,South Branch,Grocery,Cooking Oil 1L,9,$40.50
+08/05/2026,North Branch,Grocery,Basmati Rice 5kg,11,$132.00
+04/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,5,$22.50
+30/04/2026,South Branch,Dairy,CHEDDAR CHEESE,9,$61.20
+13/04/2026,North Branch,Electronics,PHONE CHARGER,10,$140.00
+02/05/2026,north branch,Home,Detergent 2kg,6,$59.40
+31/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,8,$54.40
+12/04/2026,North Branch,Dairy,CHEDDAR CHEESE,11,$74.80
+02/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,11,$49.50
+07/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,12,$81.60
+31/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,6,$27.00
+22/05/2026,North Branch,Dairy,Fresh Milk 2L,14,$44.80
+02/05/2026,South Branch,Dairy,Fresh Milk 2L,12,$38.40
+05/04/2026,South Branch,Electronics,Phone Charger,2,$28.00
+01/05/2026,North Branch,Dairy,Cheddar Cheese,4,$27.20
+22/05/2026,South Branch,Dairy,Cheddar Cheese,1,$6.80
+21/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,6,$45.00
+17/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,7,$84.00
+09/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,1,
+15/04/2026,South Branch,Grocery,Cooking Oil 1L,6,$27.00
+28/04/2026,South Branch,Dairy,Cheddar Cheese,7,$47.60
+08/04/2026,South Branch,Dairy,Fresh Milk 2L,10,$32.00
+11/04/2026,South Branch,Grocery,Cooking Oil 1L,13,$58.50
+30/05/2026,North Branch,Beauty,Shampoo 400ml,7,$52.50
+08/05/2026,South Branch,Dairy,Cheddar Cheese,6,$40.80
+30/04/2026,North Branch,Electronics,Phone Charger,2,$28.00
+10/05/2026,South Branch,Dairy,Cheddar Cheese,14,$95.20
+24/04/2026,South Branch,Grocery,Cooking Oil 1L,5,$22.50
+28/05/2026,north branch,Grocery,Cooking Oil 1L,2,$9.00
+30/05/2026,South Branch,Beauty,Shampoo 400ml,5,$37.50
+05/04/2026,South Branch,Dairy,Cheddar Cheese,9,$61.20
+26/04/2026,north branch,Electronics,Phone Charger,5,$70.00
+29/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,3,$42.00
+13/05/2026,North Branch,Home,Detergent 2kg,6,$59.40
+14/04/2026,North Branch,Dairy,Fresh Milk 2L,6,$19.20
+30/05/2026,South Branch,Dairy,Fresh Milk 2L,5,$16.00
+01/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,8,$79.20
+31/05/2026,North Branch,Grocery,COOKING OIL 1L,5,$22.50
+22/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,11,$49.50
+18/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,10,$140.00
+16/04/2026,North Branch,Grocery,Cooking Oil 1L,14,$63.00
+12/04/2026,north branch,Grocery,Cooking Oil 1L,10,$45.00
+17/05/2026,north branch,Dairy,Cheddar Cheese,5,$34.00
+15/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,7,$84.00
+07/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,10,$99.00
+04/04/2026,north branch,Beauty,Shampoo 400ml,2,$15.00
+02/04/2026,North Branch,Electronics,Phone Charger,9,$126.00
+05/04/2026,South Branch,Home,Detergent 2kg,9,$89.10
+02/05/2026,South Branch,Beauty,Shampoo 400ml,14,$105.00
+27/05/2026,South Branch,Grocery,COOKING OIL 1L,4,$18.00
+13/05/2026,South Branch,Grocery,Cooking Oil 1L,1,$4.50
+19/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,4,$39.60
+02/05/2026,North Branch,Electronics,Phone Charger,14,$196.00
+05/04/2026,South Branch,Grocery,Basmati Rice 5kg,1,$12.00
+07/05/2026,South Branch,Grocery,Basmati Rice 5kg,1,$12.00
+07/05/2026,north branch,Electronics,Phone Charger,3,$42.00
+20/04/2026,north branch,Dairy,Fresh Milk 2L,8,$25.60
+05/04/2026,north branch,Grocery,Basmati Rice 5kg,5,$60.00
+29/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,11,$154.00
+09/04/2026,South Branch,Electronics,Phone Charger,6,$84.00
+12/04/2026,SOUTH BRANCH ,Grocery,COOKING OIL 1L,2,$9.00
+25/04/2026,South Branch,Grocery,Cooking Oil 1L,1,$4.50
+03/04/2026,South Branch,Electronics,Phone Charger,2,$28.00
+22/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,10,$68.00
+24/04/2026,north branch,Grocery,Cooking Oil 1L,4,$18.00
+11/05/2026,north branch,Beauty,Shampoo 400ml,4,$30.00
+15/04/2026,North Branch,Home,DETERGENT 2KG,9,$89.10
+20/05/2026,north branch,Grocery,Basmati Rice 5kg,4,$48.00
+12/04/2026,North Branch,Home,DETERGENT 2KG,3,$29.70
+01/04/2026,North Branch,,PHONE CHARGER,9,$126.00
+13/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,4,$12.80
+13/05/2026,South Branch,Grocery,Basmati Rice 5kg,5,$60.00
+10/04/2026,north branch,Grocery,Basmati Rice 5kg,9,$108.00
+16/04/2026,South Branch,Home,Detergent 2kg,4,$39.60
+24/04/2026,South Branch,Grocery,Basmati Rice 5kg,9,$108.00
+11/05/2026,North Branch,Electronics,Phone Charger,7,$98.00
+11/04/2026,SOUTH BRANCH ,Dairy,CHEDDAR CHEESE,13,$88.40
+04/04/2026,South Branch,Grocery,Cooking Oil 1L,6,$27.00
+22/05/2026,north branch,Grocery,Basmati Rice 5kg,11,$132.00
+12/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,3,$36.00
+31/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,4,$56.00
+23/05/2026,SOUTH BRANCH ,Dairy,CHEDDAR CHEESE,8,$54.40
+03/05/2026,north branch,Dairy,Fresh Milk 2L,12,$38.40
+24/04/2026,North Branch,Electronics,Phone Charger,13,$182.00
+09/05/2026,North Branch,Grocery,Basmati Rice 5kg,10,$120.00
+16/05/2026,South Branch,Dairy,Fresh Milk 2L,12,$38.40
+12/05/2026,North Branch,Dairy,Cheddar Cheese,7,$47.60
+10/05/2026,north branch,Dairy,Cheddar Cheese,8,$54.40
+02/05/2026,North Branch,Beauty,Shampoo 400ml,10,$75.00
+25/04/2026,North Branch,Dairy,Cheddar Cheese,2,$13.60
+09/04/2026,north branch,Home,Detergent 2kg,3,$29.70
+06/05/2026,north branch,Grocery,Basmati Rice 5kg,7,$84.00
+07/05/2026,North Branch,Electronics,PHONE CHARGER,14,$196.00
+05/04/2026,North Branch,Grocery,Cooking Oil 1L,9,$40.50
+08/05/2026,north branch,Dairy,Cheddar Cheese,9,$61.20
+30/05/2026,North Branch,Grocery,Basmati Rice 5kg,7,$84.00
+28/04/2026,South Branch,Dairy,Fresh Milk 2L,10,$32.00
+11/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,8,$60.00
+07/04/2026,north branch,Dairy,Cheddar Cheese,1,$6.80
+16/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,14,$138.60
+07/05/2026,South Branch,Grocery,COOKING OIL 1L,3,$13.50
+17/04/2026,north branch,Grocery,Cooking Oil 1L,14,$63.00
+26/05/2026,South Branch,Dairy,Fresh Milk 2L,8,$25.60
+06/04/2026,north branch,Home,Detergent 2kg,7,$69.30
+01/05/2026,north branch,Dairy,CHEDDAR CHEESE,12,$81.60
+23/04/2026,north branch,Grocery,Cooking Oil 1L,10,$45.00
+19/04/2026,South Branch,Beauty,Shampoo 400ml,2,$15.00
+03/05/2026,South Branch,Grocery,Basmati Rice 5kg,9,$108.00
+01/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,5,$22.50
+23/05/2026,South Branch,Grocery,Basmati Rice 5kg,6,$72.00
+23/05/2026,north branch,Grocery,Cooking Oil 1L,12,$54.00
+04/04/2026,north branch,Grocery,Basmati Rice 5kg,3,$36.00
+20/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,7,$98.00
+25/04/2026,north branch,Dairy,Fresh Milk 2L,10,$32.00
+18/05/2026,north branch,Grocery,Cooking Oil 1L,7,$31.50
+10/05/2026,North Branch,Home,DETERGENT 2KG,11,$108.90
+31/05/2026,South Branch,,Shampoo 400ml,9,$67.50
+25/04/2026,South Branch,Dairy,Cheddar Cheese,4,$27.20
+27/04/2026,north branch,Home,Detergent 2kg,3,$29.70
+12/04/2026,North Branch,Electronics,Phone Charger,8,$112.00
+22/04/2026,SOUTH BRANCH ,Beauty,SHAMPOO 400ML,9,$67.50
+10/05/2026,North Branch,Dairy,Cheddar Cheese,2,$13.60
+18/04/2026,North Branch,Grocery,Cooking Oil 1L,3,$13.50
+06/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,8,$60.00
+22/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,1,$9.90
+13/04/2026,North Branch,,Cooking Oil 1L,8,$36.00
+07/04/2026,South Branch,Home,Detergent 2kg,2,$19.80
+28/04/2026,South Branch,Beauty,Shampoo 400ml,14,$105.00
+10/04/2026,North Branch,Grocery,Cooking Oil 1L,13,$58.50
+24/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,5,$22.50
+11/05/2026,South Branch,Beauty,Shampoo 400ml,4,$30.00
+03/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,12,$144.00
+08/05/2026,South Branch,Grocery,Basmati Rice 5kg,6,$72.00
+25/04/2026,North Branch,Grocery,Basmati Rice 5kg,6,$72.00
+11/04/2026,South Branch,Dairy,Fresh Milk 2L,12,$38.40
+20/05/2026,North Branch,Beauty,Shampoo 400ml,14,$105.00
+21/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,3,$22.50
+20/05/2026,South Branch,Grocery,Cooking Oil 1L,9,$40.50
+18/04/2026,South Branch,Beauty,Shampoo 400ml,12,$90.00
+25/05/2026,South Branch,,Fresh Milk 2L,14,$44.80
+27/05/2026,north branch,,Phone Charger,5,$70.00
+14/05/2026,South Branch,Beauty,Shampoo 400ml,7,$52.50
+11/04/2026,north branch,Home,Detergent 2kg,12,$118.80
+29/05/2026,North Branch,,Cooking Oil 1L,13,$58.50
+15/04/2026,South Branch,Dairy,Cheddar Cheese,7,$47.60
+04/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,8,$25.60
+04/05/2026,north branch,Dairy,Fresh Milk 2L,9,$28.80
+22/05/2026,north branch,Electronics,Phone Charger,10,$140.00
+12/04/2026,South Branch,,COOKING OIL 1L,7,$31.50
+14/04/2026,north branch,Grocery,BASMATI RICE 5KG,2,$24.00
+24/04/2026,north branch,Home,Detergent 2kg,12,$118.80
+15/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,6,$40.80
+15/04/2026,North Branch,Grocery,Cooking Oil 1L,12,$54.00
+20/05/2026,North Branch,Home,Detergent 2kg,4,$39.60
+18/05/2026,South Branch,Home,Detergent 2kg,11,$108.90
+15/05/2026,SOUTH BRANCH ,Electronics,PHONE CHARGER,1,$14.00
+13/05/2026,South Branch,Electronics,Phone Charger,5,$70.00
+03/04/2026,north branch,Beauty,Shampoo 400ml,14,$105.00
+08/04/2026,North Branch,Home,Detergent 2kg,9,$89.10
+21/05/2026,South Branch,Dairy,Cheddar Cheese,13,$88.40
+29/04/2026,north branch,Grocery,Basmati Rice 5kg,10,$120.00
+27/05/2026,north branch,Grocery,Basmati Rice 5kg,7,$84.00
+31/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,2,$19.80
+02/04/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+20/05/2026,north branch,Home,Detergent 2kg,3,$29.70
+19/04/2026,north branch,Grocery,Cooking Oil 1L,11,$49.50
+26/05/2026,north branch,Home,Detergent 2kg,10,$99.00
+23/04/2026,South Branch,Home,Detergent 2kg,12,$118.80
+24/04/2026,North Branch,Grocery,Basmati Rice 5kg,5,$60.00
+14/05/2026,North Branch,Dairy,Cheddar Cheese,13,$88.40
+15/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,1,$7.50
+17/05/2026,North Branch,Beauty,Shampoo 400ml,9,$67.50
+04/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,14,$168.00
+01/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,12,$168.00
+06/05/2026,north branch,Electronics,PHONE CHARGER,10,$140.00
+30/04/2026,North Branch,Beauty,Shampoo 400ml,9,$67.50
+17/05/2026,North Branch,Home,Detergent 2kg,8,$79.20
+03/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,8,$25.60
+14/04/2026,north branch,Home,Detergent 2kg,14,$138.60
+08/05/2026,north branch,Home,Detergent 2kg,1,$9.90
+13/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,11,$132.00
+04/05/2026,South Branch,Grocery,Cooking Oil 1L,3,$13.50
+24/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,5,$37.50
+09/04/2026,South Branch,Grocery,Cooking Oil 1L,3,$13.50
+07/04/2026,north branch,Beauty,Shampoo 400ml,8,$60.00
+05/05/2026,north branch,Dairy,Cheddar Cheese,3,$20.40
+06/04/2026,north branch,Beauty,Shampoo 400ml,11,$82.50
+09/04/2026,South Branch,,Cheddar Cheese,8,$54.40
+09/05/2026,South Branch,Dairy,Cheddar Cheese,13,$88.40
+29/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,5,$22.50
+22/05/2026,north branch,Home,Detergent 2kg,12,$118.80
+28/04/2026,north branch,Beauty,Shampoo 400ml,7,$52.50
+11/05/2026,North Branch,Grocery,Cooking Oil 1L,3,$13.50
+23/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,7,$98.00
+27/05/2026,South Branch,Home,Detergent 2kg,10,$99.00
+10/04/2026,South Branch,Beauty,Shampoo 400ml,4,$30.00
+12/05/2026,North Branch,Electronics,PHONE CHARGER,7,$98.00
+15/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,8,$79.20
+11/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,2,$28.00
+12/04/2026,SOUTH BRANCH ,,Phone Charger,14,$196.00
+07/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,3,$22.50
+17/05/2026,north branch,Grocery,Cooking Oil 1L,9,$40.50
+23/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,7,$22.40
+15/04/2026,South Branch,Home,Detergent 2kg,8,$79.20
+13/04/2026,north branch,Beauty,Shampoo 400ml,11,$82.50
+05/04/2026,North Branch,Dairy,Cheddar Cheese,6,$40.80
+05/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,9,$126.00
+16/04/2026,North Branch,Beauty,Shampoo 400ml,3,$22.50
+19/05/2026,South Branch,Beauty,Shampoo 400ml,12,$90.00
+21/05/2026,South Branch,Electronics,Phone Charger,12,$168.00
+24/04/2026,SOUTH BRANCH ,Dairy,FRESH MILK 2L,14,$44.80
+12/04/2026,South Branch,Dairy,Fresh Milk 2L,1,$3.20
+08/05/2026,North Branch,Dairy,Cheddar Cheese,12,$81.60
+26/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,14,$196.00
+25/05/2026,North Branch,Beauty,Shampoo 400ml,8,$60.00
+01/04/2026,South Branch,Grocery,BASMATI RICE 5KG,10,$120.00
+23/05/2026,North Branch,Home,Detergent 2kg,9,$89.10
+24/04/2026,North Branch,Home,Detergent 2kg,4,$39.60
+04/04/2026,north branch,Grocery,Cooking Oil 1L,6,$27.00
+31/05/2026,north branch,Dairy,Fresh Milk 2L,12,$38.40
+02/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,6,$27.00
+08/04/2026,South Branch,Grocery,Cooking Oil 1L,10,$45.00
+20/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,12,$118.80
+18/04/2026,North Branch,Beauty,Shampoo 400ml,6,$45.00
+19/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,10,$68.00
+20/04/2026,North Branch,Electronics,Phone Charger,11,$154.00
+24/04/2026,north branch,Dairy,Fresh Milk 2L,6,$19.20
+27/04/2026,north branch,Dairy,Fresh Milk 2L,4,$12.80
+12/04/2026,north branch,Beauty,Shampoo 400ml,8,$60.00
+13/05/2026,North Branch,Grocery,Cooking Oil 1L,2,$9.00
+22/05/2026,South Branch,Grocery,Cooking Oil 1L,6,$27.00
+25/05/2026,South Branch,Grocery,Basmati Rice 5kg,13,$156.00
+15/05/2026,South Branch,Dairy,Cheddar Cheese,7,$47.60
+10/04/2026,South Branch,Electronics,Phone Charger,11,$154.00
+25/04/2026,north branch,Beauty,Shampoo 400ml,4,
+31/05/2026,north branch,Beauty,Shampoo 400ml,2,$15.00
+17/04/2026,north branch,Dairy,Cheddar Cheese,4,$27.20
+26/05/2026,South Branch,Home,Detergent 2kg,1,$9.90
+18/04/2026,north branch,Home,Detergent 2kg,4,$39.60
+24/05/2026,north branch,Home,Detergent 2kg,12,$118.80
+13/05/2026,North Branch,Beauty,Shampoo 400ml,7,$52.50
+01/04/2026,South Branch,Dairy,Cheddar Cheese,14,$95.20
+04/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,5,$37.50
+02/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,1,$3.20
+03/05/2026,North Branch,Home,Detergent 2kg,1,$9.90
+20/04/2026,South Branch,Dairy,Cheddar Cheese,5,$34.00
+14/04/2026,north branch,Electronics,Phone Charger,4,$56.00
+11/05/2026,north branch,Dairy,Fresh Milk 2L,8,$25.60
+23/05/2026,North Branch,Electronics,Phone Charger,9,$126.00
+27/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,11,$35.20
+07/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,9,$89.10
+21/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,1,$3.20
+01/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,3,$29.70
+08/05/2026,north branch,Grocery,Cooking Oil 1L,5,$22.50
+08/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,3,$29.70
+15/04/2026,north branch,Grocery,Cooking Oil 1L,5,$22.50
+27/04/2026,north branch,Grocery,Cooking Oil 1L,9,$40.50
+24/05/2026,South Branch,Electronics,Phone Charger,14,$196.00
+13/04/2026,north branch,Dairy,Cheddar Cheese,6,$40.80
+02/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,13,$156.00
+10/04/2026,SOUTH BRANCH ,,Cheddar Cheese,14,$95.20
+25/05/2026,North Branch,Grocery,Cooking Oil 1L,6,$27.00
+19/04/2026,north branch,Home,Detergent 2kg,12,$118.80
+27/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,9,$40.50
+17/04/2026,north branch,Electronics,PHONE CHARGER,1,$14.00
+27/04/2026,South Branch,Beauty,Shampoo 400ml,9,$67.50
+06/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,4,$12.80
+22/04/2026,north branch,Home,Detergent 2kg,9,$89.10
+12/04/2026,north branch,Dairy,Fresh Milk 2L,4,$12.80
+09/05/2026,South Branch,Home,DETERGENT 2KG,14,$138.60
+08/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,8,$25.60
+17/04/2026,South Branch,Dairy,Cheddar Cheese,1,$6.80
+17/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,14,$196.00
+17/04/2026,South Branch,Grocery,Cooking Oil 1L,6,$27.00
+25/04/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,6,$27.00
+14/05/2026,South Branch,Grocery,Basmati Rice 5kg,4,$48.00
+01/05/2026,North Branch,Home,DETERGENT 2KG,1,$9.90
+05/04/2026,South Branch,Beauty,SHAMPOO 400ML,1,$7.50
+26/05/2026,North Branch,Grocery,Cooking Oil 1L,6,$27.00
+09/04/2026,SOUTH BRANCH ,Grocery,COOKING OIL 1L,11,$49.50
+08/05/2026,North Branch,Home,Detergent 2kg,8,$79.20
+10/05/2026,South Branch,Home,Detergent 2kg,9,$89.10
+19/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,9,$126.00
+21/05/2026,South Branch,Dairy,Cheddar Cheese,13,$88.40
+07/05/2026,North Branch,Dairy,Cheddar Cheese,11,$74.80
+04/05/2026,North Branch,Beauty,Shampoo 400ml,2,$15.00
+01/04/2026,South Branch,Beauty,Shampoo 400ml,8,$60.00
+06/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,11,$49.50
+19/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,9,$28.80
+07/05/2026,South Branch,Electronics,PHONE CHARGER,10,$140.00
+10/04/2026,north branch,Electronics,Phone Charger,9,$126.00
+08/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,8,$25.60
+03/04/2026,South Branch,Dairy,Fresh Milk 2L,7,$22.40
+30/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,12,$90.00
+18/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,8,$96.00
+17/04/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+06/04/2026,South Branch,Grocery,Basmati Rice 5kg,10,$120.00
+15/04/2026,South Branch,Dairy,Fresh Milk 2L,10,$32.00
+17/05/2026,North Branch,Grocery,Cooking Oil 1L,2,$9.00
+31/05/2026,South Branch,Home,Detergent 2kg,9,$89.10
+09/05/2026,North Branch,Dairy,Cheddar Cheese,11,$74.80
+17/05/2026,North Branch,Grocery,Basmati Rice 5kg,10,$120.00
+27/04/2026,South Branch,Dairy,Fresh Milk 2L,1,$3.20
+19/05/2026,north branch,Grocery,Cooking Oil 1L,7,
+01/04/2026,SOUTH BRANCH ,Grocery,BASMATI RICE 5KG,11,$132.00
+20/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,13,$41.60
+30/04/2026,north branch,Grocery,Basmati Rice 5kg,4,$48.00
+08/05/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,5,$37.50
+19/05/2026,South Branch,Grocery,Basmati Rice 5kg,6,$72.00
+23/05/2026,North Branch,Grocery,Basmati Rice 5kg,13,$156.00
+11/04/2026,North Branch,Dairy,Cheddar Cheese,12,$81.60
+28/04/2026,north branch,Dairy,CHEDDAR CHEESE,14,$95.20
+09/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,14,$95.20
+27/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,5,$37.50
+18/05/2026,South Branch,Grocery,Basmati Rice 5kg,1,$12.00
+09/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,11,$108.90
+15/04/2026,north branch,Grocery,Basmati Rice 5kg,3,$36.00
+16/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,4,$30.00
+16/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,2,$24.00
+22/04/2026,north branch,Grocery,Basmati Rice 5kg,1,$12.00
+21/04/2026,north branch,Home,Detergent 2kg,13,$128.70
+28/04/2026,South Branch,Home,Detergent 2kg,11,$108.90
+03/05/2026,north branch,Grocery,BASMATI RICE 5KG,6,$72.00
+14/05/2026,north branch,Home,Detergent 2kg,9,$89.10
+30/05/2026,north branch,Electronics,Phone Charger,13,$182.00
+04/04/2026,South Branch,,Phone Charger,4,$56.00
+18/05/2026,SOUTH BRANCH ,Home,DETERGENT 2KG,11,$108.90
+10/04/2026,South Branch,Grocery,Basmati Rice 5kg,5,$60.00
+26/04/2026,South Branch,Dairy,FRESH MILK 2L,11,$35.20
+29/04/2026,North Branch,Dairy,Fresh Milk 2L,6,$19.20
+15/05/2026,North Branch,Dairy,Fresh Milk 2L,11,$35.20
+30/05/2026,North Branch,Electronics,Phone Charger,12,$168.00
+22/05/2026,South Branch,Dairy,Fresh Milk 2L,10,$32.00
+24/05/2026,South Branch,Beauty,SHAMPOO 400ML,9,$67.50
+25/05/2026,SOUTH BRANCH ,Electronics,PHONE CHARGER,14,$196.00
+11/05/2026,South Branch,Dairy,Fresh Milk 2L,6,$19.20
+14/04/2026,North Branch,Grocery,COOKING OIL 1L,8,$36.00
+28/04/2026,north branch,Grocery,Basmati Rice 5kg,6,$72.00
+21/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,5,$16.00
+22/05/2026,South Branch,Home,Detergent 2kg,2,$19.80
+09/04/2026,SOUTH BRANCH ,Dairy,FRESH MILK 2L,1,$3.20
+04/05/2026,North Branch,Home,DETERGENT 2KG,10,$99.00
+28/05/2026,North Branch,Home,DETERGENT 2KG,5,$49.50
+25/05/2026,SOUTH BRANCH ,Dairy,FRESH MILK 2L,9,$28.80
+01/05/2026,South Branch,Beauty,Shampoo 400ml,13,$97.50
+09/05/2026,North Branch,Dairy,Fresh Milk 2L,9,$28.80
+16/05/2026,North Branch,,Fresh Milk 2L,7,$22.40
+06/04/2026,South Branch,Dairy,Cheddar Cheese,7,$47.60
+02/05/2026,North Branch,Grocery,Basmati Rice 5kg,11,$132.00
+30/05/2026,South Branch,Dairy,Cheddar Cheese,1,$6.80
+03/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,4,$39.60
+14/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,12,$81.60
+15/05/2026,South Branch,Electronics,PHONE CHARGER,1,$14.00
+02/05/2026,North Branch,Home,Detergent 2kg,1,$9.90
+15/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,12,$38.40
+05/04/2026,SOUTH BRANCH ,Dairy,FRESH MILK 2L,6,$19.20
+22/04/2026,North Branch,Electronics,Phone Charger,8,$112.00
+12/05/2026,South Branch,Beauty,SHAMPOO 400ML,9,$67.50
+02/05/2026,North Branch,Dairy,Cheddar Cheese,5,$34.00
+12/04/2026,north branch,Grocery,Basmati Rice 5kg,8,$96.00
+10/05/2026,North Branch,Dairy,Fresh Milk 2L,6,$19.20
+26/05/2026,north branch,Beauty,Shampoo 400ml,10,$75.00
+22/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,9,$108.00
+25/04/2026,North Branch,Electronics,Phone Charger,13,$182.00
+04/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,4,$30.00
+24/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,10,$140.00
+06/05/2026,South Branch,Dairy,FRESH MILK 2L,12,$38.40
+13/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,3,$42.00
+17/04/2026,north branch,Grocery,Basmati Rice 5kg,14,$168.00
+09/04/2026,north branch,Dairy,Cheddar Cheese,2,$13.60
+07/05/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,1,$12.00
+19/04/2026,north branch,Dairy,Fresh Milk 2L,6,$19.20
+30/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,9,$89.10
+20/04/2026,South Branch,Grocery,Cooking Oil 1L,8,$36.00
+22/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,8,$25.60
+09/04/2026,north branch,Electronics,PHONE CHARGER,9,$126.00
+21/04/2026,North Branch,Home,Detergent 2kg,7,$69.30
+03/05/2026,North Branch,Beauty,Shampoo 400ml,8,$60.00
+19/05/2026,North Branch,,Shampoo 400ml,7,$52.50
+02/04/2026,North Branch,Grocery,Basmati Rice 5kg,13,$156.00
+13/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,12,$54.00
+06/05/2026,north branch,Grocery,Cooking Oil 1L,14,$63.00
+18/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,12,$81.60
+24/04/2026,South Branch,Home,Detergent 2kg,11,$108.90
+15/04/2026,North Branch,Dairy,Fresh Milk 2L,12,$38.40
+03/04/2026,North Branch,Dairy,Cheddar Cheese,10,$68.00
+28/05/2026,north branch,Grocery,Basmati Rice 5kg,14,$168.00
+03/05/2026,South Branch,Dairy,Cheddar Cheese,7,$47.60
+05/05/2026,SOUTH BRANCH ,Home,DETERGENT 2KG,6,$59.40
+02/04/2026,north branch,,Shampoo 400ml,5,$37.50
+27/05/2026,north branch,Beauty,Shampoo 400ml,6,$45.00
+12/05/2026,north branch,Electronics,PHONE CHARGER,3,$42.00
+11/05/2026,North Branch,Home,Detergent 2kg,6,$59.40
+02/05/2026,North Branch,Dairy,Fresh Milk 2L,7,$22.40
+14/05/2026,north branch,Dairy,Fresh Milk 2L,14,$44.80
+13/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,10,$32.00
+29/05/2026,North Branch,Electronics,Phone Charger,7,$98.00
+05/05/2026,north branch,,Cooking Oil 1L,10,$45.00
+07/04/2026,SOUTH BRANCH ,Grocery,Basmati Rice 5kg,12,$144.00
+26/04/2026,South Branch,,Cheddar Cheese,6,$40.80
+14/05/2026,South Branch,Home,DETERGENT 2KG,9,$89.10
+18/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,6,
+01/05/2026,South Branch,Grocery,Cooking Oil 1L,4,$18.00
+28/05/2026,South Branch,Electronics,Phone Charger,9,
+26/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,11,$49.50
+24/05/2026,North Branch,Beauty,Shampoo 400ml,13,$97.50
+01/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,1,$7.50
+19/04/2026,SOUTH BRANCH ,Beauty,Shampoo 400ml,7,$52.50
+09/05/2026,north branch,Dairy,Fresh Milk 2L,7,
+17/04/2026,north branch,Dairy,Fresh Milk 2L,2,$6.40
+09/05/2026,South Branch,Grocery,BASMATI RICE 5KG,7,$84.00
+22/04/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,14,$95.20
+26/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,3,$20.40
+18/04/2026,north branch,Beauty,Shampoo 400ml,10,$75.00
+10/05/2026,north branch,Beauty,Shampoo 400ml,13,$97.50
+11/05/2026,SOUTH BRANCH ,Electronics,Phone Charger,7,$98.00
+28/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,13,$41.60
+23/05/2026,North Branch,Dairy,Fresh Milk 2L,6,$19.20
+11/04/2026,North Branch,Dairy,Cheddar Cheese,12,$81.60
+16/04/2026,north branch,Dairy,Fresh Milk 2L,4,$12.80
+08/05/2026,north branch,Beauty,Shampoo 400ml,3,$22.50
+09/04/2026,North Branch,Home,Detergent 2kg,7,$69.30
+22/05/2026,North Branch,Grocery,Basmati Rice 5kg,5,$60.00
+06/04/2026,north branch,Dairy,Cheddar Cheese,12,$81.60
+26/05/2026,north branch,Grocery,BASMATI RICE 5KG,7,$84.00
+02/04/2026,North Branch,Dairy,Cheddar Cheese,14,$95.20
+04/04/2026,SOUTH BRANCH ,Home,Detergent 2kg,5,$49.50
+23/05/2026,north branch,Grocery,Basmati Rice 5kg,13,$156.00
+07/04/2026,South Branch,Beauty,Shampoo 400ml,7,$52.50
+09/05/2026,South Branch,Grocery,Cooking Oil 1L,5,$22.50
+14/04/2026,South Branch,Dairy,Cheddar Cheese,12,$81.60
+20/04/2026,South Branch,Grocery,Basmati Rice 5kg,11,$132.00
+16/04/2026,SOUTH BRANCH ,Electronics,Phone Charger,10,$140.00
+22/05/2026,North Branch,Electronics,Phone Charger,7,$98.00
+01/04/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,5,$16.00
+17/05/2026,South Branch,Dairy,Fresh Milk 2L,11,$35.20
+27/04/2026,North Branch,Home,Detergent 2kg,6,$59.40
+25/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,10,$45.00
+04/05/2026,South Branch,Dairy,Cheddar Cheese,6,$40.80
+16/05/2026,South Branch,Home,Detergent 2kg,7,$69.30
+17/05/2026,South Branch,Beauty,Shampoo 400ml,14,$105.00
+29/05/2026,north branch,Beauty,Shampoo 400ml,10,$75.00
+11/05/2026,SOUTH BRANCH ,Dairy,Cheddar Cheese,6,$40.80
+17/04/2026,South Branch,Electronics,Phone Charger,8,$112.00
+25/05/2026,north branch,Home,Detergent 2kg,1,$9.90
+05/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,11,$35.20
+21/04/2026,North Branch,Beauty,SHAMPOO 400ML,9,$67.50
+10/04/2026,north branch,Dairy,Fresh Milk 2L,1,$3.20
+01/05/2026,South Branch,Dairy,Fresh Milk 2L,5,$16.00
+16/05/2026,north branch,Beauty,Shampoo 400ml,9,$67.50
+17/05/2026,SOUTH BRANCH ,Grocery,Cooking Oil 1L,10,$45.00
+17/05/2026,SOUTH BRANCH ,Home,Detergent 2kg,5,$49.50
+29/05/2026,South Branch,Electronics,Phone Charger,2,$28.00
+19/05/2026,North Branch,Dairy,Fresh Milk 2L,11,$35.20
+30/05/2026,SOUTH BRANCH ,Dairy,Fresh Milk 2L,1,$3.20
