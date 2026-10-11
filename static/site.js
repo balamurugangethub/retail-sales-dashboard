@@ -70,7 +70,7 @@ window.Mono = (function () {
     const d = Chart.defaults, fg = chart(), bg = paper();
     d.font.family = getComputedStyle(document.body).fontFamily || d.font.family;
     d.font.size = 12;
-    d.color = css("--muted") || fg; d.borderColor = fg;
+    d.color = css("--muted") || fg; d.borderColor = css("--grid") || fg;
     d.elements.bar.borderRadius = 0;
     d.elements.bar.borderColor = fg;
     d.elements.bar.borderWidth = 1;
@@ -82,15 +82,16 @@ window.Mono = (function () {
     d.elements.arc.borderWidth = 1;
     Object.assign(d.plugins.tooltip, { backgroundColor: ink(), titleColor: bg, bodyColor: bg, borderColor: bg, borderWidth: 1,
       cornerRadius: 0, displayColors: true, boxPadding: 4 });
-    Object.assign(d.plugins.legend.labels, { boxWidth: 12, boxHeight: 12, color: ink() });
+    Object.assign(d.plugins.legend.labels, { boxWidth: 12, boxHeight: 12, color: css("--text") || ink() });
   }
 
   // Axis styling: dashed hairline grid
-  const valueGrid = () => ({ color: css("--line") || ink(), lineWidth: 1 });
-  const axisBorder = () => ({ color: css("--line") || ink(), dash: [2, 4] });
+  const valueGrid = () => ({ color: css("--grid") || css("--line") || ink(), lineWidth: 1 });
+  const axisBorder = () => ({ color: css("--grid") || css("--line") || ink(), dash: [2, 4] });
 
   const muted = () => css("--muted") || ink();
-  return { ink, paper, muted, chart, fill, dash: (i) => DASHES[i % DASHES.length], point: (i) => POINTS[i % POINTS.length],
+  const text = () => css("--text") || ink();
+  return { ink, paper, muted, text, chart, fill, dash: (i) => DASHES[i % DASHES.length], point: (i) => POINTS[i % POINTS.length],
            applyDefaults, valueGrid, axisBorder };
 })();
 window.Mono.applyDefaults();

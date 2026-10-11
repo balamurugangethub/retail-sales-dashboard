@@ -131,7 +131,7 @@ function renderCategories(rows) {
     data: { labels: rows.map((r) => r.category), datasets: [{ data: rows.map((r) => r.sales), backgroundColor: rows.map((_r, i) => Mono.fill(i)) }] },
     options: {
       responsive: true, maintainAspectRatio: false, cutout: "58%",
-      plugins: { legend: { position: "right", labels: { color: Mono.ink() } },
+      plugins: { legend: { position: "right", labels: { color: Mono.text() } },
                  tooltip: { callbacks: { label: (c) => c.label + ": " + fmtMoney(c.parsed) } } },
       onClick: (_e, els) => {
         if (!els.length) return;
