@@ -22,6 +22,7 @@
     };
     link("/privacy", "Privacy");
     if (me.user) link("/account", me.user.shop || me.user.name, "account nav-right");
+    if (window.ChartStyle && ["/", "/builder"].includes(location.pathname)) nav.append(ChartStyle.button());
     if (window.Theme) nav.append(Theme.button());
   }).catch(() => {});
 })();
@@ -32,7 +33,7 @@ window.Mono = (function () {
   const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const ink = () => css("--ink") || "#000";
   const paper = () => css("--paper") || "#fff";
-  const chart = () => css("--chart") || ink();
+  const chart = () => css("--chart-color") || ink();
   const DASHES = [[], [6, 4], [2, 3], [10, 4, 2, 4], [1, 5], [14, 4]];
   const POINTS = ["circle", "rect", "triangle", "rectRot", "crossRot", "star"];
   const cache = new Map();
@@ -68,9 +69,9 @@ window.Mono = (function () {
   function applyDefaults() {
     if (!window.Chart) return;
     const d = Chart.defaults, fg = chart(), bg = paper();
-    d.font.family = getComputedStyle(document.body).fontFamily || d.font.family;
+    d.font.family = css("--chart-font") || getComputedStyle(document.body).fontFamily || d.font.family;
     d.font.size = 12;
-    d.color = css("--muted") || fg; d.borderColor = css("--grid") || fg;
+    d.color = muted(); d.borderColor = css("--chart-grid") || fg;
     d.elements.bar.borderRadius = 0;
     d.elements.bar.borderColor = fg;
     d.elements.bar.borderWidth = 1;
@@ -82,15 +83,15 @@ window.Mono = (function () {
     d.elements.arc.borderWidth = 1;
     Object.assign(d.plugins.tooltip, { backgroundColor: ink(), titleColor: bg, bodyColor: bg, borderColor: bg, borderWidth: 1,
       cornerRadius: 0, displayColors: true, boxPadding: 4 });
-    Object.assign(d.plugins.legend.labels, { boxWidth: 12, boxHeight: 12, color: css("--text") || ink() });
+    Object.assign(d.plugins.legend.labels, { boxWidth: 12, boxHeight: 12, color: text() });
   }
 
   // Axis styling: dashed hairline grid
-  const valueGrid = () => ({ color: css("--grid") || css("--line") || ink(), lineWidth: 1 });
-  const axisBorder = () => ({ color: css("--grid") || css("--line") || ink(), dash: [2, 4] });
+  const valueGrid = () => ({ color: css("--chart-grid") || css("--line") || ink(), lineWidth: 1 });
+  const axisBorder = () => ({ color: css("--chart-grid") || css("--line") || ink(), dash: [2, 4] });
 
-  const muted = () => css("--muted") || ink();
-  const text = () => css("--text") || ink();
+  const muted = () => css("--chart-text") || css("--muted") || ink();
+  const text = () => css("--chart-text") || css("--text") || ink();
   return { ink, paper, muted, text, chart, fill, dash: (i) => DASHES[i % DASHES.length], point: (i) => POINTS[i % POINTS.length],
            applyDefaults, valueGrid, axisBorder };
 })();

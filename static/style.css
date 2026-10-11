@@ -2,7 +2,7 @@
    theme.js swaps --paper, --ink and --chart for the visitor's chosen theme and works out
    --muted, --line and --wash as blends of the two, so every page stays two-tone. */
 :root {
-  --ink: #ffffff; --paper: #000000; --text: var(--ink); --chart: var(--ink); --grid: var(--line);
+  --ink: #ffffff; --paper: #000000; --text: var(--ink);
   --muted: #a6a6a6; --line: #404040; --wash: #141414;
   --bg: var(--paper); --card: var(--paper); --good: var(--ink); --bad: var(--ink); --warn: var(--ink);
   --font: "Inter", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
@@ -332,3 +332,6 @@ select:focus, input:focus { border-color: var(--ink); }
 .theme-picker > .btn { margin-top: 8px; }
 .theme-section { margin-top: 26px; padding-top: 16px; border-top: 2px solid var(--line); }
 @media (max-width: 640px) { .theme-picker.pop { position: fixed; top: 70px; left: 16px; right: 16px; width: auto; } }
+.tp-note { margin: -4px 0 10px; font-size: 12px; color: var(--muted); }
+/* chart background applies to the chart area only */
+.chart canvas, .chart-box canvas { background: var(--chart-bg, transparent); }

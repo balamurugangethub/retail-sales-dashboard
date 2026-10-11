@@ -165,7 +165,7 @@ function renderHeatmap(rows) {
       // a solid bar under each value, as long as its share of the range
       const pct = max === min ? 50 : 8 + 92 * (v - min) / (max - min);
       const td = el("td", { class: "cell", text: fmtMoney(v) });
-      td.style.backgroundImage = "linear-gradient(var(--chart), var(--chart))";
+      td.style.backgroundImage = "linear-gradient(var(--chart-color, var(--ink)), var(--chart-color, var(--ink)))";
       td.style.backgroundSize = `${pct.toFixed(0)}% 4px`;
       tr.append(td);
     });
