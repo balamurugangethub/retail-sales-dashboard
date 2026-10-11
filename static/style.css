@@ -1,17 +1,12 @@
-/* Monochrome theme: black and white only, square corners, thin rules.
-   Dark by default: white ink on black paper. Secondary text and hairlines are the ink at
-   lower strength, so the page stays two-tone. data-theme="light" flips it to black on white. */
+/* Two-colour theme with square corners and thin rules. Black and white by default.
+   theme.js swaps --paper, --ink and --chart for the visitor's chosen theme and works out
+   --muted, --line and --wash as blends of the two, so every page stays two-tone. */
 :root {
-  --ink: #ffffff; --paper: #000000;
-  --muted: rgba(255, 255, 255, .62); --line: rgba(255, 255, 255, .22); --wash: rgba(255, 255, 255, .08);
+  --ink: #ffffff; --paper: #000000; --chart: var(--ink);
+  --muted: #a6a6a6; --line: #404040; --wash: #141414;
   --bg: var(--paper); --card: var(--paper); --good: var(--ink); --bad: var(--ink); --warn: var(--ink);
   --font: "Inter", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
   color-scheme: dark;
-}
-:root[data-theme="light"] {
-  --ink: #000000; --paper: #ffffff;
-  --muted: rgba(0, 0, 0, .62); --line: rgba(0, 0, 0, .22); --wash: rgba(0, 0, 0, .05);
-  color-scheme: light;
 }
 
 *, *::before, *::after { box-sizing: border-box; border-radius: 0 !important; }
@@ -308,3 +303,27 @@ select:hover, input:hover { border-color: var(--ink); }
 select:focus, input:focus { border-color: var(--ink); }
 .empty, .drop-zone { color: var(--muted); }
 .empty h2, .drop-zone strong { color: var(--ink); }
+
+/* ---- theme picker ---- */
+.theme-wrap { position: relative; display: inline-block; }
+.theme-btn { font: inherit; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+             background: transparent; color: var(--muted); border: 1px solid var(--line); padding: 4px 10px; margin-left: 8px; }
+.theme-btn:hover, .theme-btn[aria-expanded="true"] { color: var(--ink); border-color: var(--ink); }
+.theme-picker h3 { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.theme-picker h3:not(:first-child) { margin-top: 16px; }
+.theme-picker.pop { position: absolute; z-index: 50; top: calc(100% + 8px); left: 0; width: min(520px, calc(100vw - 32px));
+                    background: var(--paper); color: var(--ink); border: 1px solid var(--ink); padding: 16px; text-transform: none; letter-spacing: 0; }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 6px; }
+.swatch { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 8px 9px; border: 1px solid; cursor: pointer;
+          font: inherit; text-align: left; }
+.swatch .aa { font-size: 18px; font-weight: 800; line-height: 1; }
+.swatch .nm { font-size: 11px; font-weight: 600; }
+.swatch:hover { outline: 1px solid var(--ink); outline-offset: 2px; }
+.swatch.on { outline: 2px solid var(--ink); outline-offset: 2px; }
+.custom { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.custom label { display: flex; flex-direction: column; gap: 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em;
+                text-transform: uppercase; color: var(--muted); }
+.custom input[type=color] { width: 64px; height: 32px; padding: 2px; border: 1px solid var(--line); background: var(--paper); cursor: pointer; }
+.custom .btn { margin-left: auto; }
+.theme-section { margin-top: 26px; padding-top: 16px; border-top: 2px solid var(--line); }
+@media (max-width: 640px) { .theme-picker.pop { position: fixed; top: 70px; left: 16px; right: 16px; width: auto; } }

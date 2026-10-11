@@ -22,6 +22,7 @@
     };
     link("/privacy", "Privacy");
     if (me.user) link("/account", me.user.shop || me.user.name, "account nav-right");
+    if (window.Theme) nav.append(Theme.button());
   }).catch(() => {});
 })();
 
@@ -31,6 +32,7 @@ window.Mono = (function () {
   const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const ink = () => css("--ink") || "#000";
   const paper = () => css("--paper") || "#fff";
+  const chart = () => css("--chart") || ink();
   const DASHES = [[], [6, 4], [2, 3], [10, 4, 2, 4], [1, 5], [14, 4]];
   const POINTS = ["circle", "rect", "triangle", "rectRot", "crossRot", "star"];
   const cache = new Map();
@@ -48,7 +50,7 @@ window.Mono = (function () {
   }
 
   function fill(i) {
-    const k = i % 8, fg = ink(), bg = paper();
+    const k = i % 8, fg = chart(), bg = paper();
     if (k === 0) return fg;
     if (k === 1) return bg;
     const key = k + fg + bg;
@@ -65,7 +67,7 @@ window.Mono = (function () {
 
   function applyDefaults() {
     if (!window.Chart) return;
-    const d = Chart.defaults, fg = ink(), bg = paper();
+    const d = Chart.defaults, fg = chart(), bg = paper();
     d.font.family = getComputedStyle(document.body).fontFamily || d.font.family;
     d.font.size = 12;
     d.color = css("--muted") || fg; d.borderColor = fg;
@@ -78,9 +80,9 @@ window.Mono = (function () {
     d.elements.point.borderWidth = 1.5;
     d.elements.arc.borderColor = fg;
     d.elements.arc.borderWidth = 1;
-    Object.assign(d.plugins.tooltip, { backgroundColor: fg, titleColor: bg, bodyColor: bg, borderColor: bg, borderWidth: 1,
+    Object.assign(d.plugins.tooltip, { backgroundColor: ink(), titleColor: bg, bodyColor: bg, borderColor: bg, borderWidth: 1,
       cornerRadius: 0, displayColors: true, boxPadding: 4 });
-    Object.assign(d.plugins.legend.labels, { boxWidth: 12, boxHeight: 12, color: fg });
+    Object.assign(d.plugins.legend.labels, { boxWidth: 12, boxHeight: 12, color: ink() });
   }
 
   // Axis styling: dashed hairline grid
@@ -88,7 +90,8 @@ window.Mono = (function () {
   const axisBorder = () => ({ color: css("--line") || ink(), dash: [2, 4] });
 
   const muted = () => css("--muted") || ink();
-  return { ink, paper, muted, fill, dash: (i) => DASHES[i % DASHES.length], point: (i) => POINTS[i % POINTS.length],
+  return { ink, paper, muted, chart, fill, dash: (i) => DASHES[i % DASHES.length], point: (i) => POINTS[i % POINTS.length],
            applyDefaults, valueGrid, axisBorder };
 })();
 window.Mono.applyDefaults();
+window.addEventListener("themechange", () => window.Mono.applyDefaults());

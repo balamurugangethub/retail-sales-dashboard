@@ -90,7 +90,7 @@ function renderStoreChart(rows) {
   const m = state.storeMetric, t = themeText();
   const values = rows.map((r) => r[m]);
   // the picked store stays solid; the others drop to outlines
-  const colors = rows.map((r) => state.store && r.store !== state.store ? Mono.paper() : Mono.ink());
+  const colors = rows.map((r) => state.store && r.store !== state.store ? Mono.paper() : Mono.chart());
   upsertChart("chart-store", {
     type: "bar",
     data: { labels: rows.map((r) => r.store), datasets: [{ label: METRICS[m], data: values, backgroundColor: colors, maxBarThickness: 64 }] },
@@ -114,7 +114,7 @@ function renderTrendChart(rows) {
   upsertChart("chart-trend", {
     type: "line",
     data: { labels: rows.map((r) => r.period), datasets: [{ label: METRICS[m], data: rows.map((r) => r[m]),
-      borderColor: Mono.ink(), backgroundColor: Mono.fill(6), fill: true, tension: 0, pointRadius: rows.length > 40 ? 0 : 3.5,
+      borderColor: Mono.chart(), backgroundColor: Mono.fill(6), fill: true, tension: 0, pointRadius: rows.length > 40 ? 0 : 3.5,
       pointStyle: "rect" }] },
     options: {
       responsive: true, maintainAspectRatio: false,
@@ -165,7 +165,7 @@ function renderHeatmap(rows) {
       // a solid bar under each value, as long as its share of the range
       const pct = max === min ? 50 : 8 + 92 * (v - min) / (max - min);
       const td = el("td", { class: "cell", text: fmtMoney(v) });
-      td.style.backgroundImage = "linear-gradient(var(--ink), var(--ink))";
+      td.style.backgroundImage = "linear-gradient(var(--chart), var(--chart))";
       td.style.backgroundSize = `${pct.toFixed(0)}% 4px`;
       tr.append(td);
     });
@@ -273,4 +273,5 @@ async function init() {
   await refresh();
 }
 
+window.addEventListener("themechange", () => meta && refresh());
 init().catch((e) => notify("Failed to start: " + e.message, true));

@@ -286,7 +286,7 @@ function drawWidget(w, body, res) {
   // monochrome: series differ by pattern (bars, areas, slices) or by dash and point shape (lines)
   datasets.forEach((d) => {
     const i = d.seriesIndex; delete d.seriesIndex;
-    d.borderColor = Mono.ink();
+    d.borderColor = Mono.chart();
     if (w.chart === "pie") d.backgroundColor = labels.map((_l, j) => Mono.fill(j));
     else if (isLine) Object.assign(d, { fill: w.chart === "area", tension: 0, borderDash: Mono.dash(i), pointStyle: Mono.point(i),
       backgroundColor: w.chart === "area" ? Mono.fill(datasets.length > 1 ? i + 2 : 6) : Mono.paper(),
@@ -553,4 +553,5 @@ async function init() {
   renderCanvas();
 }
 
+window.addEventListener("themechange", () => B.widgets.forEach(loadWidgetFresh));
 init().catch((e) => notify("Failed to start: " + e.message, true));
