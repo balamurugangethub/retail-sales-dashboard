@@ -24,7 +24,11 @@ function renderPreview() {
   const s = $("summary");
   if (p.error) {
     s.className = "summary bad";
-    s.textContent = p.error;
+    s.textContent = p.error + " ";
+    if (!D.readOnly) {
+      s.append(el("button", { type: "button", class: "btn small", text: "Open this file in Explore any data instead",
+        onclick: openInExplore }));
+    }
   } else {
     s.className = "summary " + (p.problem_count ? "warn" : "ok");
     s.textContent = `${p.total_rows.toLocaleString()} rows read · ${p.clean_rows.toLocaleString()} ready to import` +
@@ -53,6 +57,16 @@ function renderPreview() {
     el("tr", {}, r.map((v, i) => el("td", { text: i >= 6 ? fmtValue("money", v) : String(v) }))))));
   $("import-btn").disabled = !p.import_id;
   $("import-btn").title = p.read_only ? "Read-only demo" : "";
+}
+
+// A file that is not sales data can still be opened, charted and forecast on the Explore page
+async function openInExplore() {
+  const fd = new FormData();
+  fd.append("file", D.file);
+  try {
+    await api("/api/datasets", { method: "POST", form: fd });
+    location.href = "/explore";
+  } catch (e) { notify("Could not open the file: " + e.message, true); }
 }
 
 function currentMapping() {

@@ -23,6 +23,7 @@ MAX_DIMS, MAX_MEASURES, MAX_FILTERS, MAX_LIMIT = 2, 4, 5, 1000
 SAMPLE_ROWS = 15
 TYPE_SHARE = 0.9            # share of filled cells that must parse for a column to count as number/date
 AVERAGE_LIKE = re.compile(r"avg|average|mean|score|rate|%|percent|wait|price|satisfaction|ratio|age|temperature|grade", re.I)
+YEAR_NAME = re.compile(r"year|yr", re.I)
 ID_NAME = re.compile(r"(^|[^a-z])(id|code|zip|postal|pin|phone|mobile|sku|barcode)([^a-z]|$)", re.I)
 
 SCHEMA = """
@@ -69,11 +70,17 @@ def unique_names(header):
     return out
 
 
+def looks_like_years(name, sample):
+    return bool(YEAR_NAME.search(name)) and all(re.fullmatch(r"(1[89]|2[01])\d\d", v) for v in sample)
+
+
 def infer_type(name, values):
     filled = [v.strip() for v in values if v is not None and str(v).strip() != ""]
     if not filled:
         return "text"
     sample = filled[:3000]
+    if looks_like_years(name, sample):
+        return "date"                                       # 2011, 2012 ... are years, not amounts
     numbers = sum(1 for v in sample if cleaning.parse_number(v) is not None)
     if numbers >= TYPE_SHARE * len(sample):
         if ID_NAME.search(name) and all(re.fullmatch(r"\d+", v) for v in sample):
@@ -90,6 +97,9 @@ def typed_rows(header, rows):
     """Returns (columns, rows) with numbers as floats, dates as ISO text, blanks as None."""
     if len(header) > MAX_COLUMNS:
         raise DatasetError(f"The file has {len(header)} columns; the limit is {MAX_COLUMNS}.")
+    keep = [i for i, h in enumerate(header) if not (re.fullmatch(r"Column \d+", h or "")
+            and sum(1 for r in rows if r[i].strip()) < 0.01 * len(rows))]       # blank-header columns that are empty
+    header, rows = [header[i] for i in keep], [[r[i] for i in keep] for r in rows]
     names = unique_names(header)
     types = [infer_type(n, [r[i] for r in rows]) for i, n in enumerate(names)]
     day_first = {i: cleaning.detect_day_first([r[i] for r in rows]) for i, t in enumerate(types) if t == "date"}
@@ -103,6 +113,8 @@ def typed_rows(header, rows):
             elif t == "number":
                 n = cleaning.parse_number(v)
                 row.append(float(n) if n is not None else None)
+            elif t == "date" and re.fullmatch(r"(1[89]|2[01])\d\d", v):
+                row.append(f"{v}-01-01")                     # a bare year
             elif t == "date":
                 d = cleaning.parse_date(v, day_first[i])
                 row.append(d.isoformat() if d else None)
@@ -189,9 +201,12 @@ def insights(con, meta, prof):  # pylint: disable=too-many-locals
             found.append(f"“{rows[0][0]}” has the highest {word(num)}: {fmt(rows[0][1])}{tail}, "
                          f"across {len(rows)} values of {cols[text]['name']}.")
     if num is not None and dt is not None:
-        rows = con.execute(f"SELECT strftime('%Y-%m', c{dt}) m, {agg_name(num)}(c{num}) FROM {t} WHERE c{dt} IS NOT NULL "
-                           f"GROUP BY m ORDER BY m").fetchall()
+        yearly = con.execute(f"SELECT COUNT(DISTINCT strftime('%m-%d', c{dt})) FROM {t}").fetchone()[0] == 1
+        rows = con.execute(f"SELECT strftime('{'%Y' if yearly else '%Y-%m'}', c{dt}) m, {agg_name(num)}(c{num}) FROM {t} "
+                           f"WHERE c{dt} IS NOT NULL GROUP BY m ORDER BY m").fetchall()
         if len(rows) >= 3:                      # leave the newest month out, it is often only partly there
+            if yearly:                          # whole years only, so the newest one counts
+                rows = rows + [rows[-1]]
             prev, last = rows[-3][1], rows[-2][1]
             if prev and last is not None and prev != 0:
                 change = (last - prev) / abs(prev) * 100

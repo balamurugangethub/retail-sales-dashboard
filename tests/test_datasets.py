@@ -85,3 +85,12 @@ def test_delete_and_read_only(tmp_path):
 def test_empty_and_wide_files_give_a_message(client):
     r = client.post("/api/datasets", data={"file": (io.BytesIO(b"a,b\n"), "x.csv")}, content_type="multipart/form-data")
     assert r.status_code == 400 and "error" in r.get_json()
+
+
+def test_year_columns_are_dates_and_blank_empty_columns_are_dropped(client):
+    text = "year,industry,value,,\n" + "".join(f"{2011 + i % 5},A,{i},,\n" for i in range(40))
+    ds = upload(client, text, "survey.csv")
+    meta = client.get(f"/api/datasets/{ds}").get_json()
+    assert [(c["name"], c["type"]) for c in meta["columns"]] == [("year", "date"), ("industry", "text"), ("value", "number")]
+    out = post(client, ds, "query", {"dims": [{"field": 0, "grain": "year"}], "measures": [{"agg": "rows"}]}).get_json()
+    assert [r[0] for r in out["rows"]] == ["2011", "2012", "2013", "2014", "2015"]
