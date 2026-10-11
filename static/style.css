@@ -358,3 +358,9 @@ td.to-order.need { background: var(--ink); color: var(--paper); }
 .ex-filter { flex-direction: row; align-items: center; gap: 8px; margin: 6px 0; }
 .ex-actions { margin: 6px 0 4px; }
 td.wrap { white-space: normal; text-align: left; max-width: 380px; }
+
+/* first-run welcome */
+.card.start { margin: 24px 32px; }
+a.sample { text-decoration: none; color: inherit; }
+a.sample span { color: var(--muted); }
+a.sample:hover { border-color: var(--ink); }

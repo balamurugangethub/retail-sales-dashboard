@@ -229,6 +229,11 @@ async function loadMeta() {
   $("f-store").value = state.store; $("f-category").value = state.category;
   $("f-start").min = $("f-end").min = meta.min_date; $("f-start").max = $("f-end").max = meta.max_date;
   applyPreset();
+  const empty = meta.rows === 0;                       // a new account has no data until it brings some
+  $("empty").hidden = !empty;
+  $("main").hidden = empty;
+  document.querySelector(".filters").hidden = empty;
+  $("data-badge").textContent = empty ? "No data yet" : meta.read_only ? "Sample data" : "Your data";
   // Public demo: hide the buttons that would change data
   if (meta.read_only) document.querySelectorAll("label.btn, #reset-btn").forEach((b) => (b.hidden = true));
 }
@@ -266,11 +271,15 @@ async function init() {
   $("reset-btn").addEventListener("click", async () => {
     if (!confirm("Restore the original sample data? Any uploaded data will be removed.")) return;
     await fetch("/api/reset", { method: "POST" });
-    $("data-badge").textContent = "Sample data";
     state.store = state.category = ""; state.preset = "6m"; $("f-preset").value = "6m";
-    await loadMeta(); await refresh(); notify("Sample data restored.");
+    await loadMeta(); $("data-badge").textContent = "Sample data"; await refresh(); notify("Sample data restored.");
   });
-  await refresh();
+  $("sample-btn").addEventListener("click", async () => {
+    await fetch("/api/reset", { method: "POST" });
+    state.preset = "6m"; $("f-preset").value = "6m";
+    await loadMeta(); $("data-badge").textContent = "Sample data"; await refresh();
+  });
+  if (meta.rows > 0) await refresh();
 }
 
 window.addEventListener("themechange", () => meta && refresh());

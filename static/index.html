@@ -39,7 +39,17 @@
 </section>
 <div id="notice" class="notice" role="status" hidden></div>
 
-<main>
+<section id="empty" class="card start" hidden>
+  <div class="card-head"><h2>Welcome. Your workspace is empty.</h2></div>
+  <p class="hint">Bring your own data to get started. Nothing here is pre-filled.</p>
+  <div class="samples">
+    <a class="sample" href="/data"><strong>Import sales data</strong><span>A file from your till or spreadsheet. The app recognises your column names and cleans dates and amounts.</span></a>
+    <a class="sample" href="/explore"><strong>Open any other file</strong><span>Any table with any columns: patients, students, machines, anything. Get charts, findings and a forecast.</span></a>
+    <button class="sample" type="button" id="sample-btn"><strong>Just look around</strong><span>Fill this workspace with sample sales data. You can replace it with yours any time.</span></button>
+  </div>
+</section>
+
+<main id="main">
   <section class="kpis" id="kpis" aria-label="Key figures"></section>
 
   <section class="grid two">
@@ -80,7 +90,7 @@
   </section>
 </main>
 
-<footer>Data is sample data generated for demonstration. Upload your own CSV with columns:
+<footer>Upload your own CSV with columns:
   <code>date, store, category, product, orders, units, revenue, cost</code>.</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>

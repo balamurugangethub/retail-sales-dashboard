@@ -65,12 +65,11 @@ def test_register_validates_and_needs_policy(make_client):
 def test_each_account_has_its_own_data(make_client):
     a, b = accept(make_client()), accept(make_client())
     register(a, "a@shop.com"), register(b, "b@shop.com")
-    start = rows(a)
-    assert start > 1000 and rows(b) == start                                # both start with sample data
+    assert rows(a) == 0 and rows(b) == 0                                    # new accounts start empty
     up = a.post("/api/upload", data={"file": (io.BytesIO(ONE_ROW.encode()), "x.csv"), "mode": "replace"},
                 content_type="multipart/form-data")
     assert up.status_code == 200
-    assert rows(a) == 1 and rows(b) == start                                # B never sees A's change
+    assert rows(a) == 1 and rows(b) == 0                                # B never sees A's change
     assert a.post("/api/dashboards", json={"name": "Mine", "spec": {"widgets": []}}).status_code in (200, 201)
     assert [d["name"] for d in a.get("/api/dashboards").get_json()] == ["Mine"]
     assert b.get("/api/dashboards").get_json() == []
@@ -81,7 +80,7 @@ def test_login_logout_and_lockout(make_client):
     c = accept(make_client())
     assert c.post("/api/auth/login", json={"email": "owner@shop.com", "password": "wrong pass"}).status_code == 401
     r = c.post("/api/auth/login", json={"email": "Owner@Shop.com", "password": "correct horse"})
-    assert r.status_code == 200 and rows(c) > 1000
+    assert r.status_code == 200 and rows(c) == 0
     assert c.post("/api/auth/logout").status_code == 200
     assert c.get("/api/meta").status_code == 401
 
