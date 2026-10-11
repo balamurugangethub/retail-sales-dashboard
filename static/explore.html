@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explore any data | Retail Sales Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+<script src="/static/theme.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <h1>Retail Sales Dashboard</h1>
+    <nav class="nav"><a href="/">Overview</a><a href="/builder">Dashboard builder</a><a href="/explore" class="on">Explore any data</a><a href="/forecast">Forecast</a><a href="/data">Data</a></nav>
+    <p>Open any table, pick any fields, get charts, findings and a forecast <span class="badge">Any data</span></p>
+  </div>
+  <div class="actions">
+    <label class="btn" id="upload-label">Open a file<input type="file" id="file-input" accept=".csv,.tsv,.txt,.xlsx,.xlsm" hidden></label>
+  </div>
+</header>
+
+<section class="filters" aria-label="Dataset">
+  <label>Dataset <select id="ds-select"><option value="">No datasets yet</option></select></label>
+  <button class="btn ghost" id="ds-delete" hidden>Remove dataset</button>
+  <span class="hint" id="ds-note"></span>
+</section>
+<div id="notice" class="notice" role="status" hidden></div>
+
+<main>
+  <section id="start" class="card" hidden>
+    <div class="card-head"><h2>Start with any file</h2></div>
+    <p class="hint">CSV, TSV or Excel (.xlsx). Any columns: sales, patients, students, machines, anything. The app works out which columns are numbers, dates or text. Or try one of these:</p>
+    <div class="samples" id="samples"></div>
+  </section>
+
+  <div id="work" hidden>
+    <section class="card">
+      <div class="card-head"><h2>What the data says</h2></div>
+      <ul id="insights" class="insights"></ul>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Chart any fields</h2></div>
+      <div class="ex-form" id="form">
+        <label>Show <select id="m-agg"></select></label>
+        <label>of <select id="m-field"></select></label>
+        <label>Add second measure <select id="m2-field"><option value="">None</option></select></label>
+        <label>Group by <select id="d1-field"></select></label>
+        <label class="grain-wrap" id="d1-grain-wrap">by <select id="d1-grain"></select></label>
+        <label>Then by <select id="d2-field"><option value="">None</option></select></label>
+        <label>Chart <select id="chart-type"></select></label>
+        <label>Show top <select id="limit"><option>10</option><option selected>20</option><option>50</option><option>200</option></select></label>
+      </div>
+      <div class="ex-filters" id="filters"></div>
+      <div class="ex-actions"><button class="btn small ghost" id="add-filter">Add filter</button></div>
+      <div class="chart" id="chart-box"><canvas id="chart"></canvas></div>
+      <div class="table-wrap"><table id="result"></table></div>
+    </section>
+
+    <section class="card" id="fc-card" hidden>
+      <div class="card-head"><h2>Forecast</h2></div>
+      <div class="ex-form">
+        <label>Date <select id="fc-date"></select></label>
+        <label>Forecast <select id="fc-measure"></select></label>
+        <label>As <select id="fc-agg"><option value="sum">Total</option><option value="avg">Average</option></select></label>
+      </div>
+      <p class="hint" id="fc-note"></p>
+      <div class="chart"><canvas id="fc-chart"></canvas></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Columns</h2></div>
+      <div class="table-wrap"><table id="profile"></table></div>
+      <div class="card-head"><h2>First rows</h2></div>
+      <div class="table-wrap"><table id="sample"></table></div>
+    </section>
+  </div>
+</main>
+
+<footer>Your files stay in this app's database on your computer. Column types are guessed from the values, so check the Columns table.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>window.Chart || document.write('<script src="/static/vendor/chart.umd.min.js"><\/script>');</script>
+<script src="/static/site.js"></script>
+<script src="/static/common.js"></script>
+<script src="/static/explore.js"></script>
+</body>
+</html>

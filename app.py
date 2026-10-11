@@ -12,6 +12,7 @@ from decimal import Decimal, InvalidOperation
 from flask import Flask, Response, g, jsonify, request, send_from_directory
 
 import accounts
+import datasets
 import forecast
 import workspace
 from ai import Assistant, ChatClient
@@ -372,6 +373,7 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
     workspace.register(app, db=db, filters=filters, insights=compute_insights, error_cls=ApiError,
                        assistant=assistant or Assistant(ChatClient.from_env()))
     forecast.register(app, db=db, filters=filters, error_cls=ApiError)
+    datasets.register(app, db=db, error_cls=ApiError)
     return app
 
 
