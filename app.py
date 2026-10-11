@@ -12,6 +12,7 @@ from decimal import Decimal, InvalidOperation
 from flask import Flask, Response, g, jsonify, request, send_from_directory
 
 import accounts
+import cloud
 import datasets
 import forecast
 import workspace
@@ -54,12 +55,13 @@ def seed_database(db_path):
 
 
 def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=None,  # pylint: disable=too-many-arguments
-               consent=False, auth=False):
+               consent=False, auth=False, sync=None):
     """read_only=True disables upload/reset (used for the public hosted demo).
     Defaults to the READ_ONLY=1 environment variable. assistant overrides the
     AI assistant (tests pass a fake AI client). consent=True asks visitors to
     accept the privacy policy and cookies first; auth=True adds sign-in with a
-    separate database per account (see accounts.py)."""
+    separate database per account (see accounts.py). sync (see cloud.py) keeps those
+    account databases in an online store when the host has no permanent disk."""
     app = Flask(__name__, static_folder=os.path.join(HERE, "static"), static_url_path="/static")
     app.config["DB_PATH"] = db_path or os.path.join(HERE, "retail.db")
     app.config["READ_ONLY"] = (os.environ.get("READ_ONLY") == "1") if read_only is None else read_only
@@ -75,8 +77,9 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
         return g.get("db_path") or app.config["DB_PATH"]
 
     def prepare_db(path):
-        seed_database(path)
-        con = sqlite3.connect(path); con.executescript(workspace.SCHEMA); con.close()
+        # A new account starts empty so the owner can bring their own data; the Data page
+        # still offers the sample data and sample files to practise with.
+        con = sqlite3.connect(path); con.executescript(SCHEMA); con.executescript(workspace.SCHEMA); con.close()
 
     def db():
         if "db" not in g:
@@ -84,7 +87,7 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
             g.db.row_factory = sqlite3.Row
         return g.db
 
-    accounts.register(app, prepare_db, consent=consent, auth=auth)
+    accounts.register(app, prepare_db, consent=consent, auth=auth, sync=sync)
 
     @app.teardown_appcontext
     def close_db(_exc):
@@ -381,17 +384,18 @@ class ApiError(Exception):
     pass
 
 
+_sync = cloud.from_env()
 if os.environ.get("VERCEL"):
-    # Hosted on Vercel: the filesystem is read-only except /tmp, so the sample
-    # database is built there on cold start and the public demo is read-only.
-    _db_path, _read_only = "/tmp/retail.db", True
+    # Hosted on Vercel: the filesystem is read-only except /tmp. With an online store set up
+    # (see cloud.py) people sign in and keep their own data; without one it is a read-only demo.
+    _db_path, _read_only = "/tmp/retail.db", _sync is None
 else:
     _db_path, _read_only = None, None            # local: ./retail.db, READ_ONLY env var
 
 # Top-level WSGI app (Vercel and gunicorn look for this name). Visitors always
 # accept the privacy policy first; sign-in needs a writable disk, so the hosted
 # read-only demo skips it. AUTH=0 switches sign-in off for a single-user setup.
-app = create_app(db_path=_db_path, read_only=_read_only, consent=True,
+app = create_app(db_path=_db_path, read_only=_read_only, consent=True, sync=_sync,
                  auth=not (_read_only or os.environ.get("READ_ONLY") == "1") and os.environ.get("AUTH") != "0")
 
 if __name__ == "__main__":

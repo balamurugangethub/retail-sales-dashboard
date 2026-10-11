@@ -19,6 +19,8 @@ from datetime import timedelta
 from flask import g, jsonify, redirect, request, send_from_directory, session
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from cloud import StoreError
+
 POLICY_VERSION = "2026-10-11"
 CONSENT_COOKIE = "rsd_consent"
 CONSENT_MAX_AGE = 365 * 24 * 3600
@@ -64,8 +66,9 @@ def safe_next(target):
     return target if target.startswith("/") and not target.startswith("//") and "\\" not in target else "/"
 
 
-def register(app, prepare_db, consent=True, auth=True):  # pylint: disable=too-many-locals,too-many-statements
-    """prepare_db(path) creates a shop database (sample data + workspace tables)."""
+def register(app, prepare_db, consent=True, auth=True, sync=None):  # pylint: disable=too-many-locals,too-many-statements
+    """prepare_db(path) creates an empty shop database. sync (cloud.Sync) is optional: it keeps the
+    account files in an online store between visits when the host's disk is temporary."""
     app.config["CONSENT_REQUIRED"], app.config["AUTH_ENABLED"] = consent, auth
     folder = os.path.join(os.path.dirname(os.path.abspath(app.config["DB_PATH"])), "userdata")
     accounts_db = os.path.join(folder, "accounts.db")
@@ -124,6 +127,11 @@ def register(app, prepare_db, consent=True, auth=True):  # pylint: disable=too-m
             return None
         if consent and not has_consent():
             return blocked("Please accept the privacy policy and cookies first.", "/welcome")
+        if sync and auth:
+            try:
+                sync.ensure("accounts.db", accounts_db)
+            except StoreError:
+                return unavailable()
         if not auth or path in SIGNED_OUT_OK:
             return None
         user = current_user()
@@ -131,9 +139,33 @@ def register(app, prepare_db, consent=True, auth=True):  # pylint: disable=too-m
             session.clear()
             return blocked("Please sign in.", "/login")
         g.db_path = shop_db_path(user["id"])
+        if sync:
+            try:
+                sync.ensure(os.path.basename(g.db_path), g.db_path)
+            except StoreError:
+                return unavailable()
         if not os.path.exists(g.db_path):
             prepare_db(g.db_path)
         return None
+
+    def unavailable():
+        message = "Online storage is not reachable right now. Try again in a moment."
+        return (jsonify({"error": message}) if request.path.startswith("/api/") else message), 503
+
+    @app.after_request
+    def store_changes(resp):
+        """Save changed files to the online store before the answer goes back."""
+        if not (sync and auth) or request.method in ("GET", "HEAD", "OPTIONS") or resp.status_code >= 400:
+            return resp
+        try:
+            sync.commit("accounts.db", accounts_db)
+            if g.get("db_path"):
+                sync.commit(os.path.basename(g.db_path), g.db_path)
+        except StoreError:
+            failed = jsonify({"error": "Your change could not be saved online. Please try again."})
+            failed.status_code = 503
+            return failed
+        return resp
 
     def page(name):
         return send_from_directory(app.static_folder, PAGES[name])
@@ -193,7 +225,8 @@ def register(app, prepare_db, consent=True, auth=True):  # pylint: disable=too-m
                                 (email, name, shop, generate_password_hash(password), POLICY_VERSION))
         except sqlite3.IntegrityError:
             return jsonify({"error": "An account with this email already exists. Sign in instead."}), 400
-        prepare_db(shop_db_path(cur.lastrowid))
+        g.db_path = shop_db_path(cur.lastrowid)
+        prepare_db(g.db_path)
         sign_in(cur.lastrowid)
         return jsonify({"user": public(current_user())})
 
@@ -235,5 +268,11 @@ def register(app, prepare_db, consent=True, auth=True):  # pylint: disable=too-m
         for suffix in ("", "-wal", "-shm", "-journal"):
             if os.path.exists(path + suffix):
                 os.remove(path + suffix)
+        if sync:
+            try:
+                sync.forget(os.path.basename(path))
+            except StoreError:
+                pass                                    # the account row is gone; the file is orphaned
+        g.pop("db_path", None)
         session.clear()
         return jsonify({"ok": True})
