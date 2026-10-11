@@ -395,8 +395,10 @@ else:
 # Top-level WSGI app (Vercel and gunicorn look for this name). Visitors always
 # accept the privacy policy first; sign-in needs a writable disk, so the hosted
 # read-only demo skips it. AUTH=0 switches sign-in off for a single-user setup.
-app = create_app(db_path=_db_path, read_only=_read_only, consent=True, sync=_sync,
-                 auth=not (_read_only or os.environ.get("READ_ONLY") == "1") and os.environ.get("AUTH") != "0")
+# With an online store set up, a leftover READ_ONLY=1 setting is ignored on Vercel.
+_demo = _read_only or (os.environ.get("READ_ONLY") == "1" and not (_sync and os.environ.get("VERCEL")))
+app = create_app(db_path=_db_path, read_only=False if _sync and os.environ.get("VERCEL") else _read_only,
+                 consent=True, sync=_sync, auth=not _demo and os.environ.get("AUTH") != "0")
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=False)
