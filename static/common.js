@@ -2,8 +2,6 @@
 // Small helpers shared by the builder and data pages.
 
 const $ = (id) => document.getElementById(id);
-const PALETTE = ["#1f6fe5", "#f1c21b", "#2e9e6b", "#d64545", "#8a5cf6", "#14a3b8", "#e8782a", "#6b7d99",
-                 "#c2459e", "#3fb34f"];
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
 function el(tag, props = {}, children = []) {

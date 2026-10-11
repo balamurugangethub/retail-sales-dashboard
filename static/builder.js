@@ -266,7 +266,7 @@ function drawWidget(w, body, res) {
 
   const canvas = el("canvas");
   body.replaceChildren(el("div", { class: "chart-box" }, [canvas]));
-  const t = { color: cssVar("--muted"), grid: cssVar("--line"), ink: cssVar("--ink") };
+  const t = { color: Mono.ink(), grid: Mono.valueGrid(), border: Mono.axisBorder(), ink: Mono.ink() };
   const measuresCols = cols.slice(nd);
   let labels, datasets;
   if (nd === 2) {
@@ -275,32 +275,37 @@ function drawWidget(w, body, res) {
     const series = [...new Set(res.rows.map((r) => r[1]))];
     const look = new Map(res.rows.map((r) => [r[0] + "\u0000" + r[1], r[2]]));
     datasets = series.slice(0, 12).map((s, i) => ({ label: String(s), data: labels.map((l) => look.get(l + "\u0000" + s) || 0),
-      backgroundColor: PALETTE[i % PALETTE.length], borderColor: PALETTE[i % PALETTE.length], fmt: measuresCols[0].format }));
+      seriesIndex: i, fmt: measuresCols[0].format }));
   } else {
     labels = res.rows.map((r) => r[0]);
     const firstFmt = measuresCols[0].format;
     datasets = measuresCols.map((c, i) => ({ label: c.label, data: res.rows.map((r) => r[1 + i]),
-      backgroundColor: w.chart === "pie" ? PALETTE : (w.chart === "area" ? PALETTE[i] + "40" : PALETTE[i]),
-      borderColor: PALETTE[i], fmt: c.format, yAxisID: c.format === firstFmt ? "y" : "y1" }));
+      seriesIndex: i, fmt: c.format, yAxisID: c.format === firstFmt ? "y" : "y1" }));
   }
   const isLine = w.chart === "line" || w.chart === "area";
+  // monochrome: series differ by pattern (bars, areas, slices) or by dash and point shape (lines)
   datasets.forEach((d) => {
-    if (isLine) Object.assign(d, { fill: w.chart === "area", tension: .25, pointRadius: labels.length > 40 ? 0 : 3 });
-    else if (w.chart !== "pie") d.borderRadius = 3;
+    const i = d.seriesIndex; delete d.seriesIndex;
+    d.borderColor = Mono.ink();
+    if (w.chart === "pie") d.backgroundColor = labels.map((_l, j) => Mono.fill(j));
+    else if (isLine) Object.assign(d, { fill: w.chart === "area", tension: 0, borderDash: Mono.dash(i), pointStyle: Mono.point(i),
+      backgroundColor: w.chart === "area" ? Mono.fill(datasets.length > 1 ? i + 2 : 6) : Mono.paper(),
+      pointRadius: labels.length > 40 ? 0 : 3.5 });
+    else d.backgroundColor = Mono.fill(i);
   });
   const fmtOf = (ds) => ds.fmt || "number";
   const tooltip = { callbacks: { label: (c) => (c.dataset.label ? c.dataset.label + ": " : "") +
     fmtValue(fmtOf(c.dataset), w.chart === "pie" ? c.parsed : (w.chart === "hbar" ? c.parsed.x : c.parsed.y)) } };
   let config;
   if (w.chart === "pie") {
-    config = { type: "doughnut", data: { labels, datasets: [{ ...datasets[0], borderWidth: 0 }] },
+    config = { type: "doughnut", data: { labels, datasets: [{ ...datasets[0] }] },
       options: { responsive: true, maintainAspectRatio: false, cutout: "55%",
         plugins: { legend: { position: "right", labels: { color: t.ink, boxWidth: 12 } }, tooltip } } };
   } else {
     const horizontal = w.chart === "hbar";
     const stacked = w.chart === "stacked";
     const valueAxis = (fmt, pos) => ({ beginAtZero: true, stacked, position: pos,
-      ticks: { color: t.color, callback: (v) => fmtShort(fmt, v) }, grid: { color: t.grid, drawOnChartArea: pos !== "right" } });
+      ticks: { color: t.color, callback: (v) => fmtShort(fmt, v) }, grid: { ...t.grid, drawOnChartArea: pos !== "right" }, border: t.border });
     const catAxis = { stacked, ticks: { color: t.color, maxTicksLimit: horizontal ? 30 : 14, autoSkip: true }, grid: { display: false } };
     const scales = horizontal ? { y: catAxis, x: valueAxis(datasets[0].fmt, "bottom") } : { x: catAxis, y: valueAxis(datasets[0].fmt, "left") };
     if (!horizontal && datasets.some((d) => d.yAxisID === "y1")) scales.y1 = valueAxis(datasets.find((d) => d.yAxisID === "y1").fmt, "right");
