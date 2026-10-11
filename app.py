@@ -12,7 +12,7 @@ from decimal import Decimal, InvalidOperation
 from flask import Flask, Response, g, jsonify, request, send_from_directory
 
 import workspace
-from ai import Assistant, WatsonxClient
+from ai import Assistant, ChatClient
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REQUIRED_COLUMNS = ["date", "store", "category", "product", "orders", "units", "revenue", "cost"]
@@ -53,7 +53,7 @@ def seed_database(db_path):
 def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=None):
     """read_only=True disables upload/reset (used for the public hosted demo).
     Defaults to the READ_ONLY=1 environment variable. assistant overrides the
-    AI assistant (tests pass a fake watsonx client)."""
+    AI assistant (tests pass a fake AI client)."""
     app = Flask(__name__, static_folder=os.path.join(HERE, "static"), static_url_path="/static")
     app.config["DB_PATH"] = db_path or os.path.join(HERE, "retail.db")
     app.config["READ_ONLY"] = (os.environ.get("READ_ONLY") == "1") if read_only is None else read_only
@@ -355,7 +355,7 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
         return jsonify({"error": str(e)}), 400
 
     workspace.register(app, db=db, filters=filters, insights=compute_insights, error_cls=ApiError,
-                       assistant=assistant or Assistant(WatsonxClient.from_env()))
+                       assistant=assistant or Assistant(ChatClient.from_env()))
     return app
 
 

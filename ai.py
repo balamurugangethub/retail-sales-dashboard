@@ -1,10 +1,10 @@
-"""AI assistant: IBM watsonx.ai when credentials are set, built-in rules otherwise.
+"""AI assistant: a free AI model when one is configured, built-in rules otherwise.
 
-Set these environment variables to use watsonx.ai (IBM Granite models):
-  WATSONX_API_KEY     IBM Cloud API key
-  WATSONX_PROJECT_ID  watsonx.ai project id
-  WATSONX_URL         region endpoint, default https://us-south.ml.cloud.ibm.com
-  WATSONX_MODEL_ID    default ibm/granite-3-8b-instruct
+Works with any OpenAI-compatible chat API. Free options that need no credit card:
+  AI_PROVIDER=gemini  AI_API_KEY=<key from https://aistudio.google.com/apikey>
+  AI_PROVIDER=groq    AI_API_KEY=<key from https://console.groq.com/keys>
+  AI_PROVIDER=ollama  (runs on your own computer, no key, see https://ollama.com)
+Optional: AI_MODEL to pick another model, AI_BASE_URL for any other compatible service.
 
 The assistant never changes data itself. It returns a reply plus a list of
 *actions* (add a chart, rename a store, ...) that the browser shows and the
@@ -13,81 +13,68 @@ user confirms; data-changing actions go through the normal write endpoints.
 import json
 import os
 import re
-import threading
-import time
 import urllib.error
-import urllib.parse
 import urllib.request
 
 from queries import CHART_TYPES, DIMENSIONS, MEASURES
 
-IAM_URL = "https://iam.cloud.ibm.com/identity/token"
-DEFAULT_URL = "https://us-south.ml.cloud.ibm.com"
-DEFAULT_MODEL = "ibm/granite-3-8b-instruct"
-CHAT_VERSION = "2024-10-08"
+PROVIDERS = {
+    "gemini": {"label": "Google Gemini", "model": "gemini-2.5-flash",
+               "url": "https://generativelanguage.googleapis.com/v1beta/openai"},
+    "groq": {"label": "Groq (Llama)", "model": "llama-3.3-70b-versatile", "url": "https://api.groq.com/openai/v1"},
+    "ollama": {"label": "Ollama (local)", "model": "llama3.2", "url": "http://localhost:11434/v1", "keyless": True},
+}
 TEXT_FIELDS = ["store", "category", "product"]
 MAX_MESSAGE = 1000
 
 
-# ---- watsonx.ai client -----------------------------------------------------------
-class WatsonxError(RuntimeError):
+# ---- AI client ---------------------------------------------------------------------
+class AIError(RuntimeError):
     pass
 
 
-class WatsonxClient:  # pylint: disable=too-many-instance-attributes
-    """Minimal watsonx.ai chat client using only the standard library."""
+class ChatClient:
+    """Minimal OpenAI-compatible chat client using only the standard library."""
 
-    def __init__(self, api_key, project_id, url=DEFAULT_URL, model_id=DEFAULT_MODEL, timeout=25):
-        self.api_key, self.project_id = api_key, project_id
-        self.url, self.model_id, self.timeout = url.rstrip("/"), model_id, timeout
-        self._token, self._expires = None, 0.0
-        self._lock = threading.Lock()
+    def __init__(self, base_url, model, api_key=None, label="AI", provider="custom", timeout=30):
+        self.base_url, self.model, self.api_key = base_url.rstrip("/"), model, api_key
+        self.label, self.provider, self.timeout = label, provider, timeout
 
     @classmethod
     def from_env(cls, env=None):
+        """Returns a client from AI_* environment variables, or None (use built-in rules)."""
         env = os.environ if env is None else env
-        key, project = env.get("WATSONX_API_KEY"), env.get("WATSONX_PROJECT_ID")
-        if not (key and project):
+        name = (env.get("AI_PROVIDER") or "").strip().lower()
+        key = env.get("AI_API_KEY") or ""
+        if not name and key:
+            name = "gemini"                     # a bare key is assumed to be a Gemini key
+        preset = PROVIDERS.get(name, {})
+        url = env.get("AI_BASE_URL") or preset.get("url")
+        if not url or not (key or preset.get("keyless") or env.get("AI_BASE_URL")):
             return None
-        return cls(key, project, env.get("WATSONX_URL") or DEFAULT_URL,
-                   env.get("WATSONX_MODEL_ID") or DEFAULT_MODEL)
-
-    def _post(self, url, data, headers):
-        req = urllib.request.Request(url, data=data, headers=headers, method="POST")
-        try:
-            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
-                return json.loads(resp.read().decode("utf-8"))
-        except urllib.error.HTTPError as e:
-            detail = e.read().decode("utf-8", "replace")[:300]
-            raise WatsonxError(f"watsonx.ai returned HTTP {e.code}: {detail}") from e
-        except (urllib.error.URLError, TimeoutError, ValueError) as e:
-            raise WatsonxError(f"Could not reach watsonx.ai: {e}") from e
-
-    def token(self):
-        with self._lock:
-            if self._token and time.time() < self._expires - 60:
-                return self._token
-            body = urllib.parse.urlencode({"grant_type": "urn:ibm:params:oauth:grant-type:apikey",
-                                           "apikey": self.api_key}).encode()
-            out = self._post(IAM_URL, body, {"Content-Type": "application/x-www-form-urlencoded",
-                                             "Accept": "application/json"})
-            self._token = out["access_token"]
-            self._expires = time.time() + float(out.get("expires_in", 3600))
-            return self._token
+        return cls(url, env.get("AI_MODEL") or preset.get("model") or "", key or None,
+                   preset.get("label", "AI model"), name or "custom")
 
     def chat(self, system, user, max_tokens=700):
-        payload = {
-            "model_id": self.model_id, "project_id": self.project_id,
-            "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
-            "max_tokens": max_tokens, "temperature": 0,
-        }
-        out = self._post(f"{self.url}/ml/v1/text/chat?version={CHAT_VERSION}", json.dumps(payload).encode(),
-                         {"Content-Type": "application/json", "Accept": "application/json",
-                          "Authorization": "Bearer " + self.token()})
+        payload = {"model": self.model, "temperature": 0, "max_tokens": max_tokens,
+                   "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}
+        headers = {"Content-Type": "application/json", "Accept": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = "Bearer " + self.api_key
+        req = urllib.request.Request(self.base_url + "/chat/completions", data=json.dumps(payload).encode(),
+                                     headers=headers, method="POST")
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                out = json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode("utf-8", "replace")[:300]
+            raise AIError(f"{self.label} returned HTTP {e.code}: {detail}") from e
+        except (urllib.error.URLError, TimeoutError, ValueError) as e:
+            raise AIError(f"Could not reach {self.label}: {e}") from e
         try:
             return out["choices"][0]["message"]["content"]
         except (KeyError, IndexError, TypeError) as e:
-            raise WatsonxError("Unexpected watsonx.ai response") from e
+            raise AIError(f"Unexpected answer from {self.label}") from e
 
 
 # ---- formatting helpers ------------------------------------------------------------
@@ -514,7 +501,11 @@ class Assistant:
 
     @property
     def provider(self):
-        return "watsonx" if self.client else "rules"
+        return getattr(self.client, "provider", "ai") if self.client else "rules"
+
+    @property
+    def label(self):
+        return getattr(self.client, "label", "AI model") if self.client else "Built-in rules"
 
     def respond(self, message, ctx):
         message = (message or "").strip()[:MAX_MESSAGE]
@@ -528,10 +519,10 @@ class Assistant:
             actions = sanitize_actions(parsed.get("actions"), ctx.get("values", {}))
             if not reply and not actions:
                 raise ValueError("empty answer")
-            return {"reply": reply or rules["reply"], "actions": actions, "source": "watsonx"}
-        except (WatsonxError, ValueError, AttributeError) as e:
+            return {"reply": reply or rules["reply"], "actions": actions, "source": self.provider}
+        except (AIError, ValueError, AttributeError) as e:
             out = dict(rules, source="rules")
-            out["note"] = f"watsonx.ai was unavailable ({str(e)[:120]}); answered with built-in rules."
+            out["note"] = f"{self.label} was unavailable ({str(e)[:120]}); answered with built-in rules."
             return out
 
     @staticmethod

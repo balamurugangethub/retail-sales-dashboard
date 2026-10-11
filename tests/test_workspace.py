@@ -8,7 +8,7 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import cleaning  # noqa: E402
-from ai import Assistant, WatsonxClient, WatsonxError, sanitize_actions  # noqa: E402
+from ai import AIError, Assistant, ChatClient, sanitize_actions  # noqa: E402
 from app import create_app  # noqa: E402
 
 MESSY = """Weekly sales export
@@ -200,47 +200,79 @@ def test_assistant_proposes_data_changes_without_doing_them(client):
     assert say(client, "rename Store Z to X")["actions"] == []
 
 
-class FakeWatson:
+class FakeAI:
+    provider, label = "gemini", "Google Gemini"
+
     def __init__(self, answer=None, fail=False):
         self.answer, self.fail, self.prompts = answer, fail, []
 
     def chat(self, system, user, max_tokens=700):
         self.prompts.append((system, user, max_tokens))
         if self.fail:
-            raise WatsonxError("HTTP 401")
+            raise AIError("HTTP 401")
         return self.answer
 
 
-def test_watsonx_answer_is_validated(tmp_path):
+def test_ai_answer_is_validated(tmp_path):
     answer = "Sure!\n" + json.dumps({"reply": "Store A leads.", "actions": [
         {"type": "add_widget", "widget": {"chart": "pie", "dims": ["store"], "measures": ["sales", "bogus"]}},
         {"type": "add_widget", "widget": {"dims": ["store"], "measures": ["nope"]}},
         {"type": "rename", "field": "store", "from": "store a", "to": "Downtown"},
         {"type": "drop_database"}]})
-    fake = FakeWatson(answer)
-    c = create_app(db_path=str(tmp_path / "wx.db"), assistant=Assistant(fake)).test_client()
-    assert ok(c.get("/api/fields"))["assistant"] == "watsonx"
+    fake = FakeAI(answer)
+    c = create_app(db_path=str(tmp_path / "ai.db"), assistant=Assistant(fake)).test_client()
+    fields = ok(c.get("/api/fields"))
+    assert (fields["assistant"], fields["assistant_label"]) == ("gemini", "Google Gemini")
     r = say(c, "sales split by store")
-    assert r["source"] == "watsonx" and r["reply"] == "Store A leads."
+    assert r["source"] == "gemini" and r["reply"] == "Store A leads."
     assert [a["type"] for a in r["actions"]] == ["add_widget", "rename"]
     assert r["actions"][0]["widget"]["measures"] == ["sales"]
     assert r["actions"][1]["from"] == "Store A"
     assert "DATA SUMMARY" in fake.prompts[0][1] and "Store A" in fake.prompts[0][1]
 
 
-def test_watsonx_failure_falls_back_to_rules(tmp_path):
-    c = create_app(db_path=str(tmp_path / "wx.db"), assistant=Assistant(FakeWatson(fail=True))).test_client()
+def test_ai_failure_falls_back_to_rules(tmp_path):
+    c = create_app(db_path=str(tmp_path / "ai.db"), assistant=Assistant(FakeAI(fail=True))).test_client()
     r = say(c, "sales by store")
     assert r["source"] == "rules" and "unavailable" in r["note"] and r["actions"]
-    c2 = create_app(db_path=str(tmp_path / "wx2.db"), assistant=Assistant(FakeWatson("not json"))).test_client()
+    c2 = create_app(db_path=str(tmp_path / "ai2.db"), assistant=Assistant(FakeAI("not json"))).test_client()
     assert say(c2, "sales by store")["source"] == "rules"
 
 
-def test_watsonx_client_from_env():
-    assert WatsonxClient.from_env({}) is None
-    cl = WatsonxClient.from_env({"WATSONX_API_KEY": "k", "WATSONX_PROJECT_ID": "p",
-                                 "WATSONX_URL": "https://eu-de.ml.cloud.ibm.com/"})
-    assert cl.url == "https://eu-de.ml.cloud.ibm.com" and cl.model_id.startswith("ibm/granite")
+def test_ai_client_from_env():
+    assert ChatClient.from_env({}) is None
+    assert ChatClient.from_env({"AI_PROVIDER": "groq"}) is None                 # key missing
+    g = ChatClient.from_env({"AI_API_KEY": "k"})                               # bare key = Gemini
+    assert (g.provider, g.base_url, g.api_key) == ("gemini", "https://generativelanguage.googleapis.com/v1beta/openai", "k")
+    q = ChatClient.from_env({"AI_PROVIDER": "Groq", "AI_API_KEY": "k", "AI_MODEL": "m"})
+    assert (q.base_url, q.model) == ("https://api.groq.com/openai/v1", "m")
+    o = ChatClient.from_env({"AI_PROVIDER": "ollama"})                          # local, no key
+    assert o.base_url == "http://localhost:11434/v1" and o.api_key is None
+
+
+def test_ai_client_sends_openai_style_request(monkeypatch):
+    sent = {}
+
+    class Resp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return json.dumps({"choices": [{"message": {"content": "hi"}}]}).encode()
+
+    def fake_urlopen(req, timeout):
+        sent.update(url=req.full_url, auth=req.get_header("Authorization"), body=json.loads(req.data), timeout=timeout)
+        return Resp()
+
+    monkeypatch.setattr("ai.urllib.request.urlopen", fake_urlopen)
+    c = ChatClient.from_env({"AI_PROVIDER": "groq", "AI_API_KEY": "secret"})
+    assert c.chat("sys", "user") == "hi"
+    assert sent["url"] == "https://api.groq.com/openai/v1/chat/completions"
+    assert sent["auth"] == "Bearer secret"
+    assert sent["body"]["messages"][0] == {"role": "system", "content": "sys"}
 
 
 def test_sanitize_drops_unknown_values():

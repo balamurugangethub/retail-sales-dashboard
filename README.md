@@ -50,7 +50,7 @@ The app has three pages, linked from the header.
 - **Bulk fixes:** tidy everything, rename or merge a store/category/product, delete all rows for one.
 - **Export** to CSV and **restore** the sample data.
 
-### AI assistant (IBM watsonx.ai)
+### AI assistant
 A chat panel in the builder. Examples:
 "build a dashboard for Store B", "top 5 products by profit", "profit by month as a line",
 "which store is falling behind?", "what were total sales in Grocery?", "rename Store A to Downtown",
@@ -58,33 +58,38 @@ A chat panel in the builder. Examples:
 
 It adds charts directly. Anything that changes data (rename, delete, tidy) is shown as a card you must confirm.
 
-With IBM credentials it uses **watsonx.ai (IBM Granite)**. The model gets the field list, your
-store/category names and a summary of the numbers for the current filters, and must answer in a fixed
-JSON format; the app checks every action against the real fields and values before using it.
-Without credentials, or if watsonx.ai fails, a built-in rule engine answers instead, so the app
-always works offline. The badge in the panel shows which one is active.
+Out of the box a built-in rule engine answers, so the app works offline with no account. For smarter,
+free-form answers, connect a **free AI model** (no credit card needed). The model gets the field list,
+your store/category names and a summary of the numbers for the current filters, and must answer in a
+fixed JSON format; the app checks every action against the real fields and values before using it.
+If the AI service fails, the rule engine answers instead. The badge in the panel shows which one is active.
 
-#### Connect IBM watsonx.ai
-1. Create a free IBM Cloud account and a **watsonx.ai** project (https://dataplatform.cloud.ibm.com/wx).
-2. Copy the project ID (Project > Manage > General) and create an **IBM Cloud API key**
-   (https://cloud.ibm.com/iam/apikeys).
-3. Set the environment variables before starting the app. In Windows PowerShell:
-
-```powershell
-$env:WATSONX_API_KEY = "your-api-key"
-```
+#### Connect a free AI model (Google Gemini, recommended)
+1. Sign in at https://aistudio.google.com/apikey with a Google account and click **Create API key**.
+   It's free and doesn't ask for a card.
+2. In Windows PowerShell, in the app folder, run one at a time:
 
 ```powershell
-$env:WATSONX_PROJECT_ID = "your-project-id"
+$env:AI_API_KEY = "your-gemini-key"
 ```
 
 ```powershell
 python app.py
 ```
 
-Optional: `WATSONX_URL` (default `https://us-south.ml.cloud.ibm.com`; use your project's region, e.g.
-`https://eu-de.ml.cloud.ibm.com`) and `WATSONX_MODEL_ID` (default `ibm/granite-3-8b-instruct`; any chat
-model available in your region works). Never commit the key; on Vercel, add it under Project Settings > Environment Variables.
+The assistant badge now shows **Google Gemini**. Never commit the key; on Vercel add `AI_API_KEY` under
+Project Settings > Environment Variables (note that public visitors would then use your free quota).
+
+Other free options, set with `AI_PROVIDER`:
+
+| `AI_PROVIDER` | Key | Notes |
+|---|---|---|
+| `gemini` (default when only `AI_API_KEY` is set) | https://aistudio.google.com/apikey | model `gemini-2.5-flash` |
+| `groq` | https://console.groq.com/keys | model `llama-3.3-70b-versatile`, very fast |
+| `ollama` | none | runs on your own computer after installing https://ollama.com and `ollama pull llama3.2` |
+
+`AI_MODEL` picks a different model (for example if the default is retired), and `AI_BASE_URL` points to any
+other OpenAI-compatible service.
 
 ## Sample data matches the presentation
 
@@ -128,8 +133,8 @@ python -m pytest -q
 
 Tests check that totals match the presentation, filters apply everywhere, bad input is rejected,
 SQL injection is harmless, upload/reset behave correctly, messy files are cleaned as expected, the
-builder query and saved dashboards work, and the assistant behaves with and without watsonx.ai
-(a fake watsonx client is used, so no IBM key is needed).
+builder query and saved dashboards work, and the assistant behaves with and without an AI model
+(a fake AI client is used, so no key is needed).
 
 ## Files
 
@@ -138,7 +143,7 @@ app.py            Flask app, overview API + SQLite
 workspace.py      builder, import/cleaning, editing and assistant routes
 cleaning.py       reads CSV/Excel, guesses columns, cleans rows
 queries.py        field catalog and the generic chart query
-ai.py             watsonx.ai client, rule-based assistant, action validation
+ai.py             AI chat client (Gemini/Groq/Ollama), rule-based assistant, action validation
 seed.py           sample-data generator (calibrated to the deck)
 data/targets.csv  store x month targets used by the generator
 static/           index/builder/data pages, JS, style.css, vendor/chart.umd.min.js
