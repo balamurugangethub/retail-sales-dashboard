@@ -512,8 +512,8 @@ function confirmCard(a, readOnly) {
 
 function setupAssistant() {
   const badge = $("ai-badge");
-  if (B.fields.assistant === "watsonx") { badge.textContent = "IBM watsonx.ai"; badge.classList.add("ibm"); }
-  else { badge.textContent = "Built-in rules"; badge.title = "Set WATSONX_API_KEY and WATSONX_PROJECT_ID to use IBM watsonx.ai"; }
+  if (B.fields.assistant !== "rules") { badge.textContent = B.fields.assistant_label; badge.classList.add("ai"); }
+  else { badge.textContent = "Built-in rules"; badge.title = "Add a free AI key (see README) for smarter answers"; }
   $("suggestions").replaceChildren(...SUGGESTIONS.map((s) => el("button", { class: "sugg", text: s, onclick: () => ask(s) })));
   chatMsg("bot", "Hi! Ask me to build charts (\"profit by store as a pie\"), answer questions (\"what were total sales in March?\") or tidy your data.");
   $("chat-form").addEventListener("submit", (e) => {

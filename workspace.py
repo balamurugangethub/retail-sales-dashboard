@@ -112,6 +112,7 @@ def register(app, db, filters, insights, error_cls, assistant):  # pylint: disab
         out = catalog()
         out["values"] = values()
         out["assistant"] = assistant.provider
+        out["assistant_label"] = assistant.label
         return jsonify(out)
 
     @app.get("/api/query")
@@ -387,7 +388,7 @@ def register(app, db, filters, insights, error_cls, assistant):  # pylint: disab
 
     @app.get("/api/assistant")
     def assistant_status():
-        return jsonify({"provider": assistant.provider})
+        return jsonify({"provider": assistant.provider, "label": assistant.label})
 
     @app.post("/api/assistant")
     def assistant_chat():
