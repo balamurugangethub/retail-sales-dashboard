@@ -6,7 +6,6 @@ const state = { preset: "6m", start: "", end: "", store: "", category: "", grain
 let meta = null;
 const charts = {};
 const METRICS = { sales: "Sales", profit: "Profit", orders: "Orders" };
-const PALETTE = ["#1f6fe5", "#f1c21b", "#2e9e6b", "#d64545", "#8a5cf6", "#14a3b8"];
 
 const fmtMoney = (v) => v >= 1000 ? "$" + (v / 1000).toFixed(v >= 100000 ? 0 : 1) + "K" : "$" + v.toFixed(0);
 const fmtMetric = (m, v) => m === "orders" ? v.toLocaleString() : fmtMoney(v);
@@ -80,7 +79,7 @@ function renderKpis(k) {
   }
 }
 
-function themeText() { return { color: cssVar("--muted"), grid: cssVar("--line") }; }
+function themeText() { return { color: Mono.muted(), grid: Mono.valueGrid(), border: Mono.axisBorder() }; }
 
 function upsertChart(id, config) {
   if (charts[id]) { charts[id].destroy(); }
@@ -90,15 +89,16 @@ function upsertChart(id, config) {
 function renderStoreChart(rows) {
   const m = state.storeMetric, t = themeText();
   const values = rows.map((r) => r[m]);
-  const colors = rows.map((r) => state.store && r.store !== state.store ? "#9db0c9" : PALETTE[0]);
+  // the picked store stays solid; the others drop to outlines
+  const colors = rows.map((r) => state.store && r.store !== state.store ? Mono.paper() : Mono.chart());
   upsertChart("chart-store", {
     type: "bar",
-    data: { labels: rows.map((r) => r.store), datasets: [{ label: METRICS[m], data: values, backgroundColor: colors, borderRadius: 4 }] },
+    data: { labels: rows.map((r) => r.store), datasets: [{ label: METRICS[m], data: values, backgroundColor: colors, maxBarThickness: 64 }] },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => METRICS[m] + ": " + fmtMetric(m, c.parsed.y) } } },
       scales: { x: { ticks: { color: t.color }, grid: { display: false } },
-                y: { beginAtZero: true, ticks: { color: t.color, callback: (v) => fmtMetric(m, v) }, grid: { color: t.grid } } },
+                y: { beginAtZero: true, ticks: { color: t.color, callback: (v) => fmtMetric(m, v) }, grid: t.grid, border: t.border } },
       onClick: (_e, els) => {
         if (!els.length) return;
         const s = rows[els[0].index].store;
@@ -114,12 +114,13 @@ function renderTrendChart(rows) {
   upsertChart("chart-trend", {
     type: "line",
     data: { labels: rows.map((r) => r.period), datasets: [{ label: METRICS[m], data: rows.map((r) => r[m]),
-      borderColor: PALETTE[0], backgroundColor: PALETTE[0] + "33", fill: true, tension: .25, pointRadius: rows.length > 40 ? 0 : 4 }] },
+      borderColor: Mono.chart(), backgroundColor: Mono.fill(6), fill: true, tension: 0, pointRadius: rows.length > 40 ? 0 : 3.5,
+      pointStyle: "rect" }] },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => METRICS[m] + ": " + fmtMetric(m, c.parsed.y) } } },
       scales: { x: { ticks: { color: t.color, maxTicksLimit: 12 }, grid: { display: false } },
-                y: { beginAtZero: true, ticks: { color: t.color, callback: (v) => fmtMetric(m, v) }, grid: { color: t.grid } } },
+                y: { beginAtZero: true, ticks: { color: t.color, callback: (v) => fmtMetric(m, v) }, grid: t.grid, border: t.border } },
     },
   });
 }
@@ -127,10 +128,10 @@ function renderTrendChart(rows) {
 function renderCategories(rows) {
   upsertChart("chart-cat", {
     type: "doughnut",
-    data: { labels: rows.map((r) => r.category), datasets: [{ data: rows.map((r) => r.sales), backgroundColor: PALETTE, borderWidth: 0 }] },
+    data: { labels: rows.map((r) => r.category), datasets: [{ data: rows.map((r) => r.sales), backgroundColor: rows.map((_r, i) => Mono.fill(i)) }] },
     options: {
       responsive: true, maintainAspectRatio: false, cutout: "58%",
-      plugins: { legend: { position: "right", labels: { color: cssVar("--ink") } },
+      plugins: { legend: { position: "right", labels: { color: Mono.ink() } },
                  tooltip: { callbacks: { label: (c) => c.label + ": " + fmtMoney(c.parsed) } } },
       onClick: (_e, els) => {
         if (!els.length) return;
@@ -161,10 +162,11 @@ function renderHeatmap(rows) {
     tr.firstChild.addEventListener("click", () => setStore(state.store === s ? "" : s));
     periods.forEach((p) => {
       const v = lookup.get(s + "|" + p) || 0;
-      const a = max === min ? 0.4 : 0.12 + 0.78 * (v - min) / (max - min);
+      // a solid bar under each value, as long as its share of the range
+      const pct = max === min ? 50 : 8 + 92 * (v - min) / (max - min);
       const td = el("td", { class: "cell", text: fmtMoney(v) });
-      td.style.background = `rgba(31,111,229,${a.toFixed(2)})`;
-      td.style.color = a > 0.55 ? "#fff" : cssVar("--ink");
+      td.style.backgroundImage = "linear-gradient(var(--chart), var(--chart))";
+      td.style.backgroundSize = `${pct.toFixed(0)}% 4px`;
       tr.append(td);
     });
     body.append(tr);
@@ -271,4 +273,5 @@ async function init() {
   await refresh();
 }
 
+window.addEventListener("themechange", () => meta && refresh());
 init().catch((e) => notify("Failed to start: " + e.message, true));
