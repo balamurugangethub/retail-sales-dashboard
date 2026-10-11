@@ -131,7 +131,7 @@ function renderCategories(rows) {
     data: { labels: rows.map((r) => r.category), datasets: [{ data: rows.map((r) => r.sales), backgroundColor: rows.map((_r, i) => Mono.fill(i)) }] },
     options: {
       responsive: true, maintainAspectRatio: false, cutout: "58%",
-      plugins: { legend: { position: "right", labels: { color: Mono.ink() } },
+      plugins: { legend: { position: "right", labels: { color: Mono.text() } },
                  tooltip: { callbacks: { label: (c) => c.label + ": " + fmtMoney(c.parsed) } } },
       onClick: (_e, els) => {
         if (!els.length) return;
@@ -165,7 +165,7 @@ function renderHeatmap(rows) {
       // a solid bar under each value, as long as its share of the range
       const pct = max === min ? 50 : 8 + 92 * (v - min) / (max - min);
       const td = el("td", { class: "cell", text: fmtMoney(v) });
-      td.style.backgroundImage = "linear-gradient(var(--chart), var(--chart))";
+      td.style.backgroundImage = "linear-gradient(var(--chart-color, var(--ink)), var(--chart-color, var(--ink)))";
       td.style.backgroundSize = `${pct.toFixed(0)}% 4px`;
       tr.append(td);
     });
