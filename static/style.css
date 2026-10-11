@@ -344,3 +344,9 @@ select:focus, input:focus { border-color: var(--ink); }
 .sample span { font-size: 13px; color: var(--muted); }
 .sample:hover { border-color: var(--ink); background: var(--wash); }
 @media (max-width: 900px) { .samples { grid-template-columns: 1fr; } }
+
+/* forecast page */
+input.stock { width: 84px; text-align: right; background: var(--paper); color: var(--text); border: 1px solid var(--line); padding: 4px 6px; border-radius: 0; font: inherit; }
+input.stock:focus { outline: 2px solid var(--ink); border-color: var(--ink); }
+td.to-order { font-weight: 800; }
+td.to-order.need { background: var(--ink); color: var(--paper); }
