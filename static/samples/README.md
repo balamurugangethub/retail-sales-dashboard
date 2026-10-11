@@ -1,6 +1,6 @@
 # Sample datasets
 
-Three CSV files to try the app with. On the **Data** page, drop a file onto "Bring in your sales data", check the preview, then click Import. Use **Restore sample data** on the Data page to go back to the built-in data.
+Three CSV files to practise with. On the **Data** page, pick one under "Or practise with a sample dataset" (or drop the file onto "Bring in your sales data"), check the preview, then click Import. Use **Restore sample data** on the Data page to go back to the built-in data.
 
 | File | What it shows |
 | --- | --- |

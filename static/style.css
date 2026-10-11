@@ -335,3 +335,12 @@ select:focus, input:focus { border-color: var(--ink); }
 .tp-note { margin: -4px 0 10px; font-size: 12px; color: var(--muted); }
 /* chart background applies to the chart area only */
 .chart canvas, .chart-box canvas { background: var(--chart-bg, transparent); }
+
+/* ---- sample dataset picker ---- */
+.samples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 8px 0 4px; }
+.sample { display: flex; flex-direction: column; gap: 4px; text-align: left; padding: 12px 14px; font: inherit; cursor: pointer;
+          background: var(--paper); color: var(--text); border: 1px solid var(--line); }
+.sample strong { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.sample span { font-size: 13px; color: var(--muted); }
+.sample:hover { border-color: var(--ink); background: var(--wash); }
+@media (max-width: 900px) { .samples { grid-template-columns: 1fr; } }

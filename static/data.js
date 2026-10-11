@@ -72,9 +72,27 @@ async function doImport() {
   } catch (e) { notify("Import failed: " + e.message, true); }
 }
 
+const SAMPLES = [
+  ["1_bakery_chain_clean.csv", "Bakery chain (clean)", "3 stores, Jan to Mar 2026. A tidy file that imports with nothing to fix."],
+  ["2_messy_till_export.csv", "Messy till export", "Odd column names, dd/mm/yyyy dates, $ amounts and repeated rows. Shows the cleaning report."],
+  ["3_retail_chain_trends.csv", "Retail chain with trends", "4 stores over 18 months. One store declines and another grows, so charts and insights have a story."],
+];
+
+function setupSamples(take) {
+  $("samples").replaceChildren(...SAMPLES.map(([file, title, text]) => el("button", { type: "button", class: "sample",
+    onclick: async () => {
+      try {
+        const r = await fetch("/static/samples/" + file);
+        if (!r.ok) throw new Error(r.statusText);
+        take(new File([await r.blob()], file, { type: "text/csv" }));
+      } catch (e) { notify("Could not load the sample: " + e.message, true); }
+    } }, [el("strong", { text: title }), el("span", { text })])));
+}
+
 function setupImport() {
   const zone = $("drop-zone");
   const take = (f) => { if (!f) return; D.file = f; zone.querySelector("strong").textContent = f.name; runPreview(); };
+  setupSamples(take);
   $("file-input").addEventListener("change", (e) => take(e.target.files[0]));
   zone.addEventListener("dragover", (e) => { e.preventDefault(); zone.classList.add("drop"); });
   zone.addEventListener("dragleave", () => zone.classList.remove("drop"));
