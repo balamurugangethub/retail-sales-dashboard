@@ -18,6 +18,29 @@ Open http://127.0.0.1:5000 (Windows: double-click `run.bat`).
 The database (`retail.db`) is created and filled with sample data on first start.
 Charts are bundled in `static/vendor`, so it works offline.
 
+## Accounts, privacy and cookies
+
+1. **Welcome screen.** On the first visit, people see a short privacy summary with **Accept** and **Decline**.
+   Declining stores nothing and keeps the app closed. The full policy is at `/privacy`.
+2. **Sign in or create an account** (`/login`, `/register`). Creating an account requires ticking the privacy policy box.
+   Passwords are stored as salted scrypt hashes. After 5 wrong passwords the email is locked for 5 minutes.
+3. **Separate data per account.** Each account gets its own database (`userdata/shop_<id>.db`), which starts with the
+   sample data. Uploads, edits and saved dashboards never mix between shops.
+4. **Your account** (`/account`). Shows when the policy was accepted, and has buttons to download your data,
+   sign out, or delete the account together with all of its data.
+
+Only two cookies are used, and both are essential: `rsd_session` keeps you signed in for 14 days, and `rsd_consent`
+remembers your choice for a year. There are no analytics or advertising cookies.
+
+| Setting | What it does |
+|---|---|
+| `SECRET_KEY` | Signs the login cookie. If it is not set, a random key is created in `userdata/secret_key` |
+| `PRIVACY_CONTACT` | Email address shown on the privacy page for questions |
+| `AUTH=0` | Switches sign-in off for a single-user computer. The welcome screen still shows |
+
+The public Vercel demo is read-only and resets on every cold start, so it shows the welcome screen but no sign-in.
+Real accounts on a hosted site need a hosted database such as Supabase or Postgres.
+
 ## What it does
 
 The app has three pages, linked from the header.
@@ -122,8 +145,13 @@ All GET endpoints accept `start`, `end` (YYYY-MM-DD), `store`, `category`.
 | `POST /api/data/rename`, `/api/data/delete`, `/api/data/tidy` | bulk fixes |
 | `POST /api/assistant` (`{"message", "filters"}`) | assistant reply + proposed actions |
 
-Note: the write endpoints have no login. This is a local demo app; add authentication
-before exposing it on a network.
+| `POST /api/consent` (`{"accept": true/false}`) | accept or decline the privacy policy and cookies |
+| `GET /api/auth/me` | consent state and the signed-in user |
+| `POST /api/auth/register`, `/api/auth/login`, `/api/auth/logout` | accounts |
+| `POST /api/account/delete` (`{"password"}`) | delete the account and all of its data |
+
+Without consent, every other endpoint returns 401. Without sign-in, they also return 401.
+Serve the app over HTTPS when it is reachable from other computers.
 
 ## Tests
 
@@ -133,24 +161,26 @@ python -m pytest -q
 
 Tests check that totals match the presentation, filters apply everywhere, bad input is rejected,
 SQL injection is harmless, upload/reset behave correctly, messy files are cleaned as expected, the
-builder query and saved dashboards work, and the assistant behaves with and without an AI model
+builder query and saved dashboards work, the consent gate and sign-in work, accounts never see each
+other's data, and the assistant behaves with and without an AI model
 (a fake AI client is used, so no key is needed).
 
 ## Files
 
 ```
 app.py            Flask app, overview API + SQLite
+accounts.py       privacy/cookie consent gate, sign-in, one database per account
 workspace.py      builder, import/cleaning, editing and assistant routes
 cleaning.py       reads CSV/Excel, guesses columns, cleans rows
 queries.py        field catalog and the generic chart query
 ai.py             AI chat client (Gemini/Groq/Ollama), rule-based assistant, action validation
 seed.py           sample-data generator (calibrated to the deck)
 data/targets.csv  store x month targets used by the generator
-static/           index/builder/data pages, JS, style.css, vendor/chart.umd.min.js
+static/           index/builder/data, welcome/privacy/sign-in/account pages, JS, style.css, vendor/chart.umd.min.js
 tests/            pytest suite
 ```
 
 ## Ideas for next steps
 
-Logins per shop and roles, sales targets and alerts, forecasting, a hosted database (so the public
+Staff roles within a shop, password reset by email, sales targets and alerts, forecasting, a hosted database (so the public
 site can save uploads), connect to a real POS, and a scheduled weekly summary email.

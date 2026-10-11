@@ -192,3 +192,36 @@ input[type=search], .row-form input { font: inherit; font-size: 14px; padding: 6
 .mapping select { min-width: 170px; }
 .mapping th { width: 38%; }
 .rows th:nth-child(-n+4), .rows td:nth-child(-n+4) { text-align: left; }
+
+/* ---- sign-in, welcome and privacy pages ---- */
+.nav .nav-right { margin-left: 8px; }
+.nav a.account { border: 1px solid rgba(255,255,255,.25); }
+.gate { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
+.gate-card { width: 100%; max-width: 520px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 26px 28px; box-shadow: 0 10px 30px rgba(11,31,58,.08); }
+.gate-card.wide { max-width: 760px; }
+.gate-card h1 { margin: 0 0 4px; font-size: 22px; }
+.gate-card .logo { display: inline-block; background: var(--navy); color: var(--yellow); font-weight: 700; border-radius: 8px; padding: 3px 10px; font-size: 13px; margin-bottom: 14px; }
+.gate-card ul { padding-left: 20px; margin: 8px 0 14px; }
+.gate-card li { margin: 4px 0; }
+.form { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.form label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
+.form input[type=email], .form input[type=password], .form input[type=text] { font: inherit; font-size: 15px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--ink); }
+.form input:focus { outline: 2px solid var(--blue); outline-offset: 0; border-color: var(--blue); }
+.form label.check { flex-direction: row; align-items: flex-start; gap: 8px; color: var(--ink); font-size: 14px; }
+.form label.check input { margin-top: 3px; }
+.form .btn { width: 100%; padding: 10px 14px; font-size: 15px; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.btn-row .btn { flex: 1 1 160px; text-align: center; }
+.btn.secondary { background: transparent; color: var(--ink); border-color: var(--line); }
+.form-error { color: var(--bad); font-size: 14px; min-height: 1px; margin: 0; }
+.switch-line { margin: 16px 0 0; font-size: 14px; color: var(--muted); text-align: center; }
+a { color: var(--blue); }
+.declined { border-left: 4px solid var(--bad); background: var(--bg); padding: 10px 12px; border-radius: 6px; margin-top: 14px; }
+.policy h2 { font-size: 17px; margin: 22px 0 6px; }
+.policy p, .policy li { font-size: 15px; }
+.policy table { width: 100%; margin: 6px 0; }
+.policy th, .policy td { text-align: left; white-space: normal; }
+.kv { display: grid; grid-template-columns: 150px 1fr; gap: 6px 12px; margin: 12px 0; font-size: 14px; }
+.kv dt { color: var(--muted); } .kv dd { margin: 0; word-break: break-word; }
+.danger-zone { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--line); }
+@media (max-width: 520px) { .gate-card { padding: 20px 18px; } .kv { grid-template-columns: 1fr; gap: 2px; } .kv dd { margin-bottom: 8px; } }

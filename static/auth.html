@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in - Retail Sales Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="gate">
+  <section class="gate-card" aria-labelledby="title">
+    <span class="logo">Retail Sales Dashboard</span>
+    <h1 id="title">Sign in</h1>
+    <p class="muted" id="subtitle">Welcome back. Your dashboards and data are waiting.</p>
+    <form class="form" id="auth-form" novalidate>
+      <label data-register hidden>Your name <input type="text" name="name" autocomplete="name" maxlength="80"></label>
+      <label data-register hidden>Shop or business name (optional) <input type="text" name="shop" autocomplete="organization" maxlength="80"></label>
+      <label>Email <input type="email" name="email" autocomplete="email" required></label>
+      <label>Password <input type="password" name="password" autocomplete="current-password" required minlength="8"></label>
+      <label class="check" data-register hidden><input type="checkbox" name="accept_policy">
+        <span>I have read and accept the <a href="/privacy" target="_blank">privacy policy</a>.</span></label>
+      <p class="form-error" id="form-error" role="alert"></p>
+      <button class="btn" type="submit" id="submit">Sign in</button>
+    </form>
+    <p class="switch-line" id="switch"></p>
+  </section>
+</main>
+<script src="/static/gate.js"></script>
+</body>
+</html>
