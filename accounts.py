@@ -130,8 +130,8 @@ def register(app, prepare_db, consent=True, auth=True, sync=None):  # pylint: di
         if sync and auth:
             try:
                 sync.ensure("accounts.db", accounts_db)
-            except StoreError:
-                return unavailable()
+            except StoreError as e:
+                return unavailable(e)
         if not auth or path in SIGNED_OUT_OK:
             return None
         user = current_user()
@@ -142,14 +142,14 @@ def register(app, prepare_db, consent=True, auth=True, sync=None):  # pylint: di
         if sync:
             try:
                 sync.ensure(os.path.basename(g.db_path), g.db_path)
-            except StoreError:
-                return unavailable()
+            except StoreError as e:
+                return unavailable(e)
         if not os.path.exists(g.db_path):
             prepare_db(g.db_path)
         return None
 
-    def unavailable():
-        message = "Online storage is not reachable right now. Try again in a moment."
+    def unavailable(error):
+        message = f"Online storage is not reachable right now ({error}). Try again in a moment."
         return (jsonify({"error": message}) if request.path.startswith("/api/") else message), 503
 
     @app.after_request
