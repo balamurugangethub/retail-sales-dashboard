@@ -11,6 +11,7 @@ from decimal import Decimal, InvalidOperation
 
 from flask import Flask, Response, g, jsonify, request, send_from_directory
 
+import accounts
 import workspace
 from ai import Assistant, ChatClient
 
@@ -18,7 +19,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REQUIRED_COLUMNS = ["date", "store", "category", "product", "orders", "units", "revenue", "cost"]
 MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 # Requests that never change stored data, so the public read-only demo still allows them
-READ_ONLY_ALLOWED = {"/api/assistant", "/api/import/preview"}
+READ_ONLY_ALLOWED = {"/api/assistant", "/api/import/preview", "/api/consent", "/api/auth/logout"}
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS sales (
@@ -50,10 +51,13 @@ def seed_database(db_path):
     con.close()
 
 
-def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=None):
+def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=None,  # pylint: disable=too-many-arguments
+               consent=False, auth=False):
     """read_only=True disables upload/reset (used for the public hosted demo).
     Defaults to the READ_ONLY=1 environment variable. assistant overrides the
-    AI assistant (tests pass a fake AI client)."""
+    AI assistant (tests pass a fake AI client). consent=True asks visitors to
+    accept the privacy policy and cookies first; auth=True adds sign-in with a
+    separate database per account (see accounts.py)."""
     app = Flask(__name__, static_folder=os.path.join(HERE, "static"), static_url_path="/static")
     app.config["DB_PATH"] = db_path or os.path.join(HERE, "retail.db")
     app.config["READ_ONLY"] = (os.environ.get("READ_ONLY") == "1") if read_only is None else read_only
@@ -64,11 +68,21 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
     else:
         con = sqlite3.connect(app.config["DB_PATH"]); con.executescript(SCHEMA); con.close()
 
+    def current_db_path():
+        # Signed-in users each have their own database; accounts.gate sets g.db_path
+        return g.get("db_path") or app.config["DB_PATH"]
+
+    def prepare_db(path):
+        seed_database(path)
+        con = sqlite3.connect(path); con.executescript(workspace.SCHEMA); con.close()
+
     def db():
         if "db" not in g:
-            g.db = sqlite3.connect(app.config["DB_PATH"])
+            g.db = sqlite3.connect(current_db_path())
             g.db.row_factory = sqlite3.Row
         return g.db
+
+    accounts.register(app, prepare_db, consent=consent, auth=auth)
 
     @app.teardown_appcontext
     def close_db(_exc):
@@ -343,7 +357,7 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
 
     @app.post("/api/reset")
     def reset():
-        seed_database(app.config["DB_PATH"])
+        seed_database(current_db_path())
         return jsonify({"ok": True})
 
     @app.errorhandler(413)
@@ -370,8 +384,11 @@ if os.environ.get("VERCEL"):
 else:
     _db_path, _read_only = None, None            # local: ./retail.db, READ_ONLY env var
 
-# Top-level WSGI app (Vercel and gunicorn look for this name)
-app = create_app(db_path=_db_path, read_only=_read_only)
+# Top-level WSGI app (Vercel and gunicorn look for this name). Visitors always
+# accept the privacy policy first; sign-in needs a writable disk, so the hosted
+# read-only demo skips it. AUTH=0 switches sign-in off for a single-user setup.
+app = create_app(db_path=_db_path, read_only=_read_only, consent=True,
+                 auth=not (_read_only or os.environ.get("READ_ONLY") == "1") and os.environ.get("AUTH") != "0")
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=False)

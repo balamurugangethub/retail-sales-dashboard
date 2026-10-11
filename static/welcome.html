@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Welcome - Retail Sales Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="gate">
+  <section class="gate-card" aria-labelledby="title">
+    <span class="logo">Retail Sales Dashboard</span>
+    <h1 id="title">Before you come in</h1>
+    <p>We keep this short. By continuing you agree to our <a href="/privacy">privacy policy</a>, which says:</p>
+    <ul>
+      <li>We store your account details and the sales data you add, only to run your dashboards.</li>
+      <li>We use <strong>two essential cookies</strong>: one keeps you signed in, one remembers this choice. No ads, analytics or tracking cookies.</li>
+      <li>If an AI provider is switched on, the questions you ask the assistant and a summary of your data are sent to it.</li>
+      <li>You can download your data or delete your account at any time.</li>
+    </ul>
+    <div class="btn-row">
+      <button class="btn" id="accept">Accept and continue</button>
+      <button class="btn secondary" id="decline">Decline</button>
+    </div>
+    <p class="declined" id="declined" hidden role="status">You declined, so nothing was stored and the app stays closed.
+      The app can't work without these essential cookies. You can change your mind any time with <em>Accept and continue</em>.</p>
+    <p class="switch-line"><a href="/privacy">Read the full privacy policy</a></p>
+  </section>
+</main>
+<script src="/static/gate.js"></script>
+</body>
+</html>

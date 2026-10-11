@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your account - Retail Sales Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="gate">
+  <section class="gate-card" aria-labelledby="title">
+    <span class="logo">Retail Sales Dashboard</span>
+    <h1 id="title">Your account</h1>
+    <dl class="kv" id="details"></dl>
+    <div class="btn-row">
+      <a class="btn" href="/">Back to dashboard</a>
+      <a class="btn secondary" href="/api/export.csv">Download my data</a>
+      <button class="btn secondary" id="logout">Sign out</button>
+    </div>
+    <div class="danger-zone">
+      <h2 class="small" style="font-size:15px;margin:0 0 4px">Delete account</h2>
+      <p class="muted small">This permanently deletes your account, your sales data and your saved dashboards. It can't be undone.</p>
+      <form class="form" id="delete-form">
+        <label>Type your password to confirm <input type="password" name="password" autocomplete="current-password" required></label>
+        <p class="form-error" id="form-error" role="alert"></p>
+        <button class="btn danger" type="submit">Delete my account and data</button>
+      </form>
+    </div>
+  </section>
+</main>
+<script src="/static/gate.js"></script>
+</body>
+</html>

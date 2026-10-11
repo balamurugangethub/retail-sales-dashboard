@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy policy - Retail Sales Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="gate">
+  <article class="gate-card wide policy" aria-labelledby="title">
+    <span class="logo">Retail Sales Dashboard</span>
+    <h1 id="title">Privacy and cookie policy</h1>
+    <p class="muted small">Version 2026-10-11. If this policy changes, we ask you to accept it again.</p>
+
+    <h2>Who we are</h2>
+    <p>Retail Sales Dashboard helps shop owners and retail chains see their sales in one place.
+      This policy explains what the app stores, why, and what you can do about it.
+      <span id="contact-line">Questions go to whoever runs this copy of the app.</span></p>
+
+    <h2>What we store</h2>
+    <ul>
+      <li><strong>Account details:</strong> your name, shop name, email address and the date you accepted this policy.
+        Your password is stored only as a salted one-way hash, never as plain text.</li>
+      <li><strong>Your business data:</strong> the sales files you import, the edits you make and the dashboards you save.
+        Each account has its own separate database that no other account can see.</li>
+    </ul>
+    <p>We do not sell your data, show ads, or share it with anyone except the AI provider described below.</p>
+
+    <h2>Cookies</h2>
+    <p>We only use cookies the app needs to work. There are no analytics, advertising or tracking cookies.</p>
+    <table>
+      <thead><tr><th>Cookie</th><th>Why</th><th>How long</th></tr></thead>
+      <tbody>
+        <tr><td><code>rsd_consent</code></td><td>Remembers that you accepted this policy.</td><td>1 year</td></tr>
+        <tr><td><code>rsd_session</code></td><td>Keeps you signed in. It is signed so it can't be forged.</td><td>14 days, or until you sign out</td></tr>
+      </tbody>
+    </table>
+    <p>On the public demo, dashboards you save are kept in your own browser's storage and never reach our server.</p>
+
+    <h2>AI assistant</h2>
+    <p>The assistant works without any outside service using built-in rules. If the person running the app has connected
+      an AI provider (such as Google Gemini, Groq or a local Ollama), your question and a summary of your data
+      (totals and the names of stores, categories and top products) are sent to that provider to write the answer.
+      Their own privacy terms apply to that request.</p>
+
+    <h2>How long we keep it</h2>
+    <p>We keep your account and data until you delete your account. Deleting it removes your account,
+      your sales data and your saved dashboards straight away.</p>
+
+    <h2>Your choices</h2>
+    <ul>
+      <li><strong>Decline:</strong> you can decline this policy on the welcome screen. Nothing is stored, but you can't use the app.</li>
+      <li><strong>Download:</strong> export your sales data as a CSV file from your account page at any time.</li>
+      <li><strong>Delete:</strong> delete your account and all of its data from your account page.</li>
+      <li><strong>Change your mind:</strong> <a href="/welcome">review your cookie choice</a>.</li>
+    </ul>
+
+    <div class="btn-row"><a class="btn" href="/" id="back">Back to the app</a></div>
+  </article>
+</main>
+<script>
+fetch("/api/auth/me").then((r) => r.json()).then((me) => {
+  if (me.contact) {
+    const line = document.getElementById("contact-line");
+    line.textContent = "Questions or requests: ";
+    const a = document.createElement("a");
+    a.href = "mailto:" + me.contact; a.textContent = me.contact; line.append(a, ".");
+  }
+  if (me.consent_required && !me.consent) {
+    const b = document.getElementById("back"); b.href = "/welcome"; b.textContent = "Back to accept or decline";
+  }
+}).catch(() => {});
+</script>
+</body>
+</html>
