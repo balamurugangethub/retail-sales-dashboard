@@ -68,7 +68,7 @@ window.Mono = (function () {
     const d = Chart.defaults, fg = ink(), bg = paper();
     d.font.family = getComputedStyle(document.body).fontFamily || d.font.family;
     d.font.size = 12;
-    d.color = fg; d.borderColor = fg;
+    d.color = css("--muted") || fg; d.borderColor = fg;
     d.elements.bar.borderRadius = 0;
     d.elements.bar.borderColor = fg;
     d.elements.bar.borderWidth = 1;
@@ -83,11 +83,12 @@ window.Mono = (function () {
     Object.assign(d.plugins.legend.labels, { boxWidth: 12, boxHeight: 12, color: fg });
   }
 
-  // Axis styling: ink ticks, fine dashed grid
-  const valueGrid = () => ({ color: ink(), lineWidth: 0.5 });
-  const axisBorder = () => ({ color: ink(), dash: [2, 4] });
+  // Axis styling: dashed hairline grid
+  const valueGrid = () => ({ color: css("--line") || ink(), lineWidth: 1 });
+  const axisBorder = () => ({ color: css("--line") || ink(), dash: [2, 4] });
 
-  return { ink, paper, fill, dash: (i) => DASHES[i % DASHES.length], point: (i) => POINTS[i % POINTS.length],
+  const muted = () => css("--muted") || ink();
+  return { ink, paper, muted, fill, dash: (i) => DASHES[i % DASHES.length], point: (i) => POINTS[i % POINTS.length],
            applyDefaults, valueGrid, axisBorder };
 })();
 window.Mono.applyDefaults();

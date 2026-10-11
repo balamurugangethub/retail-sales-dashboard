@@ -266,7 +266,7 @@ function drawWidget(w, body, res) {
 
   const canvas = el("canvas");
   body.replaceChildren(el("div", { class: "chart-box" }, [canvas]));
-  const t = { color: Mono.ink(), grid: Mono.valueGrid(), border: Mono.axisBorder(), ink: Mono.ink() };
+  const t = { color: Mono.muted(), grid: Mono.valueGrid(), border: Mono.axisBorder(), ink: Mono.ink() };
   const measuresCols = cols.slice(nd);
   let labels, datasets;
   if (nd === 2) {

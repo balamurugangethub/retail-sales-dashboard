@@ -79,7 +79,7 @@ function renderKpis(k) {
   }
 }
 
-function themeText() { return { color: Mono.ink(), grid: Mono.valueGrid(), border: Mono.axisBorder() }; }
+function themeText() { return { color: Mono.muted(), grid: Mono.valueGrid(), border: Mono.axisBorder() }; }
 
 function upsertChart(id, config) {
   if (charts[id]) { charts[id].destroy(); }
