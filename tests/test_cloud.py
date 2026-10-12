@@ -129,3 +129,9 @@ def test_a_fresh_server_never_overwrites_stored_data_with_its_empty_files(tmp_pa
     before = {k: v for k, v in store.files.items()}
     server(tmp_path / "two", store)                               # only accepts cookies, no sign-in
     assert store.files == before
+
+
+def test_status_reports_switched_on_features(tmp_path):
+    from app import create_app
+    plain = create_app(db_path=str(tmp_path / "t.db")).test_client()
+    assert plain.get("/api/status").get_json() == {"online_storage": False, "sign_in": False, "read_only": False}

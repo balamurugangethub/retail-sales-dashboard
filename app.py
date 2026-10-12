@@ -72,6 +72,12 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
     else:
         con = sqlite3.connect(app.config["DB_PATH"]); con.executescript(SCHEMA); con.close()
 
+    @app.route("/api/status")
+    def status():
+        """Which hosting features are switched on (no secrets), to diagnose a deployment."""
+        return jsonify({"online_storage": sync is not None, "sign_in": bool(auth),
+                        "read_only": bool(app.config["READ_ONLY"])})
+
     def current_db_path():
         # Signed-in users each have their own database; accounts.gate sets g.db_path
         return g.get("db_path") or app.config["DB_PATH"]

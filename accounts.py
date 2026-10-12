@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS users (
 """
 
 # Reachable before accepting the policy (the policy itself, the choice, assets)
-CONSENT_FREE = {"/welcome", "/privacy", "/api/consent", "/api/auth/me", "/favicon.ico"}
+CONSENT_FREE = {"/welcome", "/privacy", "/api/consent", "/api/auth/me", "/api/status", "/favicon.ico"}
 # Reachable before signing in
 SIGNED_OUT_OK = {"/login", "/register", "/api/auth/login", "/api/auth/register", "/api/auth/logout"}
 PAGES = {"/welcome": "welcome.html", "/privacy": "privacy.html", "/login": "auth.html",
