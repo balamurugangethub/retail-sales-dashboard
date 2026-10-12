@@ -135,3 +135,9 @@ def test_status_reports_switched_on_features(tmp_path):
     from app import create_app
     plain = create_app(db_path=str(tmp_path / "t.db")).test_client()
     assert plain.get("/api/status").get_json() == {"online_storage": False, "sign_in": False, "read_only": False}
+
+
+def test_settings_pasted_with_spaces_or_quotes_still_work():
+    sync = cloud.from_env({"RSD_STORE_URL": " https://x.supabase.co/ \n", "RSD_STORE_KEY": "k ", "RSD_STORE_TOKEN": ' "tok"\n'})
+    assert (sync.store.url, sync.store.key, sync.store.token) == ("https://x.supabase.co", "k", "tok")
+    assert cloud.from_env({"RSD_STORE_URL": "u", "RSD_STORE_KEY": "k", "RSD_STORE_TOKEN": "  "}) is None

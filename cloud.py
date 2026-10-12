@@ -62,7 +62,8 @@ class SupabaseStore:
 
 def from_env(env=None):
     env = os.environ if env is None else env
-    url, key, token = env.get("RSD_STORE_URL"), env.get("RSD_STORE_KEY"), env.get("RSD_STORE_TOKEN")
+    url, key, token = ((env.get(name) or "").strip().strip("\"'") for name in
+                       ("RSD_STORE_URL", "RSD_STORE_KEY", "RSD_STORE_TOKEN"))   # pasted values often carry spaces
     return Sync(SupabaseStore(url, key, token)) if url and key and token else None
 
 
