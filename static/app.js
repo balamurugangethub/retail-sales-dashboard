@@ -264,7 +264,14 @@ async function init() {
       notify(`Imported ${body.imported.toLocaleString()} rows.`);
       state.store = state.category = ""; state.preset = "all"; $("f-preset").value = "all";
       await loadMeta(); await refresh();
-    } catch (err) { notify("Upload failed: " + err.message, true); }
+    } catch (err) {
+      notify("Upload failed: " + err.message, true);
+      if (/^Missing columns/.test(err.message) && confirm("This file is not sales data.\n\nOpen it in Explore any data instead?")) {
+        const ex = new FormData(); ex.append("file", file);
+        const r2 = await fetch("/api/datasets", { method: "POST", body: ex });
+        if (r2.ok) location.href = "/explore"; else notify("Could not open the file in Explore.", true);
+      }
+    }
     e.target.value = "";
   });
 
