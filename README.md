@@ -89,6 +89,51 @@ Every request goes through the consent and sign-in gate first. Each account has 
 hosted site that database is loaded from Supabase when you sign in and saved back after each change, so uploads
 survive restarts. `/api/status` shows whether online storage and sign-in are switched on.
 
+### How your data flows
+
+```mermaid
+flowchart LR
+    F["CSV or Excel file"] --> R["Read and detect column types<br/>number, date or text"]
+    R --> C{"Looks like sales?"}
+    C -->|"yes"| CL["Clean: dates, currency, duplicates, store names"]
+    C -->|"no"| EX["Explore: any columns"]
+    CL --> S[("sales table")]
+    EX --> D[("ds_N table per upload")]
+    S --> OV["Overview, Builder, Forecast"]
+    S --> SQ["SQL workbench"]
+    D --> XP["Explore charts and forecast"]
+    D --> SQ
+    OV --> OUT["Charts, KPIs, CSV export"]
+    XP --> OUT
+    SQ --> OUT
+```
+
+Sales-shaped files are cleaned and loaded into the `sales` table. Any other file becomes its own table, so the app
+works with data of any shape. The SQL workbench can read both, but only with SELECT.
+
+### Sign-in and storage sync
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant F as Flask
+    participant L as Local SQLite file
+    participant S as Supabase storage
+
+    B->>F: Sign in
+    F->>S: Ask for the stored version of this account
+    S-->>F: Version and database file
+    F->>L: Write the file if it is newer than the local copy
+    B->>F: Upload a file or edit a row
+    F->>L: Change the data
+    F->>S: Store the changed file (only if it changed)
+    S-->>F: New version
+    F-->>B: Updated charts
+```
+
+The hosted site runs on a temporary disk, so the database file is the source of truth only while the server is
+awake. Supabase keeps the saved copy, and a server never overwrites a stored copy it has not fetched first.
+
 ## What it does
 
 The app has three pages, linked from the header.
