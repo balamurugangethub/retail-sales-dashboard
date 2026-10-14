@@ -77,7 +77,7 @@ def check(con, meta):
             outlier_cells += far
             if far:
                 issues.append(issue("medium", name, "outliers",
-                                    f"{name}: {far:,} values are far outside the usual range ({fence[0]:,.4g} to {fence[1]:,.4g}). Check for typing mistakes."))
+                                    f"{name}: {far:,} value{'s are' if far != 1 else ' is'} far outside the usual range ({fence[0]:,.4g} to {fence[1]:,.4g}). Check for typing mistakes."))
         elif col["type"] == "date" and filled:
             future = future_dates(con, table, c)
             if future:
