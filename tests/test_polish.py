@@ -28,5 +28,6 @@ def test_favicon_is_served(client):
 
 @pytest.mark.parametrize("path", sorted(glob.glob(os.path.join(HERE, "static", "*.html"))))
 def test_every_page_has_icon_and_viewport(path):
-    html = open(path, encoding="utf-8").read()
+    with open(path, encoding="utf-8") as f:
+        html = f.read()
     assert 'rel="icon"' in html and 'name="viewport"' in html
