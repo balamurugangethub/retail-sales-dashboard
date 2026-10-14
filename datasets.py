@@ -16,6 +16,7 @@ from flask import jsonify, request, send_from_directory
 
 import cleaning
 import forecast
+import quality
 
 MAX_COLUMNS = 80
 MAX_NAME = 80
@@ -436,6 +437,10 @@ def register(app, db, error_cls):
                         "sample": sample_rows(db(), meta), "grains": list(GRAINS),
                         "aggs": [{"id": k, "label": v[0], "types": sorted(v[2]) if v[2] else None}
                                  for k, v in AGGS.items()]})
+
+    @app.get("/api/datasets/<int:ds_id>/quality")
+    def dataset_quality(ds_id):
+        return jsonify(quality.check(db(), meta_or_404(ds_id)))
 
     @app.delete("/api/datasets/<int:ds_id>")
     def delete_dataset(ds_id):
