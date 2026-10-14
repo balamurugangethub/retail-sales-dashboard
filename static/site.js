@@ -38,6 +38,8 @@
     if (me.user) link("/account", me.user.shop || me.user.name, "account nav-right");
     if (window.ChartStyle && ["/", "/builder"].includes(location.pathname)) nav.append(ChartStyle.button());
     if (window.Theme) nav.append(Theme.button());
+    const here = nav.querySelector("a.on");                // on a phone the row scrolls: show the current page
+    if (here && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = Math.max(0, here.offsetLeft - 16);
   }).catch(() => {});
 })();
 

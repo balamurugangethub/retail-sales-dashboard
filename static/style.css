@@ -14,7 +14,7 @@
 html { -webkit-font-smoothing: antialiased; }
 body { margin: 0; background: var(--paper); color: var(--text); font: 15px/1.5 var(--font); }
 ::selection { background: var(--ink); color: var(--paper); }
-:focus-visible { outline: 2px solid var(--line); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 a { color: var(--text); text-underline-offset: 3px; }
 a:hover { text-decoration-thickness: 2px; }
 input[type=checkbox], input[type=radio] { accent-color: var(--ink); }
@@ -395,3 +395,12 @@ a.sample:hover { border-color: var(--ink); }
 .pl-detail { color: var(--muted); }
 .pl-ms { font-size: 11px; color: var(--muted); margin-top: auto; padding-top: 6px; }
 @media (max-width: 700px) { .pl-step { border-right: 0; border-bottom: 1px solid var(--line); } .pl-step:last-child { border-bottom: 0; } }
+
+/* ---- small screens: one scrolling row of links instead of four rows ---- */
+@media (max-width: 700px) {
+  .brand { min-width: 0; max-width: 100%; }
+  .nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; align-items: center; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a, .nav button { white-space: nowrap; flex: 0 0 auto; }
+}
+.loading { color: var(--muted); font-size: 13px; padding: 10px 0; }
