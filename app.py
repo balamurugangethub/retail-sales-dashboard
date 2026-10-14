@@ -15,6 +15,7 @@ import accounts
 import cloud
 import datasets
 import forecast
+import sqlbench
 import workspace
 from ai import Assistant, ChatClient
 
@@ -22,7 +23,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REQUIRED_COLUMNS = ["date", "store", "category", "product", "orders", "units", "revenue", "cost"]
 MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 # Requests that never change stored data, so the public read-only demo still allows them
-READ_ONLY_ALLOWED = {"/api/assistant", "/api/import/preview", "/api/consent", "/api/auth/logout"}
+READ_ONLY_ALLOWED = {"/api/assistant", "/api/import/preview", "/api/consent", "/api/auth/logout", "/api/sql/run"}
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS sales (
@@ -383,6 +384,7 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
                        assistant=assistant or Assistant(ChatClient.from_env()))
     forecast.register(app, db=db, filters=filters, error_cls=ApiError)
     datasets.register(app, db=db, error_cls=ApiError)
+    sqlbench.register(app, db=db, error_cls=ApiError)
     return app
 
 

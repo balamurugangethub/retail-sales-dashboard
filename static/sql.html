@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL workbench | Retail Sales Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+<script src="/static/theme.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <h1>Retail Sales Dashboard</h1>
+    <nav class="nav"><a href="/">Overview</a><a href="/builder">Dashboard builder</a><a href="/explore">Explore any data</a><a href="/sql" class="on">SQL</a><a href="/forecast">Forecast</a><a href="/data">Data</a></nav>
+    <p>Run read-only SQL on your own tables <span class="badge">SELECT only</span></p>
+  </div>
+</header>
+<div id="notice" class="notice" role="status" hidden></div>
+
+<main>
+  <section id="empty" class="card" hidden>
+    <div class="card-head"><h2>No tables yet</h2></div>
+    <p class="hint">Open a file on the <a href="/explore">Explore any data</a> page and it appears here as a table you can query.</p>
+  </section>
+
+  <div id="work" class="sql-layout" hidden>
+    <aside class="card sql-schema">
+      <div class="card-head"><h2>Tables</h2></div>
+      <p class="hint">Click a name to add it to the query.</p>
+      <div id="schema"></div>
+    </aside>
+
+    <div class="sql-main">
+      <section class="card">
+        <div class="card-head"><h2>Query</h2></div>
+        <textarea id="sql" class="sql-editor" spellcheck="false" rows="8" aria-label="SQL query"></textarea>
+        <div class="ex-actions sql-actions">
+          <button class="btn" id="run">Run (Ctrl+Enter)</button>
+          <label class="sql-pick">Example
+            <select id="examples"><option value="">Choose one</option></select></label>
+          <label class="sql-pick">Recent
+            <select id="recent"><option value="">None yet</option></select></label>
+          <span class="hint" id="status"></span>
+        </div>
+      </section>
+
+      <section class="card" id="results-card" hidden>
+        <div class="card-head"><h2>Result</h2>
+          <button class="btn small ghost" id="export">Download CSV</button></div>
+        <div class="table-wrap sql-result"><table id="result"></table></div>
+        <p class="hint" id="result-note"></p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer>Queries can only read your data: nothing here can change or delete it. Results show up to 1,000 rows and each query stops after 5 seconds.</footer>
+
+<script src="/static/site.js"></script>
+<script src="/static/common.js"></script>
+<script src="/static/sql.js"></script>
+</body>
+</html>
