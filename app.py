@@ -396,6 +396,12 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
     def too_large(_e):
         return jsonify({"error": "File too large (max 10 MB)"}), 413
 
+    @app.errorhandler(404)
+    def not_found(_e):
+        if request.path.startswith("/api/"):
+            return jsonify({"error": "Not found"}), 404
+        return send_from_directory(app.static_folder, "notfound.html"), 404
+
     @app.errorhandler(ApiError)
     def api_error(e):
         return jsonify({"error": str(e)}), 400

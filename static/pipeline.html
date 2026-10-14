@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pipeline | Retail Sales Dashboard</title>
+<meta name="description" content="See how each uploaded file was read, cleaned, loaded and checked.">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/static/style.css">
 <script src="/static/theme.js"></script>
 </head>
@@ -22,7 +24,7 @@
     <div class="card-head"><h2>No pipelines yet</h2></div>
     <p class="hint">Open a file on the <a href="/explore">Explore any data</a> page. Each file goes through the same steps, and this page shows what each step did.</p>
   </section>
-  <div id="runs"></div>
+  <div id="runs"><p class="loading" role="status">Loading pipelines…</p></div>
 </main>
 
 <footer>Each file is read, its column types are detected, values are cleaned, the rows are loaded into a table, and the table is checked for quality. Files opened before this page existed show a quality score only.</footer>
