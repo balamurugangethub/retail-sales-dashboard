@@ -1,11 +1,38 @@
 # Retail Sales Dashboard
 
-A web dashboard for a 5-store retail chain. It replaces the weekly "merge Excel files from every
-store" routine with one live source of truth: KPIs, trends, store comparison, category mix, a
-store x month heatmap, top products, and plain-English insights.
+[![Tests](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/tests.yml/badge.svg)](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/tests.yml)
+[![Pylint](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/pylint.yml/badge.svg)](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/pylint.yml)
 
-Built as the working prototype for the presentation problem statement:
+**Live demo: https://retail-sales-dashboard-sigma.vercel.app** (click *Try with sample data* on the sign-in page)
+
+A small data platform that started as a sales dashboard for a 5-store retail chain. It replaces the weekly
+"merge Excel files from every store" routine with one live source of truth, and it works with any CSV or Excel
+file: read it, clean it, check its quality, store it, query it with SQL, chart it and forecast it.
+
+Built as the working prototype for the problem statement:
 *"A retail chain with 5 stores cannot see its sales clearly or quickly."*
+
+| Overview | Explore any data, with quality checks |
+|---|---|
+| ![Overview with KPIs and charts](docs/screenshots/overview.png) | ![Data quality card and chart builder](docs/screenshots/explore.png) |
+| **SQL workbench (read-only)** | **Pipeline view** |
+| ![SQL query and result table](docs/screenshots/sql.png) | ![Steps each file went through](docs/screenshots/pipeline.png) |
+
+<img src="docs/screenshots/mobile.png" alt="The dashboard on a phone" width="260">
+
+## What this project shows
+
+| Skill | Where to look |
+|---|---|
+| Ingestion from files and web links | `cleaning.py`, `datasets.py`, `sources.py` (links are checked so the server cannot be pointed at private addresses) |
+| Data cleaning and type detection | `cleaning.py`, `typed_rows` in `datasets.py` |
+| Data quality checks and scoring | `quality.py` |
+| Pipeline history and lineage | `pipeline_runs` and `dataset_sources` tables, the Pipeline page |
+| SQL | `sqlbench.py`: a read-only workbench using a SQLite authorizer, time and row limits, and readable views over generated tables |
+| Storage design | one SQLite database per account, synced to Supabase on a host with no permanent disk (`cloud.py`) |
+| Analytics and forecasting | `queries.py`, `forecast.py` |
+| Security and privacy | consent gate, scrypt password hashes, login lockout, no write access from SQL |
+| Testing and CI | 150+ pytest tests, GitHub Actions for tests and pylint |
 
 ## Run it
 
@@ -136,7 +163,7 @@ awake. Supabase keeps the saved copy, and a server never overwrites a stored cop
 
 ## What it does
 
-The app has three pages, linked from the header.
+The app's pages are linked from the header. The first three are the original sales dashboard; the rest work with any data.
 
 ### Overview (`/`)
 - **KPI tiles:** sales, profit, orders, average basket, each with % change vs the previous period.
@@ -165,6 +192,23 @@ The app has three pages, linked from the header.
 - **Edit in place:** search, filter, sort, double-click a cell to edit it, delete rows.
 - **Bulk fixes:** tidy everything, rename or merge a store/category/product, delete all rows for one.
 - **Export** to CSV and **restore** the sample data.
+
+### Explore any data (`/explore`)
+- **Open any file** (CSV, TSV, Excel) or a **web link**. Linked files show when they were last refreshed and refresh
+  themselves when you open them after the time you chose (every day, 6 hours, hour or only when asked).
+- **What the data says** (plain-English findings), **Data quality** (score out of 100: empty values, repeated rows,
+  odd spellings, numbers far outside the usual range, future dates), a chart builder and a forecast.
+
+### SQL (`/sql`)
+Write `SELECT` queries on your own tables. Each file shows up as a table with readable names. Queries can only read:
+they stop after 5 seconds or 1000 rows and cannot reach anything but your tables.
+
+### Pipeline (`/pipeline`)
+Every file with the steps it went through (read, detect types, clean, load, quality check), row counts and timings.
+
+### Demo accounts
+The sign-in page has **Try with sample data**: a private demo shop with sample sales and three sample files,
+deleted after 24 hours.
 
 ### AI assistant
 A chat panel in the builder. Examples:
@@ -238,6 +282,13 @@ All GET endpoints accept `start`, `end` (YYYY-MM-DD), `store`, `category`.
 | `POST /api/data/rename`, `/api/data/delete`, `/api/data/tidy` | bulk fixes |
 | `POST /api/assistant` (`{"message", "filters"}`) | assistant reply + proposed actions |
 
+| `GET /api/datasets`, `POST /api/datasets`, `GET/DELETE /api/datasets/<id>` | uploaded files of any shape |
+| `POST /api/datasets/from-url` (`{"url", "hours"}`), `POST /api/datasets/<id>/refresh` | open a web link, refresh it |
+| `GET /api/datasets/<id>/quality` | data quality score and problems |
+| `POST /api/datasets/<id>/query`, `/forecast` | chart data and forecast for any file |
+| `GET /api/pipeline` | steps each file went through |
+| `GET /api/sql/schema`, `POST /api/sql/run` | tables you can query, run a read-only query |
+| `POST /api/auth/demo` | open a demo account |
 | `POST /api/consent` (`{"accept": true/false}`) | accept or decline the privacy policy and cookies |
 | `GET /api/auth/me` | consent state and the signed-in user |
 | `POST /api/auth/register`, `/api/auth/login`, `/api/auth/logout` | accounts |
@@ -264,7 +315,9 @@ other's data, and the assistant behaves with and without an AI model
 app.py            Flask app, overview API + SQLite
 accounts.py       privacy/cookie consent gate, sign-in, one database per account
 workspace.py      builder, import/cleaning, editing and assistant routes
-datasets.py       uploads of any CSV/Excel file (Explore page), one table per upload
+datasets.py       uploads of any CSV/Excel file (Explore page), one table per upload, pipeline history
+quality.py        data quality checks and score
+sources.py        safe download of web links
 sqlbench.py       read-only SQL workbench over your tables
 forecast.py       forecast and order planner
 cloud.py          Supabase storage so accounts and uploads persist on the hosted site
@@ -274,10 +327,12 @@ ai.py             AI chat client (Gemini/Groq/Ollama), rule-based assistant, act
 seed.py           sample-data generator (calibrated to the deck)
 data/targets.csv  store x month targets used by the generator
 static/           index/builder/data, welcome/privacy/sign-in/account pages, JS, style.css, vendor/chart.umd.min.js
-tests/            pytest suite
+tests/            pytest suite (run on every push by GitHub Actions)
+docs/             screenshots, hosting notes
 ```
 
 ## Ideas for next steps
 
-Staff roles within a shop, password reset by email, sales targets and alerts, forecasting, a hosted database (so the public
-site can save uploads), connect to a real POS, and a scheduled weekly summary email.
+Staff roles within a shop, password reset by email, sales targets and alerts, a timer-based refresh for linked files
+(today they refresh when opened, because the hosted site has no always-on server), connecting to a real POS, and a
+scheduled weekly summary email.
