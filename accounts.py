@@ -144,8 +144,7 @@ def register(app, prepare_db, consent=True, auth=True, sync=None):  # pylint: di
                 sync.ensure(os.path.basename(g.db_path), g.db_path)
             except StoreError as e:
                 return unavailable(e)
-        if not os.path.exists(g.db_path):
-            prepare_db(g.db_path)
+        prepare_db(g.db_path)               # creates the file, and adds tables that newer versions need
         return None
 
     def unavailable(error):
