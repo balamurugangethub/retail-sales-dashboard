@@ -279,3 +279,41 @@ def test_sanitize_drops_unknown_values():
     values = {"store": ["Store A"], "category": [], "product": []}
     assert sanitize_actions([{"type": "delete_rows", "field": "store", "value": "Ghost"}], values) == []
     assert sanitize_actions("garbage", values) == []
+
+
+# ---- builder on an uploaded dataset ------------------------------------------------
+def dataset_dashboard(widgets, source=1):
+    return {"name": "Ward", "spec": {"source": source, "widgets": widgets, "filters": {"store": "A"}}}
+
+
+def test_dashboard_on_a_dataset_is_saved_with_its_source(client):
+    widget = {"chart": "bar", "dims": ["c0", "c2:month"], "measures": ["avg:c1", "rows"], "limit": 5, "sort": "-avg:c1"}
+    saved = ok(client.post("/api/dashboards", json=dataset_dashboard([widget])))
+    spec = saved["spec"]
+    assert spec["source"] == 1 and spec["filters"] == {}
+    assert spec["widgets"][0]["dims"] == ["c0", "c2:month"] and spec["widgets"][0]["sort"] == "-avg:c1"
+    assert ok(client.get(f"/api/dashboards/{saved['id']}"))["spec"]["source"] == 1
+
+
+@pytest.mark.parametrize("widget", [
+    {"dims": ["store"], "measures": ["sales"]},                       # a sales field is not a column
+    {"dims": ["c0; DROP TABLE sales"], "measures": ["rows"]},
+    {"dims": ["c0:fortnight"], "measures": ["rows"]},
+    {"dims": [], "measures": []},
+    {"dims": ["c0", "c1", "c2"], "measures": ["rows"]},
+    {"dims": ["c0"], "measures": ["median:c1"]},
+])
+def test_dataset_dashboard_rejects_fields_that_are_not_columns(client, widget):
+    r = client.post("/api/dashboards", json=dataset_dashboard([widget]))
+    assert r.status_code == 400
+
+
+@pytest.mark.parametrize("source", [0, -3, "1", True, 1.5])
+def test_dataset_dashboard_rejects_a_bad_source(client, source):
+    assert client.post("/api/dashboards", json=dataset_dashboard([], source)).status_code == 400
+
+
+def test_sales_dashboards_are_unchanged(client):
+    w = {"chart": "bar", "dims": ["store"], "measures": ["sales"]}
+    saved = ok(client.post("/api/dashboards", json={"name": "S", "spec": {"widgets": [w], "filters": {"store": "A"}}}))
+    assert "source" not in saved["spec"] and saved["spec"]["filters"] == {"store": "A"}

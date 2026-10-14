@@ -26,7 +26,8 @@
 </header>
 
 <section class="filters" aria-label="Dashboard filters">
-  <label>Period
+  <label>Data <select id="f-source" aria-label="Data source"><option value="">Sales</option></select></label>
+  <label class="sales-only">Period
     <select id="f-preset">
       <option value="all">All time</option>
       <option value="12m">Last 12 months</option>
@@ -36,10 +37,10 @@
       <option value="custom">Custom…</option>
     </select>
   </label>
-  <label>From <input type="date" id="f-start"></label>
-  <label>To <input type="date" id="f-end"></label>
-  <label>Store <select id="f-store"><option value="">All stores</option></select></label>
-  <label>Category <select id="f-category"><option value="">All categories</option></select></label>
+  <label class="sales-only">From <input type="date" id="f-start"></label>
+  <label class="sales-only">To <input type="date" id="f-end"></label>
+  <label class="sales-only">Store <select id="f-store"><option value="">All stores</option></select></label>
+  <label class="sales-only">Category <select id="f-category"><option value="">All categories</option></select></label>
 </section>
 <div id="notice" class="notice" role="status" hidden></div>
 
@@ -56,7 +57,7 @@
   <main id="canvas" class="canvas" aria-label="Dashboard canvas">
     <div id="empty" class="empty">
       <h2>Start your dashboard</h2>
-      <p>Drag <b>Sales</b> from the left onto this area, or double-click any field.<br>
+      <p>Drag a field from the left onto this area, or double-click any field.<br>
          Or let the assistant build a starter dashboard for you.</p>
       <button class="btn" id="starter-btn">Build a starter dashboard</button>
     </div>

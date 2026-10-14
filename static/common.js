@@ -38,6 +38,7 @@ function fmtValue(format, v) {
   if (v === null || v === undefined) return "–";
   if (format === "money") return "$" + (Math.abs(v) >= 100 ? Math.round(v).toLocaleString() : v.toFixed(2));
   if (format === "pct") return v.toFixed(1) + "%";
+  if (format === "decimal") return Math.abs(v) >= 100 ? Math.round(v).toLocaleString() : (Math.round(v * 100) / 100).toLocaleString();
   return Math.round(v).toLocaleString();
 }
 
@@ -46,7 +47,7 @@ function fmtShort(format, v) {
   const a = Math.abs(v), p = format === "money" ? "$" : "";
   if (a >= 1e6) return p + (v / 1e6).toFixed(1) + "M";
   if (a >= 1e3) return p + (v / 1e3).toFixed(a >= 1e5 ? 0 : 1) + "K";
-  return p + (format === "money" && a < 100 ? v.toFixed(2) : Math.round(v));
+  return p + ((format === "money" || format === "decimal") && a < 100 ? +v.toFixed(2) : Math.round(v));
 }
 
 // Period presets relative to the last date in the data
