@@ -35,6 +35,13 @@ CREATE TABLE IF NOT EXISTS datasets (
     columns TEXT NOT NULL,        -- JSON [{"name": ..., "type": "number|date|text"}]
     rows INTEGER NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS pipeline_runs (
+    dataset_id INTEGER PRIMARY KEY,
+    created REAL NOT NULL,
+    filename TEXT,
+    steps TEXT NOT NULL           -- JSON [{"step": ..., "detail": ..., "rows": ..., "ms": ...}]
+);
 """
 
 GRAINS = {
@@ -125,14 +132,33 @@ def typed_rows(header, rows):
     return [{"name": n, "type": t} for n, t in zip(names, types)], out
 
 
-def create_dataset(con, filename, data, name=None):
+def source_cells(rows):
+    return sum(1 for r in rows for v in r if str(v).strip() != "")
+
+
+def create_dataset(con, filename, data, name=None):  # pylint: disable=too-many-locals
+    steps, t0 = [], time.perf_counter()
+
+    def lap(step, detail, rows):
+        nonlocal t0
+        now = time.perf_counter()
+        steps.append({"step": step, "detail": detail, "rows": rows, "ms": round((now - t0) * 1000)})
+        t0 = now
     try:
         header, rows = cleaning.read_table(filename, data)
     except cleaning.CleaningError as e:
         raise DatasetError(str(e)) from e
     if not rows:
         raise DatasetError("The file has a header but no rows.")
+    lap("Read", f"{len(data):,} bytes, {len(header)} columns found", len(rows))
     columns, body = typed_rows(header, rows)
+    kinds = {k: sum(1 for c in columns if c["type"] == k) for k in ("number", "date", "text")}
+    dropped = len(header) - len(columns)
+    lap("Detect types", f"columns: {kinds['number']} number, {kinds['date']} date, {kinds['text']} text"
+        + (f"; {dropped} empty column{'s' if dropped != 1 else ''} dropped" if dropped else ""), len(body))
+    unreadable = source_cells(rows) - sum(1 for r in body for v in r if v is not None)
+    lap("Clean", "numbers, dates and blanks converted"
+        + (f"; {unreadable:,} values could not be read and were left empty" if unreadable > 0 else "; every value was readable"), len(body))
     label = (name or re.sub(r"\.[A-Za-z0-9]+$", "", filename or "") or "Dataset").strip()[:MAX_NAME] or "Dataset"
     with con:
         cur = con.execute("INSERT INTO datasets(name, created, columns, rows) VALUES (?,?,?,?)",
@@ -142,7 +168,24 @@ def create_dataset(con, filename, data, name=None):
         con.execute(f"CREATE TABLE ds_{ds_id} ({defs})")
         marks = ", ".join("?" for _ in columns)
         con.executemany(f"INSERT INTO ds_{ds_id} VALUES ({marks})", body)
+        lap("Load", f"stored as table ds_{ds_id}, ready for charts, forecasts and SQL", len(body))
+        con.execute("INSERT INTO pipeline_runs(dataset_id, created, filename, steps) VALUES (?,?,?,?)",
+                    (ds_id, time.time(), (filename or "")[:200], json.dumps(steps)))
     return ds_id
+
+
+def pipeline_overview(con):
+    """Every upload with the steps it went through and a fresh quality score."""
+    out = []
+    for row in con.execute("SELECT d.id, d.name, d.rows, d.columns, d.created, p.filename, p.steps FROM datasets d "
+                           "LEFT JOIN pipeline_runs p ON p.dataset_id = d.id ORDER BY d.created DESC"):
+        meta = {"id": row["id"], "rows": row["rows"], "columns": json.loads(row["columns"])}
+        report = quality.check(con, meta)
+        out.append({"id": row["id"], "name": row["name"], "rows": row["rows"], "columns": len(meta["columns"]),
+                    "created": row["created"], "filename": row["filename"],
+                    "steps": json.loads(row["steps"]) if row["steps"] else None,
+                    "quality": {"score": report["score"], "grade": report["grade"], "issues": len(report["issues"])}})
+    return out
 
 
 def load_meta(con, ds_id):
@@ -442,6 +485,14 @@ def register(app, db, error_cls):
     def dataset_quality(ds_id):
         return jsonify(quality.check(db(), meta_or_404(ds_id)))
 
+    @app.get("/api/pipeline")
+    def pipeline():
+        return jsonify({"datasets": pipeline_overview(db())})
+
+    @app.get("/pipeline")
+    def pipeline_page():
+        return send_from_directory(app.static_folder, "pipeline.html")
+
     @app.delete("/api/datasets/<int:ds_id>")
     def delete_dataset(ds_id):
         if app.config["READ_ONLY"]:
@@ -451,6 +502,7 @@ def register(app, db, error_cls):
         with d:
             d.execute(f"DROP TABLE IF EXISTS ds_{ds_id}")
             d.execute("DELETE FROM datasets WHERE id = ?", (ds_id,))
+            d.execute("DELETE FROM pipeline_runs WHERE dataset_id = ?", (ds_id,))
         return jsonify({"ok": True})
 
     @app.post("/api/datasets/<int:ds_id>/query")
