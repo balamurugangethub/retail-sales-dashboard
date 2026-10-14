@@ -14,7 +14,7 @@
 html { -webkit-font-smoothing: antialiased; }
 body { margin: 0; background: var(--paper); color: var(--text); font: 15px/1.5 var(--font); }
 ::selection { background: var(--ink); color: var(--paper); }
-:focus-visible { outline: 2px solid var(--line); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 a { color: var(--text); text-underline-offset: 3px; }
 a:hover { text-decoration-thickness: 2px; }
 input[type=checkbox], input[type=radio] { accent-color: var(--ink); }
@@ -401,3 +401,12 @@ a.sample:hover { border-color: var(--ink); }
 .link-form label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
 .link-form input, .link-form select { background: var(--paper); color: var(--text); border: 1px solid var(--line); border-radius: 0; padding: 7px 8px; font: inherit; font-size: 13px; text-transform: none; letter-spacing: 0; }
 .link-url { flex: 1 1 280px; }
+
+/* ---- small screens: one scrolling row of links instead of four rows ---- */
+@media (max-width: 700px) {
+  .brand { min-width: 0; max-width: 100%; }
+  .nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; align-items: center; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a, .nav button { white-space: nowrap; flex: 0 0 auto; }
+}
+.loading { color: var(--muted); font-size: 13px; padding: 10px 0; }

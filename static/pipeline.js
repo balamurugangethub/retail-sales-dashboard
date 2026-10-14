@@ -37,7 +37,7 @@ function card(d) {
 
 (async function init() {
   let r;
-  try { r = await api("/api/pipeline"); } catch (e) { return notify(e.message, true); }
+  try { r = await api("/api/pipeline"); } catch (e) { $("runs").replaceChildren(); return notify(e.message, true); }
   $("empty").hidden = r.datasets.length > 0;
   $("runs").replaceChildren(...r.datasets.map(card));
 })();
