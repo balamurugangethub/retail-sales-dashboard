@@ -32,7 +32,8 @@ def open_link(client, url="https://example.com/sales.csv", hours=24):
     return client.post("/api/datasets/from-url", json={"url": url, "hours": hours})
 
 
-def test_open_from_link_creates_dataset_with_source(client, web):
+@pytest.mark.usefixtures("web")
+def test_open_from_link_creates_dataset_with_source(client):
     r = open_link(client)
     assert r.status_code == 200
     ds = client.get(f"/api/datasets/{r.get_json()['id']}").get_json()
@@ -61,7 +62,8 @@ def test_refresh_refuses_changed_columns(client, web):
     assert client.get(f"/api/datasets/{ds}").get_json()["rows"] == 3
 
 
-def test_due_when_older_than_the_refresh_hours(client, web):
+@pytest.mark.usefixtures("web")
+def test_due_when_older_than_the_refresh_hours(client):
     ds = open_link(client, hours=1).get_json()["id"]
     c = sqlite3.connect(client.application.config["DB_PATH"])
     c.execute("UPDATE dataset_sources SET refreshed = refreshed - 7200")
@@ -72,24 +74,28 @@ def test_due_when_older_than_the_refresh_hours(client, web):
     assert client.get(f"/api/datasets/{ds}").get_json()["source"]["due"] is False
 
 
-def test_never_refresh_is_never_due(client, web):
+@pytest.mark.usefixtures("web")
+def test_never_refresh_is_never_due(client):
     ds = open_link(client, hours=0).get_json()["id"]
     assert client.get(f"/api/datasets/{ds}").get_json()["source"]["due"] is False
 
 
-def test_bad_refresh_choice_and_unlinked_dataset(client, web):
+@pytest.mark.usefixtures("web")
+def test_bad_refresh_choice_and_unlinked_dataset(client):
     assert open_link(client, hours=5).status_code == 400
     plain = client.post("/api/datasets", data={"file": (io.BytesIO(b"a,b\n1,2\n"), "x.csv")}, content_type="multipart/form-data")
     r = client.post(f"/api/datasets/{plain.get_json()['id']}/refresh")
     assert r.status_code == 400 and "not opened from a link" in r.get_json()["error"]
 
 
-def test_link_errors_are_friendly(client, web):
+@pytest.mark.usefixtures("web")
+def test_link_errors_are_friendly(client):
     r = open_link(client, url="https://example.com/missing.csv")
     assert r.status_code == 400 and "404" in r.get_json()["error"]
 
 
-def test_delete_removes_the_source(client, web):
+@pytest.mark.usefixtures("web")
+def test_delete_removes_the_source(client):
     ds = open_link(client).get_json()["id"]
     assert client.delete(f"/api/datasets/{ds}").status_code == 200
     assert client.post(f"/api/datasets/{ds}/refresh").status_code == 400
@@ -100,7 +106,8 @@ def test_read_only_site_refuses_links(tmp_path, web):
     assert open_link(ro).status_code == 403
 
 
-def test_source_tables_are_not_queryable(client, web):
+@pytest.mark.usefixtures("web")
+def test_source_tables_are_not_queryable(client):
     open_link(client)
     assert client.post("/api/sql/run", json={"sql": "SELECT * FROM dataset_sources"}).status_code == 400
 

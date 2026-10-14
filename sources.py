@@ -51,7 +51,7 @@ def check_url(url):
     return parts.scheme, parts.hostname, port, path + (f"?{parts.query}" if parts.query else "")
 
 
-class Pinned:
+class Pinned:  # pylint: disable=no-member,attribute-defined-outside-init
     """Mixin: connect to a fixed, already checked address."""
     pinned = None
 

@@ -38,7 +38,8 @@ def test_schema_uses_readable_names(client):
 
 def test_runs_ordinary_sql(client):
     upload(client)
-    out = run(client, "SELECT ward, COUNT(*) AS n, ROUND(AVG(wait_min), 1) AS wait FROM ward_visits GROUP BY ward ORDER BY ward;").get_json()
+    out = run(client, "SELECT ward, COUNT(*) AS n, ROUND(AVG(wait_min), 1) AS wait "
+                 "FROM ward_visits GROUP BY ward ORDER BY ward;").get_json()
     assert out["columns"] == ["ward", "n", "wait"]
     assert [r[:2] for r in out["rows"]] == [["A", 30], ["B", 30]]
     assert out["truncated"] is False

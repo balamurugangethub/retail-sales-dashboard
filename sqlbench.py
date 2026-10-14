@@ -20,7 +20,8 @@ MAX_CELL_BYTES = 1_000_000
 PROGRESS_STEPS = 10_000
 
 ALLOWED_ACTIONS = {sqlite3.SQLITE_SELECT, sqlite3.SQLITE_READ, sqlite3.SQLITE_FUNCTION, sqlite3.SQLITE_RECURSIVE}
-RESERVED_TABLES = {"sales", "datasets", "dashboards", "staged_imports", "pipeline_runs", "dataset_sources", "sqlite_master", "sqlite_temp_master"}
+RESERVED_TABLES = {"sales", "datasets", "dashboards", "staged_imports", "pipeline_runs", "dataset_sources",
+                   "sqlite_master", "sqlite_temp_master"}
 KEYWORDS = {"select", "from", "where", "group", "order", "by", "limit", "table", "index", "values", "insert",
             "update", "delete", "join", "on", "as", "and", "or", "not", "null", "case", "when", "then", "else",
             "end", "in", "is", "like", "union", "all", "distinct", "having", "create", "drop", "default",
@@ -84,7 +85,7 @@ INTERNAL_TABLES = {"sqlite_master", "sqlite_schema", "sqlite_temp_master", "sqli
 def authorizer(con, allowed_tables):
     """Refuse everything but SELECT, and reading any stored table that is not one of the user's."""
     stored = {r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type = 'table'")}
-    off_limits = ((stored | INTERNAL_TABLES) - allowed_tables)
+    off_limits = (stored | INTERNAL_TABLES) - allowed_tables
 
     def check(action, arg1, _arg2, _db, _source):
         if action not in ALLOWED_ACTIONS:
@@ -120,7 +121,7 @@ def run(con, sql, limit=MAX_ROWS):
         columns = [d[0] for d in cur.description]
         rows = [[cell(v) for v in r] for r in cur.fetchmany(limit + 1)]
     except sqlite3.DatabaseError as e:
-        raise SqlError(explain(e, started)) from e
+        raise SqlError(explain(e)) from e
     finally:
         con.set_progress_handler(None, 0)
         con.set_authorizer(None)
@@ -131,7 +132,7 @@ def run(con, sql, limit=MAX_ROWS):
             "ms": round((time.monotonic() - started) * 1000)}
 
 
-def explain(error, started):
+def explain(error):
     text = str(error)
     if "interrupted" in text:
         return f"The query took longer than {MAX_SECONDS} seconds and was stopped. Add a filter or a LIMIT."
