@@ -17,6 +17,7 @@ from flask import jsonify, request, send_from_directory
 import cleaning
 import forecast
 import quality
+import sources
 
 MAX_COLUMNS = 80
 MAX_NAME = 80
@@ -34,6 +35,13 @@ CREATE TABLE IF NOT EXISTS datasets (
     created REAL NOT NULL,
     columns TEXT NOT NULL,        -- JSON [{"name": ..., "type": "number|date|text"}]
     rows INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS dataset_sources (
+    dataset_id INTEGER PRIMARY KEY,
+    url TEXT NOT NULL,
+    hours INTEGER NOT NULL,       -- refresh when older than this many hours; 0 means only when asked
+    refreshed REAL NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS pipeline_runs (
@@ -136,7 +144,8 @@ def source_cells(rows):
     return sum(1 for r in rows for v in r if str(v).strip() != "")
 
 
-def create_dataset(con, filename, data, name=None):  # pylint: disable=too-many-locals
+def load_table(filename, data):  # pylint: disable=too-many-locals
+    """Reads a file into typed columns. Returns (columns, rows, steps) where steps describe what was done."""
     steps, t0 = [], time.perf_counter()
 
     def lap(step, detail, rows):
@@ -159,6 +168,22 @@ def create_dataset(con, filename, data, name=None):  # pylint: disable=too-many-
     unreadable = source_cells(rows) - sum(1 for r in body for v in r if v is not None)
     lap("Clean", "numbers, dates and blanks converted"
         + (f"; {unreadable:,} values could not be read and were left empty" if unreadable > 0 else "; every value was readable"), len(body))
+    return columns, body, steps
+
+
+def load_step(detail, rows, started):
+    return {"step": "Load", "detail": detail, "rows": rows, "ms": round((time.perf_counter() - started) * 1000)}
+
+
+def store_run(con, ds_id, filename, steps):
+    con.execute("INSERT OR REPLACE INTO pipeline_runs(dataset_id, created, filename, steps) VALUES (?,?,?,?)",
+                (ds_id, time.time(), (filename or "")[:200], json.dumps(steps)))
+
+
+def create_dataset(con, filename, data, name=None, source=None):
+    """Stores an upload as table ds_<id>. source is (url, refresh hours) for a file opened from a link."""
+    columns, body, steps = load_table(filename, data)
+    started = time.perf_counter()
     label = (name or re.sub(r"\.[A-Za-z0-9]+$", "", filename or "") or "Dataset").strip()[:MAX_NAME] or "Dataset"
     with con:
         cur = con.execute("INSERT INTO datasets(name, created, columns, rows) VALUES (?,?,?,?)",
@@ -168,10 +193,59 @@ def create_dataset(con, filename, data, name=None):  # pylint: disable=too-many-
         con.execute(f"CREATE TABLE ds_{ds_id} ({defs})")
         marks = ", ".join("?" for _ in columns)
         con.executemany(f"INSERT INTO ds_{ds_id} VALUES ({marks})", body)
-        lap("Load", f"stored as table ds_{ds_id}, ready for charts, forecasts and SQL", len(body))
-        con.execute("INSERT INTO pipeline_runs(dataset_id, created, filename, steps) VALUES (?,?,?,?)",
-                    (ds_id, time.time(), (filename or "")[:200], json.dumps(steps)))
+        steps.append(load_step(f"stored as table ds_{ds_id}, ready for charts, forecasts and SQL", len(body), started))
+        store_run(con, ds_id, source[0] if source else filename, steps)
+        if source:
+            con.execute("INSERT INTO dataset_sources(dataset_id, url, hours, refreshed) VALUES (?,?,?,?)",
+                        (ds_id, source[0], source[1], time.time()))
     return ds_id
+
+
+REFRESH_CHOICES = (0, 1, 6, 24)
+
+
+def open_link(con, url, hours=24, name=None):
+    hours = int(hours or 0)
+    if hours not in REFRESH_CHOICES:
+        raise DatasetError("Choose how often to refresh: never, every hour, every 6 hours or every day.")
+    try:
+        data, filename = sources.fetch(url)
+    except sources.SourceError as e:
+        raise DatasetError(str(e)) from e
+    return create_dataset(con, filename, data, name, source=(str(url).strip()[:500], hours))
+
+
+def refresh_dataset(con, ds_id):
+    """Download the linked file again and replace the rows. The columns must be the same as before."""
+    link = con.execute("SELECT url FROM dataset_sources WHERE dataset_id = ?", (ds_id,)).fetchone()
+    if not link:
+        raise DatasetError("This dataset was not opened from a link, so there is nothing to refresh.")
+    meta = load_meta(con, ds_id)
+    try:
+        data, filename = sources.fetch(link["url"])
+    except sources.SourceError as e:
+        raise DatasetError(str(e)) from e
+    columns, body, steps = load_table(filename, data)
+    if [(c["name"], c["type"]) for c in columns] != [(c["name"], c["type"]) for c in meta["columns"]]:
+        raise DatasetError("The columns in the file have changed since you opened it. Open the link again as a new dataset.")
+    started = time.perf_counter()
+    with con:
+        con.execute(f"DELETE FROM ds_{ds_id}")
+        marks = ", ".join("?" for _ in columns)
+        con.executemany(f"INSERT INTO ds_{ds_id} VALUES ({marks})", body)
+        con.execute("UPDATE datasets SET rows = ? WHERE id = ?", (len(body), ds_id))
+        con.execute("UPDATE dataset_sources SET refreshed = ? WHERE dataset_id = ?", (time.time(), ds_id))
+        steps.append(load_step(f"refreshed table ds_{ds_id}: {meta['rows']:,} rows before, {len(body):,} now", len(body), started))
+        store_run(con, ds_id, link["url"], steps)
+    return {"rows_before": meta["rows"], "rows": len(body)}
+
+
+def source_info(con, ds_id):
+    row = con.execute("SELECT url, hours, refreshed FROM dataset_sources WHERE dataset_id = ?", (ds_id,)).fetchone()
+    if not row:
+        return None
+    due = bool(row["hours"]) and time.time() - row["refreshed"] > row["hours"] * 3600
+    return {"url": row["url"], "hours": row["hours"], "refreshed": row["refreshed"], "due": due}
 
 
 def pipeline_overview(con):
@@ -182,7 +256,7 @@ def pipeline_overview(con):
         meta = {"id": row["id"], "rows": row["rows"], "columns": json.loads(row["columns"])}
         report = quality.check(con, meta)
         out.append({"id": row["id"], "name": row["name"], "rows": row["rows"], "columns": len(meta["columns"]),
-                    "created": row["created"], "filename": row["filename"],
+                    "created": row["created"], "filename": row["filename"], "source": source_info(con, row["id"]),
                     "steps": json.loads(row["steps"]) if row["steps"] else None,
                     "quality": {"score": report["score"], "grade": report["grade"], "issues": len(report["issues"])}})
     return out
@@ -472,11 +546,28 @@ def register(app, db, error_cls):
         ds_id = guard(lambda: create_dataset(db(), f.filename, f.read(), request.form.get("name")))
         return jsonify({"id": ds_id})
 
+    def writable():
+        if app.config["READ_ONLY"]:
+            raise ApiError("This hosted demo is read-only. Run the app on your computer to open your own data.")
+
+    @app.post("/api/datasets/from-url")
+    def add_from_link():
+        writable()
+        data = body()
+        ds_id = guard(lambda: open_link(db(), data.get("url"), data.get("hours", 24), data.get("name")))
+        return jsonify({"id": ds_id})
+
+    @app.post("/api/datasets/<int:ds_id>/refresh")
+    def refresh(ds_id):
+        writable()
+        meta_or_404(ds_id)
+        return jsonify(guard(lambda: refresh_dataset(db(), ds_id)))
+
     @app.get("/api/datasets/<int:ds_id>")
     def get_dataset(ds_id):
         meta = meta_or_404(ds_id)
         prof = profile(db(), meta)
-        return jsonify({**meta, "profile": prof, "insights": insights(db(), meta, prof),
+        return jsonify({**meta, "source": source_info(db(), ds_id), "profile": prof, "insights": insights(db(), meta, prof),
                         "sample": sample_rows(db(), meta), "grains": list(GRAINS),
                         "aggs": [{"id": k, "label": v[0], "types": sorted(v[2]) if v[2] else None}
                                  for k, v in AGGS.items()]})
@@ -503,6 +594,7 @@ def register(app, db, error_cls):
             d.execute(f"DROP TABLE IF EXISTS ds_{ds_id}")
             d.execute("DELETE FROM datasets WHERE id = ?", (ds_id,))
             d.execute("DELETE FROM pipeline_runs WHERE dataset_id = ?", (ds_id,))
+            d.execute("DELETE FROM dataset_sources WHERE dataset_id = ?", (ds_id,))
         return jsonify({"ok": True})
 
     @app.post("/api/datasets/<int:ds_id>/query")

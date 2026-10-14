@@ -23,7 +23,13 @@
   <label>Dataset <select id="ds-select"><option value="">No datasets yet</option></select></label>
   <button class="btn ghost" id="ds-delete" hidden>Remove dataset</button>
   <span class="hint" id="ds-note"></span>
+  <span class="hint" id="ds-source"></span><button class="btn small ghost" id="ds-refresh" hidden>Refresh now</button>
 </section>
+<form class="filters link-form" id="link-form" aria-label="Open a file from a web link">
+  <label class="link-url">Or open a web link <input type="url" id="link-url" placeholder="https://example.com/data.csv" required></label>
+  <label>Refresh <select id="link-hours"><option value="24">every day</option><option value="6">every 6 hours</option><option value="1">every hour</option><option value="0">only when I ask</option></select></label>
+  <button class="btn" type="submit" id="link-go">Open link</button>
+</form>
 <div id="notice" class="notice" role="status" hidden></div>
 
 <main>
