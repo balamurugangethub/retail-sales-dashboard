@@ -379,3 +379,9 @@ a.sample:hover { border-color: var(--ink); }
 .sql-pick select { background: var(--paper); color: var(--text); border: 1px solid var(--line); border-radius: 0; padding: 6px 8px; font: inherit; font-size: 13px; text-transform: none; letter-spacing: 0; max-width: 260px; }
 .sql-result { max-height: 460px; overflow: auto; }
 @media (max-width: 900px) { .sql-layout { grid-template-columns: 1fr; } .sql-schema { position: static; max-height: none; } }
+
+/* ---- demo mode ---- */
+.demo-bar { background: var(--ink); color: var(--paper); font-size: 13px; padding: 8px 32px; text-align: center; }
+.demo-bar a { color: var(--paper); font-weight: 700; }
+.demo-box { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+.demo-box .btn { width: 100%; }

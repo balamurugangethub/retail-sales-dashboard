@@ -44,7 +44,14 @@
         $("subtitle").textContent = "Accounts are switched off on this public demo. Run the app on your own computer to create one.";
         form.hidden = true; $("switch").innerHTML = '<a href="/">Explore the demo</a>';
       } else if (me.user) location.href = next();
+      else if (me.demo_available) $("demo-box").hidden = false;
     });
+    $("demo-btn").onclick = async () => {
+      $("form-error").textContent = "";
+      $("demo-btn").disabled = true;
+      try { await post("/api/auth/demo"); location.href = next(); }
+      catch (e) { $("form-error").textContent = e.message; $("demo-btn").disabled = false; }
+    };
     form.onsubmit = async (ev) => {
       ev.preventDefault();
       $("form-error").textContent = "";
@@ -65,6 +72,10 @@
     fetch("/api/auth/me").then((r) => r.json()).then((me) => {
       if (!me.user) { location.href = "/login?next=/account"; return; }
       const u = me.user;
+      if (u.demo) {
+        const pw = $("delete-form").querySelector("input[name=password]");
+        pw.required = false; pw.closest("label").hidden = true;
+      }
       const rows = [["Name", u.name], ["Shop", u.shop || "–"], ["Email", u.email], ["Member since", u.created.slice(0, 10)],
                     ["Privacy policy", "Accepted version " + u.policy_version + " on " + u.policy_accepted_at.slice(0, 10)]];
       rows.forEach(([k, v]) => {
