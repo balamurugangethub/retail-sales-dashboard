@@ -410,3 +410,6 @@ a.sample:hover { border-color: var(--ink); }
   .nav a, .nav button { white-space: nowrap; flex: 0 0 auto; }
 }
 .loading { color: var(--muted); font-size: 13px; padding: 10px 0; }
+
+/* Builder on an uploaded dataset: the sales-only filters are hidden */
+.filters.dataset .sales-only { display: none; }

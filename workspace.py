@@ -15,6 +15,8 @@ from queries import CHART_TYPES, QueryError, catalog, run_query, validate_spec
 TEXT_FIELDS = ["store", "category", "product"]
 MAX_WIDGETS = 40
 STAGING_TTL_SECONDS = 2 * 3600
+DS_DIM = re.compile(r"c\d{1,2}(:(day|week|month|quarter|year))?")
+DS_MEASURE = re.compile(r"(sum|avg|min|max|count|distinct):c\d{1,2}|rows")
 FIELD_CHOICES = [[f, cleaning.FIELD_LABELS[f]] for f in cleaning.FIELDS]
 
 SCHEMA = """
@@ -49,6 +51,24 @@ def clean_widget(w, error_cls):
         out["sort"] = w["sort"]
     if isinstance(w.get("filters"), dict):
         out["filters"] = {k: str(v)[:120] for k, v in w["filters"].items() if k in TEXT_FIELDS and v}
+    return out
+
+
+def clean_dataset_widget(w, error_cls):
+    """A builder widget on an uploaded dataset: fields are column ids like c3, c2:month, sum:c4 or rows."""
+    if not isinstance(w, dict):
+        raise error_cls("Each widget must be an object")
+    dims = [str(d) for d in (w.get("dims") or []) if d]
+    measures = [str(m) for m in (w.get("measures") or []) if m]
+    if (len(dims) > 2 or not 0 < len(measures) <= 4 or len(set(dims)) != len(dims) or len(set(measures)) != len(measures)
+            or not all(DS_DIM.fullmatch(d) for d in dims) or not all(DS_MEASURE.fullmatch(m) for m in measures)):
+        raise error_cls("This chart uses fields that do not exist in the chosen data")
+    out = {"chart": w.get("chart") if w.get("chart") in CHART_TYPES else "bar", "dims": dims, "measures": measures,
+           "title": str(w.get("title") or "")[:80], "span": w.get("span") if w.get("span") in (1, 2, 3, 4) else 2}
+    if isinstance(w.get("limit"), int) and 0 < w["limit"] <= 500:
+        out["limit"] = w["limit"]
+    if isinstance(w.get("sort"), str) and w["sort"][1:] in dims + measures and w["sort"][:1] in "+-":
+        out["sort"] = w["sort"]
     return out
 
 
@@ -132,6 +152,11 @@ def register(app, db, filters, insights, error_cls, assistant):  # pylint: disab
         widgets = spec.get("widgets") or []
         if not isinstance(widgets, list) or len(widgets) > MAX_WIDGETS:
             raise ApiError(f"A dashboard holds at most {MAX_WIDGETS} widgets")
+        source = spec.get("source")
+        if source is not None:
+            if not isinstance(source, int) or isinstance(source, bool) or source < 1:
+                raise ApiError("Unknown data source")
+            return {"source": source, "widgets": [clean_dataset_widget(w, ApiError) for w in widgets], "filters": {}}
         flt = spec.get("filters") if isinstance(spec.get("filters"), dict) else {}
         flt = {k: str(v)[:120] for k, v in flt.items() if k in TEXT_FIELDS + ["start", "end", "preset"] and v}
         return {"widgets": [clean_widget(w, ApiError) for w in widgets], "filters": flt}

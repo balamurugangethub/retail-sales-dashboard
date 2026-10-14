@@ -4,6 +4,7 @@
 
 const B = {
   fields: null, meta: null, widgets: [], selected: null, dashId: null, dirty: false,
+  source: null, ds: null, salesFields: null,        // source: id of an uploaded dataset, or null for the sales data
   filters: { preset: "all", start: "", end: "", store: "", category: "" },
 };
 const charts = new Map();
@@ -15,6 +16,87 @@ const SIZE_LABELS = { 1: "Small", 2: "Medium", 3: "Wide", 4: "Full width" };
 
 const dimInfo = (id) => B.fields.dimensions.find((d) => d.id === id);
 const measureInfo = (id) => B.fields.measures.find((m) => m.id === id);
+const defaultMeasure = () => B.fields.measures[0].id;
+
+// ---- uploaded datasets as a data source ---------------------------------------------
+const GRAINS = ["month", "day", "week", "quarter", "year"];
+
+function datasetFields(ds) {
+  const dimensions = [], measures = [], counts = [];
+  ds.columns.forEach((c, i) => {
+    if (c.type === "text") dimensions.push({ id: "c" + i, label: c.name, time: false });
+    if (c.type === "date") GRAINS.forEach((g) => dimensions.push({ id: `c${i}:${g}`, label: `${c.name} (${g})`, time: true }));
+    if (c.type === "number") {
+      measures.push({ id: "sum:c" + i, label: "Sum of " + c.name, format: "decimal" });
+      measures.push({ id: "avg:c" + i, label: "Average " + c.name, format: "decimal" });
+    }
+    if (c.type === "text") counts.push({ id: "distinct:c" + i, label: "Different " + c.name, format: "number" });
+  });
+  measures.push(...counts, { id: "rows", label: "Number of rows", format: "number" });
+  return { dimensions, measures, assistant: B.salesFields.assistant, assistant_label: B.salesFields.assistant_label };
+}
+
+function datasetSpec(w) {
+  const spec = {
+    dims: w.dims.map((d) => { const [c, grain] = d.split(":"); return grain ? { field: +c.slice(1), grain } : { field: +c.slice(1) }; }),
+    measures: w.measures.map((m) => { const [agg, c] = m.split(":"); return c ? { agg, field: +c.slice(1) } : { agg }; }),
+    limit: w.limit || 500,
+  };
+  if (w.limit && w.sort) {
+    const key = w.sort.slice(1), dir = w.sort[0] === "+" ? "asc" : "desc";
+    const di = w.dims.indexOf(key);
+    spec.sort = { by: di >= 0 ? "d" + di : "m" + w.measures.indexOf(key), dir };
+  }
+  return spec;
+}
+
+async function loadDatasetWidget(w) {
+  const res = await api(`/api/datasets/${B.source}/query`, { method: "POST", body: datasetSpec(w) });
+  const cols = [...w.dims.map((d) => ({ id: d, label: dimInfo(d).label, kind: "dimension" })),
+                ...w.measures.map((m) => ({ id: m, label: measureInfo(m).label, kind: "measure", format: measureInfo(m).format }))];
+  const nd = w.dims.length;
+  return { columns: cols, rows: res.rows.map((r) => r.map((v, i) => (i >= nd && typeof v === "number" ? Math.round(v * 100) / 100 : v))) };
+}
+
+function starterWidgets() {
+  const f = B.fields, sums = f.measures.filter((m) => m.id.startsWith("sum:")), rows = [];
+  const date = f.dimensions.find((d) => d.id.endsWith(":month")), text = f.dimensions.find((d) => !d.time);
+  const main = (sums[0] || f.measures[f.measures.length - 1]).id;
+  rows.push({ chart: "kpi", measures: ["rows", ...sums.slice(0, 2).map((m) => m.id)] });
+  if (date) rows.push({ chart: "line", dims: [date.id], measures: [main], span: 3 });
+  if (text) rows.push({ chart: "hbar", dims: [text.id], measures: [main], limit: 10, sort: "-" + main, span: 2 });
+  return rows;
+}
+
+function setSourceUi() {
+  document.querySelector(".filters").classList.toggle("dataset", !!B.source);
+  const box = $("chat-input");
+  box.disabled = !!B.source;
+  box.placeholder = B.source ? "The assistant works on the sales data" : "e.g. top 5 products by profit";
+  $("suggestions").hidden = !!B.source;
+}
+
+async function useSource(id, confirmed = false) {
+  id = id ? +id : null;
+  if (id === B.source) return;
+  if (!confirmed && B.dirty && B.widgets.length && !confirm("Charts use fields from the current data. Switching clears the canvas. Continue?")) {
+    $("f-source").value = B.source || ""; return;
+  }
+  if (id) {
+    B.ds = await api("/api/datasets/" + id);
+    B.source = id; B.fields = datasetFields(B.ds);
+  } else { B.source = null; B.ds = null; B.fields = B.salesFields; }
+  B.widgets = []; B.selected = null; B.dashId = null; B.dirty = false;
+  $("dash-name").value = "Untitled dashboard"; $("f-source").value = B.source || "";
+  setSourceUi(); renderFields(); renderCanvas(); listDashboards();
+  if (B.source) chatMsg("bot", `Now charting "${B.ds.name}". The assistant only works on the sales data for now, so build charts by dragging fields or use "Build a starter dashboard".`);
+}
+
+async function fillSources() {
+  const { datasets } = await api("/api/datasets");
+  $("f-source").replaceChildren(el("option", { value: "", text: "Sales" }),
+    ...datasets.map((d) => el("option", { value: d.id, text: d.name, selected: d.id === B.source })));
+}
 
 function autoChart(w) {
   if (!w.dims.length) return "kpi";
@@ -79,7 +161,7 @@ function addFieldToSelection(field) {
 }
 
 function createFromField(field, beforeId = null) {
-  const w = newWidget(field.kind === "measure" ? { measures: [field.id] } : { dims: [field.id], measures: ["sales"] });
+  const w = newWidget(field.kind === "measure" ? { measures: [field.id] } : { dims: [field.id], measures: [defaultMeasure()] });
   insertWidget(w, beforeId);
   select(w.id);
 }
@@ -246,7 +328,7 @@ function queryParams(w) {
 async function loadWidget(w) {
   const body = document.querySelector(`.widget[data-id="${w.id}"] .w-body`);
   try {
-    const res = await api("/api/query", { params: queryParams(w) });
+    const res = B.source ? await loadDatasetWidget(w) : await api("/api/query", { params: queryParams(w) });
     if (!body.isConnected) return;
     drawWidget(w, body, res);
   } catch (e) {
@@ -358,7 +440,8 @@ function currentSpec() {
       if (Object.keys(w.filters || {}).length) o.filters = w.filters;
       return o;
     }),
-    filters: Object.fromEntries(Object.entries(B.filters).filter(([, v]) => v)),
+    filters: B.source ? {} : Object.fromEntries(Object.entries(B.filters).filter(([, v]) => v)),
+    ...(B.source ? { source: B.source } : {}),
   };
 }
 
@@ -401,6 +484,8 @@ async function openDashboard(id) {
     const d = B.meta.read_only ? localDashboards().find((x) => String(x.id) === String(id))
                                : await api("/api/dashboards/" + id);
     if (!d) throw new Error("not found");
+    const wanted = d.spec.source || null;
+    if (wanted !== B.source) await useSource(wanted, true);
     B.dashId = d.id; $("dash-name").value = d.name;
     B.widgets = (d.spec.widgets || []).map((s) => newWidget(s));
     const f = d.spec.filters || {};
@@ -462,6 +547,7 @@ function chatMsg(who, text, extra = []) {
 }
 
 async function ask(message) {
+  if (B.source) return;
   chatMsg("me", message);
   const thinking = chatMsg("bot", "Thinking…");
   try {
@@ -535,19 +621,28 @@ function setupAssistant() {
 }
 
 async function refreshMeta() {
-  [B.meta, B.fields] = await Promise.all([api("/api/meta"), api("/api/fields")]);
+  [B.meta, B.salesFields] = await Promise.all([api("/api/meta"), api("/api/fields")]);
+  if (!B.source) B.fields = B.salesFields;
   fillFilterOptions(); syncFilterInputs();
 }
 
 async function init() {
   await refreshMeta();
-  renderFields(); setupCanvasDrop(); setupFilters(); setupAssistant();
+  setupCanvasDrop(); setupFilters(); setupAssistant();
+  await fillSources();
+  $("f-source").addEventListener("change", (e) => useSource(e.target.value).catch((err) => { notify("Could not open that data: " + err.message, true); $("f-source").value = B.source || ""; }));
+  const wanted = new URLSearchParams(location.search).get("source");
+  if (wanted && [...$("f-source").options].some((o) => o.value === wanted)) await useSource(wanted, true);
+  else renderFields();
   $("save-btn").addEventListener("click", save);
   $("new-btn").addEventListener("click", newDashboard);
   $("delete-btn").addEventListener("click", deleteDashboard);
   $("dash-select").addEventListener("change", (e) => openDashboard(e.target.value));
   $("dash-name").addEventListener("input", markDirty);
-  $("starter-btn").addEventListener("click", () => ask("Build a dashboard"));
+  $("starter-btn").addEventListener("click", () => {
+    if (!B.source) return ask("Build a dashboard");
+    starterWidgets().forEach((s) => addFromSpec(s, false)); renderCanvas();
+  });
   window.addEventListener("beforeunload", (e) => { if (B.dirty && B.widgets.length) e.preventDefault(); });
   await listDashboards();
   renderCanvas();
