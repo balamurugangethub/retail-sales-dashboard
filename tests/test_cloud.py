@@ -141,3 +141,24 @@ def test_settings_pasted_with_spaces_or_quotes_still_work():
     sync = cloud.from_env({"RSD_STORE_URL": " https://x.supabase.co/ \n", "RSD_STORE_KEY": "k ", "RSD_STORE_TOKEN": ' "tok"\n'})
     assert (sync.store.url, sync.store.key, sync.store.token) == ("https://x.supabase.co", "k", "tok")
     assert cloud.from_env({"RSD_STORE_URL": "u", "RSD_STORE_KEY": "k", "RSD_STORE_TOKEN": "  "}) is None
+
+
+def test_explore_uploads_survive_sign_out_sign_in_and_a_restart(tmp_path):
+    store = MemoryStore()
+    first = server(tmp_path / "one", store)
+    assert sign_up(first).status_code == 200
+    up = first.post("/api/datasets", data={"file": (io.BytesIO(b"ward,wait\nA,10\nB,20\n"), "Ward Visits.csv")},
+                    content_type="multipart/form-data")
+    assert up.status_code == 200
+    dataset_id = up.get_json()["id"]
+
+    assert first.post("/api/auth/logout").status_code == 200
+    login = first.post("/api/auth/login", json={"email": "o@shop.com", "password": "correct horse"})
+    assert login.status_code == 200
+    assert first.get(f"/api/datasets/{dataset_id}").get_json()["rows"] == 2
+
+    second = server(tmp_path / "two", store)                      # new disk, nothing local
+    second.post("/api/auth/login", json={"email": "o@shop.com", "password": "correct horse"})
+    assert second.get(f"/api/datasets/{dataset_id}").get_json()["rows"] == 2
+    run = second.post("/api/sql/run", json={"sql": "SELECT COUNT(*) AS n FROM ward_visits"})
+    assert run.get_json()["rows"] == [[2]]
