@@ -23,6 +23,7 @@ def test_demo_gives_a_full_workspace(client):
     assert client.get("/api/meta").get_json()["rows"] > 1000
     names = [d["name"] for d in client.get("/api/datasets").get_json()["datasets"]]
     assert sorted(names) == ["Hospital visits", "Retail chain", "School results"]
+    assert len(client.get("/api/pipeline").get_json()["datasets"]) == 3
     tables = [t["name"] for t in client.get("/api/sql/schema").get_json()["tables"]]
     assert "hospital_visits" in tables and "sales" in tables
 
