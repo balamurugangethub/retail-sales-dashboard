@@ -86,7 +86,10 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
     def prepare_db(path):
         # A new account starts empty so the owner can bring their own data; the Data page
         # still offers the sample data and sample files to practise with.
-        con = sqlite3.connect(path); con.executescript(SCHEMA); con.executescript(workspace.SCHEMA); con.close()
+        con = sqlite3.connect(path)
+        for script in (SCHEMA, workspace.SCHEMA, datasets.SCHEMA):
+            con.executescript(script)
+        con.close()
 
     def db():
         if "db" not in g:
