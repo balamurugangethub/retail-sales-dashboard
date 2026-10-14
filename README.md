@@ -41,6 +41,54 @@ remembers your choice for a year. There are no analytics or advertising cookies.
 The public Vercel demo is read-only and resets on every cold start, so it shows the welcome screen but no sign-in.
 Real accounts on a hosted site need a hosted database such as Supabase or Postgres.
 
+## Architecture
+
+GitHub draws this diagram itself from the text below, so it stays editable in this file.
+
+```mermaid
+flowchart LR
+    subgraph Browser["Browser (vanilla JS + Chart.js)"]
+        P1["Overview, Builder, Forecast"]
+        P2["Data, Explore, SQL"]
+        P3["Login, Account, Privacy"]
+    end
+
+    subgraph Flask["Flask app (Vercel serverless or python app.py)"]
+        GATE["Consent + sign-in gate<br/>accounts.py"]
+        API["Sales API, builder queries<br/>app.py, queries.py"]
+        IMP["Import and cleaning<br/>cleaning.py, datasets.py"]
+        SQLW["SQL workbench (read-only)<br/>sqlbench.py"]
+        FC["Forecast + order planner<br/>forecast.py"]
+        AI["AI assistant<br/>ai.py"]
+    end
+
+    subgraph Storage["Storage"]
+        SQLITE[("SQLite per account<br/>local file or temp copy")]
+        SUPA[("Supabase<br/>saved accounts and uploads<br/>cloud.py")]
+    end
+
+    GEM["Google Gemini<br/>optional, free"]
+
+    P1 --> GATE
+    P2 --> GATE
+    P3 --> GATE
+    GATE --> API
+    GATE --> IMP
+    GATE --> SQLW
+    GATE --> FC
+    GATE --> AI
+    API --> SQLITE
+    IMP --> SQLITE
+    SQLW --> SQLITE
+    FC --> SQLITE
+    SQLITE <-->|"sync on sign-in and after changes"| SUPA
+    AI -.->|"falls back to built-in rules"| GEM
+```
+
+Every request goes through the consent and sign-in gate first. Each account has its own SQLite database. On the
+hosted site that database is loaded from Supabase when you sign in and saved back after each change, so uploads
+survive restarts. `/api/status` shows whether online storage and sign-in are switched on.
+
 ## What it does
 
 The app has three pages, linked from the header.
@@ -171,6 +219,10 @@ other's data, and the assistant behaves with and without an AI model
 app.py            Flask app, overview API + SQLite
 accounts.py       privacy/cookie consent gate, sign-in, one database per account
 workspace.py      builder, import/cleaning, editing and assistant routes
+datasets.py       uploads of any CSV/Excel file (Explore page), one table per upload
+sqlbench.py       read-only SQL workbench over your tables
+forecast.py       forecast and order planner
+cloud.py          Supabase storage so accounts and uploads persist on the hosted site
 cleaning.py       reads CSV/Excel, guesses columns, cleans rows
 queries.py        field catalog and the generic chart query
 ai.py             AI chat client (Gemini/Groq/Ollama), rule-based assistant, action validation
