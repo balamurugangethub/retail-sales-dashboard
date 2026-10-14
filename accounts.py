@@ -26,6 +26,8 @@ CONSENT_COOKIE = "rsd_consent"
 CONSENT_MAX_AGE = 365 * 24 * 3600
 MIN_PASSWORD = 8
 MAX_FAILS, LOCK_SECONDS = 5, 300
+DEMO_HOURS = 24                     # demo accounts are deleted after this long
+DEMO_PER_HOUR = 30                  # most demo accounts one server hands out per hour
 
 ACCOUNTS_SCHEMA = """
 CREATE TABLE IF NOT EXISTS users (
@@ -36,14 +38,15 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash TEXT NOT NULL,
     created TEXT NOT NULL DEFAULT (datetime('now')),
     policy_version TEXT NOT NULL,
-    policy_accepted_at TEXT NOT NULL DEFAULT (datetime('now'))
+    policy_accepted_at TEXT NOT NULL DEFAULT (datetime('now')),
+    demo INTEGER NOT NULL DEFAULT 0
 );
 """
 
 # Reachable before accepting the policy (the policy itself, the choice, assets)
 CONSENT_FREE = {"/welcome", "/privacy", "/api/consent", "/api/auth/me", "/api/status", "/favicon.ico"}
 # Reachable before signing in
-SIGNED_OUT_OK = {"/login", "/register", "/api/auth/login", "/api/auth/register", "/api/auth/logout"}
+SIGNED_OUT_OK = {"/login", "/register", "/api/auth/login", "/api/auth/register", "/api/auth/logout", "/api/auth/demo"}
 PAGES = {"/welcome": "welcome.html", "/privacy": "privacy.html", "/login": "auth.html",
          "/register": "auth.html", "/account": "account.html"}
 
@@ -66,9 +69,10 @@ def safe_next(target):
     return target if target.startswith("/") and not target.startswith("//") and "\\" not in target else "/"
 
 
-def register(app, prepare_db, consent=True, auth=True, sync=None):  # pylint: disable=too-many-locals,too-many-statements
+def register(app, prepare_db, consent=True, auth=True, sync=None, seed_demo=None):  # pylint: disable=too-many-locals,too-many-statements
     """prepare_db(path) creates an empty shop database. sync (cloud.Sync) is optional: it keeps the
-    account files in an online store between visits when the host's disk is temporary."""
+    account files in an online store between visits when the host's disk is temporary. seed_demo(path)
+    fills a new demo account with sample data; without it there is no demo button."""
     app.config["CONSENT_REQUIRED"], app.config["AUTH_ENABLED"] = consent, auth
     folder = os.path.join(os.path.dirname(os.path.abspath(app.config["DB_PATH"])), "userdata")
     accounts_db = os.path.join(folder, "accounts.db")
@@ -80,6 +84,8 @@ def register(app, prepare_db, consent=True, auth=True, sync=None):  # pylint: di
         app.secret_key = _secret_key(folder)
         with sqlite3.connect(accounts_db) as c:
             c.executescript(ACCOUNTS_SCHEMA)
+            if "demo" not in {row[1] for row in c.execute("PRAGMA table_info(users)")}:
+                c.execute("ALTER TABLE users ADD COLUMN demo INTEGER NOT NULL DEFAULT 0")     # accounts from older versions
         c.close()
     app.config.update(SESSION_COOKIE_NAME="rsd_session", SESSION_COOKIE_HTTPONLY=True,
                       SESSION_COOKIE_SAMESITE="Lax", SESSION_COOKIE_SECURE=bool(os.environ.get("VERCEL")),
@@ -110,7 +116,7 @@ def register(app, prepare_db, consent=True, auth=True, sync=None):  # pylint: di
     def public(user):
         return {"name": user["name"], "email": user["email"], "shop": user["shop"],
                 "created": user["created"], "policy_version": user["policy_version"],
-                "policy_accepted_at": user["policy_accepted_at"]} if user else None
+                "policy_accepted_at": user["policy_accepted_at"], "demo": bool(user["demo"])} if user else None
 
     def has_consent():
         return request.cookies.get(CONSENT_COOKIE) == POLICY_VERSION
@@ -193,7 +199,7 @@ def register(app, prepare_db, consent=True, auth=True, sync=None):  # pylint: di
     def me():
         return jsonify({"consent": has_consent(), "consent_required": consent, "auth_enabled": auth,
                         "read_only": app.config["READ_ONLY"], "policy_version": POLICY_VERSION,
-                        "contact": contact, "user": public(current_user()) if has_consent() or not consent else None})
+                        "contact": contact, "demo_available": bool(auth and seed_demo), "user": public(current_user()) if has_consent() or not consent else None})
 
     def sign_in(uid):
         session.clear()
@@ -229,6 +235,48 @@ def register(app, prepare_db, consent=True, auth=True, sync=None):  # pylint: di
         sign_in(cur.lastrowid)
         return jsonify({"user": public(current_user())})
 
+    def remove_files(uid):
+        path = shop_db_path(uid)
+        for suffix in ("", "-wal", "-shm", "-journal"):
+            if os.path.exists(path + suffix):
+                os.remove(path + suffix)
+        if sync:
+            try:
+                sync.forget(os.path.basename(path))
+            except StoreError:
+                pass                                    # the account row is gone; the file is orphaned
+
+    def purge_old_demos():
+        old = accounts().execute("SELECT id FROM users WHERE demo = 1 AND created < datetime('now', ?)",
+                                 (f"-{DEMO_HOURS} hours",)).fetchall()
+        for row in old:
+            with accounts() as c:
+                c.execute("DELETE FROM users WHERE id = ?", (row["id"],))
+            remove_files(row["id"])
+
+    demo_times = []
+
+    @app.post("/api/auth/demo")
+    def start_demo():
+        if not (auth and seed_demo):
+            return jsonify({"error": "The demo is not available on this site."}), 400
+        now = time.time()
+        demo_times[:] = [t for t in demo_times if t > now - 3600]
+        if len(demo_times) >= DEMO_PER_HOUR:
+            return jsonify({"error": "Lots of people are trying the demo right now. Try again in a few minutes."}), 429
+        demo_times.append(now)
+        purge_old_demos()
+        email = f"demo-{secrets.token_hex(6)}@demo.invalid"
+        with accounts() as c:
+            cur = c.execute("INSERT INTO users(email, name, shop, password_hash, policy_version, demo)"
+                            " VALUES (?,?,?,?,?,1)",
+                            (email, "Demo visitor", "Demo shop", generate_password_hash(secrets.token_hex(16)), POLICY_VERSION))
+        g.db_path = shop_db_path(cur.lastrowid)
+        prepare_db(g.db_path)
+        seed_demo(g.db_path)
+        sign_in(cur.lastrowid)
+        return jsonify({"user": public(current_user())})
+
     dummy_hash = generate_password_hash(secrets.token_hex(8))
 
     @app.post("/api/auth/login")
@@ -259,19 +307,11 @@ def register(app, prepare_db, consent=True, auth=True, sync=None):  # pylint: di
     @app.post("/api/account/delete")
     def delete_account():
         user = current_user()
-        if not check_password_hash(user["password_hash"], str(body().get("password") or "")):
+        if not user["demo"] and not check_password_hash(user["password_hash"], str(body().get("password") or "")):
             return jsonify({"error": "Password is not correct."}), 401
         with accounts() as c:
             c.execute("DELETE FROM users WHERE id = ?", (user["id"],))
-        path = shop_db_path(user["id"])
-        for suffix in ("", "-wal", "-shm", "-journal"):
-            if os.path.exists(path + suffix):
-                os.remove(path + suffix)
-        if sync:
-            try:
-                sync.forget(os.path.basename(path))
-            except StoreError:
-                pass                                    # the account row is gone; the file is orphaned
+        remove_files(user["id"])
         g.pop("db_path", None)
         session.clear()
         return jsonify({"ok": True})

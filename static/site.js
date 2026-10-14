@@ -20,6 +20,20 @@
       if (location.pathname === href) a.classList.add("on");
       nav.append(a);
     };
+    if (me.user && me.user.demo) {
+      const bar = document.createElement("div");
+      bar.className = "demo-bar"; bar.setAttribute("role", "status");
+      bar.append("You are using a demo shop with sample data. It is deleted after 24 hours. ");
+      const a = document.createElement("a");
+      a.href = "/register"; a.textContent = "Create your own account";
+      a.onclick = async (ev) => {                      // sign out of the demo first, or the register page sends you back
+        ev.preventDefault();
+        await realFetch("/api/auth/logout", { method: "POST" });
+        location.href = "/register";
+      };
+      bar.append(a);
+      document.body.prepend(bar);
+    }
     link("/privacy", "Privacy");
     if (me.user) link("/account", me.user.shop || me.user.name, "account nav-right");
     if (window.ChartStyle && ["/", "/builder"].includes(location.pathname)) nav.append(ChartStyle.button());

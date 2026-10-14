@@ -43,6 +43,10 @@ CREATE INDEX IF NOT EXISTS idx_sales_category ON sales(category);
 """
 
 
+DEMO_FILES = [("4_hospital_visits.csv", "Hospital visits"), ("5_school_results.csv", "School results"),
+              ("3_retail_chain_trends.csv", "Retail chain")]
+
+
 def seed_database(db_path):
     import seed
     con = sqlite3.connect(db_path)
@@ -97,7 +101,20 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
             g.db.row_factory = sqlite3.Row
         return g.db
 
-    accounts.register(app, prepare_db, consent=consent, auth=auth, sync=sync)
+    def seed_demo(path):
+        """A demo account starts with the sample sales and the three sample files."""
+        import seed
+        con = sqlite3.connect(path)
+        con.executemany(
+            "INSERT INTO sales(day, store, category, product, orders, units, revenue_cents, cost_cents)"
+            " VALUES (?,?,?,?,?,?,?,?)", seed.generate_rows())
+        con.commit()
+        for filename, title in DEMO_FILES:
+            with open(os.path.join(HERE, "static", "samples", filename), "rb") as f:
+                datasets.create_dataset(con, filename, f.read(), title)
+        con.close()
+
+    accounts.register(app, prepare_db, consent=consent, auth=auth, sync=sync, seed_demo=seed_demo)
 
     @app.teardown_appcontext
     def close_db(_exc):

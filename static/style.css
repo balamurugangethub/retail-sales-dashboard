@@ -380,6 +380,12 @@ a.sample:hover { border-color: var(--ink); }
 .sql-result { max-height: 460px; overflow: auto; }
 @media (max-width: 900px) { .sql-layout { grid-template-columns: 1fr; } .sql-schema { position: static; max-height: none; } }
 
+/* ---- demo mode ---- */
+.demo-bar { background: var(--ink); color: var(--paper); font-size: 13px; padding: 8px 32px; text-align: center; }
+.demo-bar a { color: var(--paper); font-weight: 700; }
+.demo-box { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+.demo-box .btn { width: 100%; }
+
 /* ---- pipeline view ---- */
 .pl-flow { list-style: none; margin: 12px 0 4px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0; border: 1px solid var(--line); }
 .pl-step { display: flex; flex-direction: column; gap: 4px; padding: 12px; border-right: 1px solid var(--line); font-size: 13px; position: relative; }

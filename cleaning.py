@@ -183,8 +183,8 @@ def detect_day_first(values):
 
 def parse_date(text, day_first=True):
     s = str(text or "").strip()
-    if not s:
-        return None
+    if not s or not any(ch.isdigit() for ch in s):
+        return None                                  # every date format has a digit; skips the slow format loop for words
     s = re.sub(r"[T ]\d{1,2}:\d{2}(:\d{2})?(\.\d+)?(Z|[+-]\d{2}:?\d{2})?$", "", s).strip()
     s = s.replace(",", " ")
     s = re.sub(r"\s+", " ", s)

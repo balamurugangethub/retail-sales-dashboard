@@ -25,8 +25,10 @@ def test_new_account_can_use_uploads_everywhere(shop):
     client, _ = shop
     assert client.get("/api/datasets").get_json()["datasets"] == []
     assert client.get("/api/sql/schema").status_code == 200
+    assert client.get("/api/pipeline").get_json()["datasets"] == []
     ds = upload(client)
     assert client.get(f"/api/datasets/{ds}/quality").status_code == 200
+    assert client.get("/api/pipeline").get_json()["datasets"][0]["id"] == ds
     assert client.post("/api/sql/run", json={"sql": "SELECT COUNT(*) AS n FROM t"}).get_json()["rows"] == [[3]]
 
 
