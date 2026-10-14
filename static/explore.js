@@ -32,6 +32,7 @@ async function openDataset(id) {
   $("ds-note").textContent = `${ds.rows.toLocaleString()} rows, ${ds.columns.length} columns`;
   $("insights").replaceChildren(...ds.insights.map((t) => el("li", { text: t })));
   renderProfile();
+  loadQuality(id);
   const numCols = cols().filter((c) => c[2] === "number"), dateCols = cols().filter((c) => c[2] === "date");
   fillSelect($("m-agg"), ds.aggs.map((a) => [a.id, a.label]));
   $("m-agg").value = numCols.length ? "sum" : "rows";
@@ -56,6 +57,20 @@ async function openDataset(id) {
     $("fc-agg").value = /avg|average|score|rate|%|wait|price|satisfaction|ratio/i.test(numCols[0][1]) ? "avg" : "sum";
   }
   await Promise.all([run(), fcOk ? runForecast() : null]);
+}
+
+async function loadQuality(id) {
+  $("q-score").textContent = "Checking";
+  $("q-summary").textContent = "";
+  $("q-issues").replaceChildren();
+  let q;
+  try { q = await api(`/api/datasets/${id}/quality`); } catch (e) { $("q-score").textContent = "Unavailable"; return; }
+  if (!ds || String(ds.id) !== String(id)) return;
+  $("q-score").textContent = `${q.score} / 100, ${q.grade}`;
+  $("q-summary").textContent = `${q.completeness_pct}% of cells are filled and ${q.duplicate_rows.toLocaleString()} rows are repeats. The checks only read your data; nothing is changed.`;
+  const rows = q.issues.length ? q.issues.map((i) => el("li", { class: i.severity === "high" ? "warn" : "info", text: i.message }))
+    : [el("li", { class: "good", text: "No problems found: no gaps, repeats, odd spellings or extreme numbers." })];
+  $("q-issues").replaceChildren(...rows);
 }
 
 function renderProfile() {
