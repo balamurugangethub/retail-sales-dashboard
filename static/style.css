@@ -396,6 +396,12 @@ a.sample:hover { border-color: var(--ink); }
 .pl-ms { font-size: 11px; color: var(--muted); margin-top: auto; padding-top: 6px; }
 @media (max-width: 700px) { .pl-step { border-right: 0; border-bottom: 1px solid var(--line); } .pl-step:last-child { border-bottom: 0; } }
 
+/* ---- open from a web link ---- */
+.link-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 16px; }
+.link-form label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+.link-form input, .link-form select { background: var(--paper); color: var(--text); border: 1px solid var(--line); border-radius: 0; padding: 7px 8px; font: inherit; font-size: 13px; text-transform: none; letter-spacing: 0; }
+.link-url { flex: 1 1 280px; }
+
 /* ---- small screens: one scrolling row of links instead of four rows ---- */
 @media (max-width: 700px) {
   .brand { min-width: 0; max-width: 100%; }

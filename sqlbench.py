@@ -20,7 +20,7 @@ MAX_CELL_BYTES = 1_000_000
 PROGRESS_STEPS = 10_000
 
 ALLOWED_ACTIONS = {sqlite3.SQLITE_SELECT, sqlite3.SQLITE_READ, sqlite3.SQLITE_FUNCTION, sqlite3.SQLITE_RECURSIVE}
-RESERVED_TABLES = {"sales", "datasets", "dashboards", "staged_imports", "pipeline_runs", "sqlite_master", "sqlite_temp_master"}
+RESERVED_TABLES = {"sales", "datasets", "dashboards", "staged_imports", "pipeline_runs", "dataset_sources", "sqlite_master", "sqlite_temp_master"}
 KEYWORDS = {"select", "from", "where", "group", "order", "by", "limit", "table", "index", "values", "insert",
             "update", "delete", "join", "on", "as", "and", "or", "not", "null", "case", "when", "then", "else",
             "end", "in", "is", "like", "union", "all", "distinct", "having", "create", "drop", "default",

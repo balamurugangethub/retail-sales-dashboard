@@ -27,9 +27,10 @@ function card(d) {
   const steps = d.steps ? d.steps.map((s, i) => stepBox(s, i + 1)) : [];
   const note = d.steps ? `Opened ${when(d.created)}${d.filename ? ` from ${d.filename}` : ""}`
     : `Opened ${when(d.created)}, before step history was kept: ${d.rows.toLocaleString()} rows, ${d.columns} columns`;
+  const src = d.source ? [el("p", { class: "hint", text: `Linked to ${d.source.url}: ${d.source.hours ? `refreshes every ${d.source.hours} hour${d.source.hours === 1 ? "" : "s"} when you open Explore` : "refreshes only when you ask"}.` })] : [];
   return el("section", { class: "card" }, [
     el("div", { class: "card-head" }, [el("h2", { text: d.name })]),
-    el("p", { class: "hint", text: note }),
+    el("p", { class: "hint", text: note }), ...src,
     el("ol", { class: "pl-flow" }, [...steps, checkBox(d.quality, steps.length + 1)]),
   ]);
 }

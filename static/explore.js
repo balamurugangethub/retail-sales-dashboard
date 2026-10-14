@@ -18,6 +18,7 @@ async function loadList(selectId) {
   const r = await api("/api/datasets");
   readOnly = r.read_only;
   $("upload-label").hidden = readOnly;
+  $("link-form").hidden = readOnly;
   fillSelect($("ds-select"), r.datasets.length ? r.datasets.map((d) => [d.id, `${d.name} (${d.rows.toLocaleString()} rows)`]) : [["", "No datasets yet"]]);
   $("start").hidden = r.datasets.length > 0;
   $("work").hidden = r.datasets.length === 0;
@@ -30,6 +31,7 @@ async function loadList(selectId) {
 async function openDataset(id) {
   ds = await api("/api/datasets/" + id);
   $("ds-note").textContent = `${ds.rows.toLocaleString()} rows, ${ds.columns.length} columns`;
+  showSource();
   $("insights").replaceChildren(...ds.insights.map((t) => el("li", { text: t })));
   renderProfile();
   loadQuality(id);
@@ -57,6 +59,26 @@ async function openDataset(id) {
     $("fc-agg").value = /avg|average|score|rate|%|wait|price|satisfaction|ratio/i.test(numCols[0][1]) ? "avg" : "sum";
   }
   await Promise.all([run(), fcOk ? runForecast() : null]);
+  if (ds.source && ds.source.due && !readOnly && !autoTried.has(ds.id)) { autoTried.add(ds.id); refreshNow(true); }
+}
+const autoTried = new Set();                         // try the automatic refresh once per dataset per visit
+
+const ago = (t) => { const m = Math.round((Date.now() / 1000 - t) / 60); return m < 1 ? "just now" : m < 60 ? `${m} min ago` : m < 2880 ? `${Math.round(m / 60)} hours ago` : `${Math.round(m / 1440)} days ago`; };
+
+function showSource() {
+  const s = ds.source;
+  $("ds-source").textContent = s ? `Linked to ${s.url}. Last refreshed ${ago(s.refreshed)}${s.hours ? `, refreshes every ${s.hours} hour${s.hours === 1 ? "" : "s"} when you open it` : ""}.` : "";
+  $("ds-refresh").hidden = !s || readOnly;
+}
+
+async function refreshNow(quiet) {
+  $("ds-refresh").disabled = true;
+  try {
+    const r = await api(`/api/datasets/${ds.id}/refresh`, { method: "POST" });
+    await loadList(ds.id);
+    notify(`Refreshed: ${r.rows_before.toLocaleString()} rows before, ${r.rows.toLocaleString()} now.`);
+  } catch (e) { if (!quiet) notify(e.message, true); }
+  finally { $("ds-refresh").disabled = false; }
 }
 
 async function loadQuality(id) {
@@ -202,6 +224,17 @@ async function upload(file, name) {
     const r = await fetch("/static/samples/" + file); upload(new File([await r.blob()], file), title);
   } }, [el("strong", { text: title }), el("span", { text })])));
   $("file-input").onchange = (e) => { if (e.target.files[0]) upload(e.target.files[0]); e.target.value = ""; };
+  $("ds-refresh").onclick = () => refreshNow(false);
+  $("link-form").onsubmit = async (ev) => {
+    ev.preventDefault();
+    $("link-go").disabled = true;
+    try {
+      const r = await api("/api/datasets/from-url", { method: "POST", body: { url: fv("link-url"), hours: +fv("link-hours") } });
+      $("link-url").value = "";
+      await loadList(r.id); notify("Opened the link");
+    } catch (e) { notify(e.message, true); }
+    finally { $("link-go").disabled = false; }
+  };
   $("ds-select").onchange = () => $("ds-select").value && openDataset($("ds-select").value);
   $("ds-delete").onclick = async () => {
     if (!ds || !confirm(`Remove “${ds.name}” from the app? Your original file is not touched.`)) return;
