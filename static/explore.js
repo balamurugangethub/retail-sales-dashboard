@@ -69,7 +69,7 @@ async function loadQuality(id) {
   $("q-score").textContent = `${q.score} / 100, ${q.grade}`;
   $("q-summary").textContent = `${q.completeness_pct}% of cells are filled and ${q.duplicate_rows.toLocaleString()} rows are repeats. The checks only read your data; nothing is changed.`;
   const rows = q.issues.length ? q.issues.map((i) => el("li", { class: i.severity === "high" ? "warn" : "info", text: i.message }))
-    : [el("li", { class: "good", text: "No problems found: no gaps, repeats, odd spellings or extreme numbers." })];
+    : [el("li", { class: "good", text: "No problems found: no empty values, repeated rows or inconsistent spellings." })];
   $("q-issues").replaceChildren(...rows);
 }
 

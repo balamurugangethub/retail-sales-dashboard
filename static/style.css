@@ -379,3 +379,13 @@ a.sample:hover { border-color: var(--ink); }
 .sql-pick select { background: var(--paper); color: var(--text); border: 1px solid var(--line); border-radius: 0; padding: 6px 8px; font: inherit; font-size: 13px; text-transform: none; letter-spacing: 0; max-width: 260px; }
 .sql-result { max-height: 460px; overflow: auto; }
 @media (max-width: 900px) { .sql-layout { grid-template-columns: 1fr; } .sql-schema { position: static; max-height: none; } }
+
+/* ---- pipeline view ---- */
+.pl-flow { list-style: none; margin: 12px 0 4px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0; border: 1px solid var(--line); }
+.pl-step { display: flex; flex-direction: column; gap: 4px; padding: 12px; border-right: 1px solid var(--line); font-size: 13px; position: relative; }
+.pl-step:last-child { border-right: 0; }
+.pl-num { font-size: 10px; font-weight: 800; letter-spacing: .1em; color: var(--muted); }
+.pl-rows { font-weight: 700; }
+.pl-detail { color: var(--muted); }
+.pl-ms { font-size: 11px; color: var(--muted); margin-top: auto; padding-top: 6px; }
+@media (max-width: 700px) { .pl-step { border-right: 0; border-bottom: 1px solid var(--line); } .pl-step:last-child { border-bottom: 0; } }
