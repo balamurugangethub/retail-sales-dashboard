@@ -1,0 +1,51 @@
+name: Warehouse pipeline
+
+on: [push, pull_request]
+
+jobs:
+  dbt:
+    name: Load two weeks of data and run dbt
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: pip
+        cache-dependency-path: |
+          requirements-dev.txt
+          warehouse/requirements.txt
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt -r warehouse/requirements.txt
+    - name: Generate 14 daily files
+      run: python -m warehouse.generate --start 2026-06-17 --days 14
+    - name: Validate, load raw, dbt build (models + tests)
+      run: python -m warehouse.run --no-snapshot
+    - name: A broken file must stop the pipeline
+      run: |
+        python -m warehouse.generate --corrupt 2026-07-01
+        if python -m warehouse.run --no-snapshot; then echo "the broken file was loaded"; exit 1; fi
+        test -f warehouse/data/landing/quarantine/sales_2026-07-01.csv
+        cat warehouse/data/alerts.log
+    - name: Warehouse tests
+      run: python -m pytest -q tests/test_warehouse.py
+
+  airflow:
+    name: Build the Airflow image and parse the DAG
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build
+      run: docker compose -f warehouse/airflow/docker-compose.yml build
+    - name: The DAG imports without errors
+      run: |
+        docker compose -f warehouse/airflow/docker-compose.yml run --rm --no-deps --user "$(id -u):0" airflow bash -c "
+          airflow db migrate > /dev/null &&
+          python -c \"
+        from airflow.models.dagbag import DagBag
+        bag = DagBag('/opt/airflow/repo/warehouse/airflow/dags', include_examples=False)
+        assert not bag.import_errors, bag.import_errors
+        print(sorted(bag.dags['retail_daily_warehouse'].task_ids))
+        \""

@@ -1,0 +1,15 @@
+{
+  "exported_at": "2026-10-16T11:56:15Z",
+  "first_day": "2024-07-01",
+  "last_day": "2026-06-30",
+  "rows": {
+    "raw": 1050477,
+    "staging": 1048354,
+    "fact": 1048354
+  },
+  "files_loaded": 730,
+  "dbt": {
+    "tests": 30,
+    "passed": 30
+  }
+}

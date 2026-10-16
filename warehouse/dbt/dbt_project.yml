@@ -1,0 +1,33 @@
+name: retail_warehouse
+version: "1.0.0"
+config-version: 2
+profile: retail_warehouse
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages", "logs"]
+
+vars:
+  # dim_date covers every day the chain could have sold on
+  date_spine_start: "2024-01-01"
+  date_spine_end: "2027-12-31"
+
+seeds:
+  retail_warehouse:
+    +schema: raw
+    stores:
+      +column_types: {store_key: integer, opened_on: date, size_sqm: integer}
+    products:
+      +column_types: {product_key: integer, list_price: "decimal(10,2)", unit_cost: "decimal(10,2)", popularity: double}
+
+models:
+  retail_warehouse:
+    staging:
+      +schema: staging
+      +materialized: view
+    marts:
+      +schema: marts
+      +materialized: table

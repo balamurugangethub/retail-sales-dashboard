@@ -1,0 +1,61 @@
+product_key,sku,product_name,category,list_price,unit_cost,popularity
+1,GRO-001,Basmati Rice 5kg,Grocery,9.50,6.90,3.0
+2,GRO-002,Cooking Oil 1L,Grocery,3.20,2.40,2.4
+3,GRO-003,Fresh Milk 2L,Grocery,2.10,1.60,4.0
+4,GRO-004,Whole Wheat Atta 10kg,Grocery,8.90,6.60,1.8
+5,GRO-005,Free Range Eggs 12,Grocery,3.40,2.50,2.6
+6,GRO-006,Green Tea 100 bags,Grocery,4.80,3.10,1.2
+7,GRO-007,Instant Coffee 200g,Grocery,6.50,4.40,1.4
+8,GRO-008,Toor Dal 1kg,Grocery,2.90,2.10,2.2
+9,GRO-009,Sugar 1kg,Grocery,1.40,1.10,2.8
+10,GRO-010,Breakfast Cereal 500g,Grocery,4.20,2.90,1.5
+11,GRO-011,Peanut Butter 450g,Grocery,3.90,2.60,1.0
+12,GRO-012,Bottled Water 6x1L,Grocery,2.40,1.50,2.5
+13,ELE-001,Wireless Earbuds,Electronics,39.00,26.00,2.4
+14,ELE-002,Phone Charger 25W,Electronics,14.00,8.50,4.0
+15,ELE-003,Smart Speaker,Electronics,59.00,41.00,1.8
+16,ELE-004,USB-C Cable 2m,Electronics,7.50,3.20,2.6
+17,ELE-005,Power Bank 10000mAh,Electronics,24.00,15.50,1.2
+18,ELE-006,Bluetooth Mouse,Electronics,17.00,10.00,1.4
+19,ELE-007,LED Desk Lamp,Electronics,22.00,13.00,2.2
+20,ELE-008,Smart Watch,Electronics,129.00,92.00,2.8
+21,ELE-009,Portable SSD 1TB,Electronics,89.00,64.00,1.5
+22,ELE-010,HDMI Cable 2m,Electronics,8.00,3.50,1.0
+23,ELE-011,Webcam 1080p,Electronics,35.00,22.00,2.5
+24,ELE-012,Wall Adapter Dual,Electronics,11.00,6.00,3.0
+25,APP-001,Cotton T-Shirt,Apparel,9.00,4.50,4.0
+26,APP-002,Denim Jeans,Apparel,29.00,15.00,1.8
+27,APP-003,Running Shoes,Apparel,49.00,28.00,2.6
+28,APP-004,Hooded Sweatshirt,Apparel,27.00,13.50,1.2
+29,APP-005,Sports Socks 3-Pack,Apparel,6.00,2.60,1.4
+30,APP-006,Rain Jacket,Apparel,45.00,24.00,2.2
+31,APP-007,Formal Shirt,Apparel,22.00,11.00,2.8
+32,APP-008,Leggings,Apparel,15.00,7.00,1.5
+33,APP-009,Baseball Cap,Apparel,11.00,4.80,1.0
+34,APP-010,Leather Belt,Apparel,16.00,7.50,2.5
+35,APP-011,Flip Flops,Apparel,7.00,3.00,3.0
+36,APP-012,Kids T-Shirt,Apparel,6.50,3.10,2.4
+37,HOM-001,LED Bulb Pack,Home,8.50,4.90,1.8
+38,HOM-002,Bath Towel Set,Home,19.00,10.50,2.6
+39,HOM-003,Cookware Set,Home,69.00,44.00,1.2
+40,HOM-004,Storage Box 30L,Home,9.00,5.20,1.4
+41,HOM-005,Bedsheet Double,Home,18.00,9.50,2.2
+42,HOM-006,Dinner Plate Set,Home,24.00,14.00,2.8
+43,HOM-007,Kitchen Knife Set,Home,29.00,16.50,1.5
+44,HOM-008,Laundry Detergent 2kg,Home,7.50,5.10,1.0
+45,HOM-009,Scented Candle,Home,6.00,2.70,2.5
+46,HOM-010,Wall Clock,Home,14.00,7.40,3.0
+47,HOM-011,Doormat,Home,8.00,3.90,2.4
+48,HOM-012,Water Bottle Steel,Home,9.50,4.60,4.0
+49,BEA-001,Face Wash,Beauty,4.50,2.20,2.6
+50,BEA-002,Shampoo 400ml,Beauty,5.50,3.10,1.2
+51,BEA-003,Moisturiser,Beauty,8.00,4.30,1.4
+52,BEA-004,Sunscreen SPF50,Beauty,9.50,5.00,2.2
+53,BEA-005,Lip Balm,Beauty,2.50,1.00,2.8
+54,BEA-006,Hair Oil 200ml,Beauty,3.80,2.00,1.5
+55,BEA-007,Body Lotion 400ml,Beauty,6.50,3.50,1.0
+56,BEA-008,Toothpaste 150g,Beauty,2.20,1.30,2.5
+57,BEA-009,Deodorant,Beauty,4.20,2.20,3.0
+58,BEA-010,Hand Cream,Beauty,3.60,1.70,2.4
+59,BEA-011,Perfume 50ml,Beauty,32.00,17.00,4.0
+60,BEA-012,Shaving Kit,Beauty,12.00,6.30,1.8

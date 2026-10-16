@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_sales_lines
+    description: Order lines with proper types, blank payment methods set to "unknown", and repeated lines removed.
+    columns:
+      - name: sales_line_id
+        tests: [unique, not_null]
+      - name: quantity
+        tests: [not_null]
+      - name: payment_method
+        tests:
+          - accepted_values:
+              arguments:
+                values: [card, cash, upi, wallet, unknown]
+  - name: stg_stores
+    columns:
+      - name: store_id
+        tests: [unique, not_null]
+  - name: stg_products
+    columns:
+      - name: sku
+        tests: [unique, not_null]

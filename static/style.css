@@ -413,3 +413,5 @@ a.sample:hover { border-color: var(--ink); }
 
 /* Builder on an uploaded dataset: the sales-only filters are hidden */
 .filters.dataset .sales-only { display: none; }
+.rows tr.bad td { font-weight: 700; }
+#audit th:last-child, #audit td:last-child { text-align: left; white-space: normal; min-width: 260px; }

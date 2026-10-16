@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Till files exactly as they arrived, loaded by warehouse/load.py after validation.
+    schema: raw
+    tables:
+      - name: sales_lines
+        description: One row per order line, every value as text, plus the source file and load time.
+        columns:
+          - name: _source_file
+            tests: [not_null]
+      - name: load_audit
+        description: One row per file the pipeline loaded or rejected.
