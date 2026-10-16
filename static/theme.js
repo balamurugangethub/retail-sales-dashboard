@@ -169,7 +169,18 @@
       document.dispatchEvent(new Event("click"));   // close any other open popover first
       pop = make(); pop.classList.add("pop"); pop.onclick = (ev) => ev.stopPropagation();
       wrap.append(pop); b.setAttribute("aria-expanded", "true");
+      place();
     };
+    // Pin the menu to the viewport under the button and keep it fully on screen
+    const place = () => {
+      if (!pop) return;
+      const r = b.getBoundingClientRect(), w = pop.offsetWidth, m = 12;
+      const top = Math.min(Math.max(m, r.bottom + 8), Math.max(m, innerHeight - 160));
+      pop.style.top = top + "px";
+      pop.style.left = Math.max(m, Math.min(r.right - w, innerWidth - w - m)) + "px";
+      pop.style.maxHeight = Math.max(200, innerHeight - top - m) + "px";
+    };
+    window.addEventListener("resize", place);
     document.addEventListener("click", close);
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
     wrap.append(b);

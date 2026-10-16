@@ -5,7 +5,7 @@
 :root {
   --ink: #ebe7de; --paper: #10100f; --surface: #191917; --text: #f1f0ef; --on-accent: #020202;
   --muted: #9c9b9a; --line: #343433; --wash: #1e1d1c; --glow: rgba(235, 231, 222, .16);
-  --shadow: 0 10px 30px rgba(0, 0, 0, .45); --r: 12px; --r-sm: 8px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, .45); --r: 0; --r-sm: 0;
   --bg: var(--paper); --card: var(--surface); --good: var(--ink); --bad: var(--ink); --warn: var(--ink);
   --font: "Inter", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
   color-scheme: dark;
@@ -420,13 +420,13 @@ a.sample:hover { border-color: var(--ink); }
 #audit th:last-child, #audit td:last-child { text-align: left; white-space: normal; min-width: 260px; }
 
 /* =====================================================================================
-   Premium layer: depth, soft corners, motion. It sits on top of the rules above, which
+   Premium layer: depth, motion. It sits on top of the rules above, which
    still define layout, so every page picks it up. All colours come from the theme tokens.
    ===================================================================================== */
 html { scroll-behavior: smooth; }
 html.theme-fade body, html.theme-fade .card, html.theme-fade .kpi, html.theme-fade .widget, html.theme-fade .top,
 html.theme-fade .panel, html.theme-fade .btn, html.theme-fade select, html.theme-fade input { transition: background-color .4s, color .4s, border-color .4s; }
-body { background: radial-gradient(1100px 520px at 12% -8%, var(--glow), transparent 62%) fixed, var(--paper);
+body { background: var(--paper);
        font-feature-settings: "cv11", "ss01", "tnum"; letter-spacing: .005em; animation: page-in .45s ease both; }
 ::selection { background: var(--ink); color: var(--on-accent); }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: var(--r-sm); }
@@ -577,3 +577,95 @@ main > div > section.card, main > section.card { margin-bottom: 18px; }
 .gate-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: linear-gradient(90deg, var(--ink), transparent); }
 .gate-card .logo { border-radius: 999px; padding: 4px 12px; }
 .gate-card li::before { border-radius: 50%; }
+
+/* =====================================================================================
+   Sharp layer: square boxes, flat page, hard offset shadows. This is the app's own look:
+   ruled panels that lift on a solid block of the accent, mono labels, a square mark.
+   ===================================================================================== */
+:root { --mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Consolas, "Liberation Mono", Menlo, monospace; --hard: 5px 5px 0 var(--line); --hard-ink: 6px 6px 0 var(--ink); }
+*, *::before, *::after { border-radius: 0 !important; }
+body { background: var(--paper); }
+
+/* header: a ruled bar, a square mark, no gradient */
+.top { background: var(--paper); border-bottom: 2px solid var(--ink); padding: 18px 32px; }
+.top h1 { background: none; color: var(--text); -webkit-background-clip: border-box; background-clip: border-box; letter-spacing: .04em;
+          display: flex; align-items: center; }
+.top h1::before { content: ""; width: 14px; height: 14px; background: var(--ink); margin-right: 12px; flex: none; box-shadow: 4px 4px 0 var(--line); }
+.top p { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; }
+.badge { background: var(--ink); color: var(--on-accent); border-color: var(--ink); }
+
+/* navigation: square tabs, the open page is a solid block */
+.nav { gap: 0; border: 1px solid var(--line); }
+.nav a, .nav a:first-child { border: 0; border-right: 1px solid var(--line); padding: 7px 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; transform: none !important; }
+.nav a:hover { background: var(--wash); color: var(--text); }
+.nav a.on, .nav a.on:first-child { background: var(--ink); color: var(--on-accent); box-shadow: none; }
+.nav a:last-of-type { border-right: 0; }
+.theme-wrap { display: inline-flex; }
+.theme-btn { margin-left: 0; border: 0; border-left: 1px solid var(--line); padding: 7px 12px; font-family: var(--mono); font-size: 11px; transform: none !important; }
+.theme-btn:hover, .theme-btn[aria-expanded="true"] { background: var(--ink); color: var(--on-accent); }
+.theme-btn kbd { border-radius: 0; }
+
+/* buttons: flat blocks with a hard shadow that they press into */
+.btn { background: var(--ink); border: 1px solid var(--ink); box-shadow: 3px 3px 0 var(--line); font-family: var(--mono); font-size: 12px; letter-spacing: .06em; }
+.btn:hover { background: var(--ink); color: var(--on-accent); transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--text); }
+.btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--line); }
+.btn.ghost, .btn.secondary, .btn.danger { background: var(--paper); border: 1px solid var(--text); box-shadow: 3px 3px 0 var(--line); }
+.btn.ghost:hover, .btn.secondary:hover, .btn.danger:hover { background: var(--ink); border-color: var(--ink); color: var(--on-accent); box-shadow: 4px 4px 0 var(--text); }
+.btn:disabled, .btn:disabled:hover { transform: none; box-shadow: none; }
+.btn .ripple { display: none; }
+
+/* inputs */
+select:focus, input:focus, textarea:focus { box-shadow: 3px 3px 0 var(--ink); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* panels: ruled boxes, hard shadow, lifted on hover */
+.card, .widget, .panel, .gate-card, .sample { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--hard); }
+.card:hover, .widget:hover { border-color: var(--ink); box-shadow: var(--hard-ink); transform: translate(-2px, -2px); }
+.panel:hover { transform: none; border-color: var(--line); box-shadow: var(--hard); }
+.card-head { border-bottom: 1px solid var(--line); }
+.card-head h2, .panel h2 { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.card-head h2::before { width: 8px; height: 8px; box-shadow: none; margin-right: 10px; vertical-align: 1px; }
+
+/* KPI tiles: a thick accent cap and mono figures */
+.kpis { gap: 18px; }
+.kpis .kpi, .kpis .kpi:nth-child(n) { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--hard); padding: 18px 20px 16px; border-top: 4px solid var(--ink); }
+.kpis .kpi::after { display: none; }
+.kpi:hover { transform: translate(-2px, -2px); border-color: var(--ink); box-shadow: var(--hard-ink); }
+.kpi .label { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; }
+.kpi .value { font-family: var(--mono); font-size: 32px; font-weight: 700; letter-spacing: -.04em; }
+.kpi .delta { font-family: var(--mono); }
+
+.seg { background: var(--paper); border: 1px solid var(--text); }
+.insights li { background: var(--surface); border-left: 4px solid var(--ink); }
+.insights li:hover { transform: translateX(4px); }
+.insights li::before { background: var(--ink); color: var(--on-accent); }
+.field { background: var(--surface); }
+.widget.selected { outline: 2px solid var(--ink); outline-offset: 3px; box-shadow: var(--hard-ink); }
+.icon:hover { transform: none; }
+code { background: var(--wash); border: 1px solid var(--line); }
+table th { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.loading { background: linear-gradient(100deg, transparent 20%, var(--wash) 40%, transparent 60%) 100% 0 / 200% 100%, var(--surface); }
+
+/* toasts, palette, demo bar */
+.notice { background: var(--surface); border: 1px solid var(--ink); border-left: 6px solid var(--ink); box-shadow: var(--hard-ink); }
+.demo-bar { background: var(--ink); }
+.cmdk { border: 1px solid var(--ink); box-shadow: var(--hard-ink); }
+.cmdk li { font-family: var(--mono); font-size: 13px; }
+.cmdk-back { background: rgba(0, 0, 0, .55); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.cmdk li .kind i { width: 10px; height: 10px; }
+
+/* theme menu: pinned to the viewport by theme.js so it can never run off the screen */
+.theme-picker.pop { position: fixed; z-index: 120; top: 64px; left: 12px; width: min(600px, calc(100vw - 24px)); max-height: calc(100vh - 80px); overflow: auto;
+                    background: var(--surface); border: 1px solid var(--ink); box-shadow: var(--hard-ink); padding: 18px; }
+.swatches { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
+.swatch { padding: 10px; border-width: 1px; box-shadow: 3px 3px 0 var(--line); }
+.swatch:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); outline: 0; }
+.swatch .dot { width: 14px; height: 14px; box-shadow: none; }
+.swatch.on { outline: 2px solid var(--ink); outline-offset: 2px; box-shadow: 3px 3px 0 var(--ink); }
+@media (max-width: 640px) { .theme-picker.pop { top: 12px !important; left: 12px !important; right: 12px; width: auto; max-height: calc(100vh - 24px); } .nav { flex-wrap: wrap; } }
+.gate-card::before { height: 4px; background: var(--ink); }
+.gate-card .logo { background: var(--ink); color: var(--on-accent); }
+/* header and filter bar share the page column so everything lines up on wide screens */
+.top, .filters:not(.inline) { padding-left: max(32px, calc((100vw - 1280px) / 2 + 32px)); padding-right: max(32px, calc((100vw - 1280px) / 2 + 32px)); }
+@media (max-width: 640px) { .top, .filters:not(.inline) { padding-left: 16px; padding-right: 16px; } main { padding-left: 16px; padding-right: 16px; } }
+@media (max-width: 640px) { .kpi .value { font-size: 24px; } .kpis { gap: 12px; } }
