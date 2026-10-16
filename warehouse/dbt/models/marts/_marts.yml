@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: Calendar dimension, one row per day.
+    columns:
+      - name: date_key
+        tests: [unique, not_null]
+  - name: dim_store
+    description: The five stores.
+    columns:
+      - name: store_key
+        tests: [unique, not_null]
+      - name: region
+        tests:
+          - accepted_values:
+              arguments:
+                values: [South, West]
+  - name: dim_product
+    description: The product catalogue.
+    columns:
+      - name: product_key
+        tests: [unique, not_null]
+      - name: category
+        tests:
+          - accepted_values:
+              arguments:
+                values: [Grocery, Electronics, Apparel, Home, Beauty]
+  - name: fct_sales
+    description: Sales fact. Grain is one order line; joins to dim_date, dim_store and dim_product.
+    columns:
+      - name: sales_line_id
+        tests: [unique, not_null]
+      - name: date_key
+        tests:
+          - not_null
+          - relationships:
+                arguments: {to: ref('dim_date'), field: date_key}
+      - name: store_key
+        tests:
+          - not_null
+          - relationships:
+                arguments: {to: ref('dim_store'), field: store_key}
+      - name: product_key
+        tests:
+          - not_null
+          - relationships:
+                arguments: {to: ref('dim_product'), field: product_key}
+      - name: quantity
+        tests: [not_null]
+  - name: mart_store_daily
+    description: Sales, profit and orders per store per day. The dashboard's Warehouse page reads this.
+  - name: mart_category_monthly
+    description: Sales and profit per category, store and month.
+  - name: mart_product_monthly
+    description: Sales and profit per product, store and month.

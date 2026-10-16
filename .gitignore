@@ -3,3 +3,7 @@ __pycache__/
 .pytest_cache/
 server.err
 userdata/
+warehouse/data/
+warehouse/dbt/target/
+warehouse/dbt/logs/
+warehouse/dbt/.user.yml

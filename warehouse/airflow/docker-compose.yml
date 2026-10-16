@@ -1,0 +1,27 @@
+# Airflow for the retail warehouse, in one container (scheduler, API server and a SQLite metadata DB).
+# From the repository folder:   docker compose -f warehouse/airflow/docker-compose.yml up --build
+# Then open http://localhost:8080 (no password locally) and switch on "retail_daily_warehouse".
+services:
+  airflow:
+    build:
+      context: ..
+      dockerfile: airflow/Dockerfile
+    command: standalone
+    ports:
+      - "8080:8080"
+    # On Linux, set AIRFLOW_UID to your user id (id -u) so files it writes stay yours.
+    user: "${AIRFLOW_UID:-50000}:0"
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/repo/warehouse/airflow/dags
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "true"
+      AIRFLOW__DAG_PROCESSOR__REFRESH_INTERVAL: "30"
+      PYTHONPATH: /opt/airflow/repo
+      RETAIL_REPO: /opt/airflow/repo
+      WAREHOUSE_DATA_DIR: /opt/airflow/repo/warehouse/data
+      # "1" makes each run drop the next day's till file first, so there is always something to load
+      SIMULATE_ARRIVALS: "1"
+      # Paste a Discord or Slack webhook URL into a .env file next to this one to get alerts in chat
+      ALERT_WEBHOOK_URL: "${ALERT_WEBHOOK_URL:-}"
+    volumes:
+      - ../..:/opt/airflow/repo

@@ -1,0 +1,6 @@
+store_key,store_id,store_name,city,region,opened_on,size_sqm
+1,S01,Store A,Chennai,South,2015-03-14,1450
+2,S02,Store B,Bengaluru,South,2017-08-01,1200
+3,S03,Store C,Mumbai,West,2016-11-20,1300
+4,S04,Store D,Pune,West,2019-05-09,950
+5,S05,Store E,Hyderabad,South,2021-02-26,900

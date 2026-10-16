@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Warehouse | Retail Sales Dashboard</title>
+<meta name="description" content="Sales for the 5-store chain read from the dbt marts of the DuckDB warehouse: about a million order lines loaded by a scheduled pipeline.">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/style.css">
+<script src="/static/theme.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <h1>Retail Sales Dashboard</h1>
+    <nav class="nav"><a href="/">Overview</a><a href="/builder">Dashboard builder</a><a href="/explore">Explore any data</a><a href="/sql">SQL</a><a href="/pipeline">Pipeline</a><a href="/warehouse" class="on">Warehouse</a><a href="/forecast">Forecast</a><a href="/data">Data</a></nav>
+    <p>Two years of till data, loaded every morning and modelled with dbt <span class="badge" id="source-badge">Loading</span></p>
+  </div>
+</header>
+
+<section class="filters" aria-label="Filters">
+  <label>Store <select id="f-store"><option value="">All stores</option></select></label>
+  <label>From <select id="f-start"></select></label>
+  <label>To <select id="f-end"></select></label>
+  <button class="btn ghost" id="clear-btn">Clear filters</button>
+</section>
+<div id="notice" class="notice" role="status" hidden></div>
+
+<main>
+  <section class="card">
+    <div class="card-head"><h2>Where these numbers come from</h2></div>
+    <p class="hint" id="source-note"></p>
+    <ol class="pl-flow" id="layers"></ol>
+  </section>
+
+  <section class="kpis" id="kpis" aria-label="Key figures"></section>
+
+  <section class="grid two">
+    <article class="card">
+      <div class="card-head"><h2>Monthly sales and profit</h2></div>
+      <p class="hint">From <code>marts.mart_store_daily</code></p>
+      <div class="chart"><canvas id="chart-trend"></canvas></div>
+    </article>
+    <article class="card">
+      <div class="card-head"><h2>By store</h2></div>
+      <p class="hint">Click a bar to show one store.</p>
+      <div class="chart"><canvas id="chart-store"></canvas></div>
+    </article>
+  </section>
+
+  <section class="grid two">
+    <article class="card">
+      <div class="card-head"><h2>Sales by category</h2></div>
+      <p class="hint">From <code>marts.mart_category_monthly</code></p>
+      <div class="chart small"><canvas id="chart-cat"></canvas></div>
+    </article>
+    <article class="card">
+      <div class="card-head"><h2>Top products</h2></div>
+      <p class="hint">From <code>marts.mart_product_monthly</code></p>
+      <div class="table-wrap"><table class="rows" id="products"></table></div>
+    </article>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><h2>Latest pipeline loads</h2></div>
+    <p class="hint">Each daily file is checked before it is loaded. A file that fails is moved to quarantine, the run stops and an alert is sent.</p>
+    <div class="table-wrap"><table class="rows" id="audit"></table></div>
+  </section>
+</main>
+
+<footer>Pipeline code: <code>warehouse/</code> in the repository. Airflow runs it daily; dbt builds a star schema (fct_sales with store, product and date dimensions) and runs its tests on every load.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>window.Chart || document.write('<script src="/static/vendor/chart.umd.min.js"><\/script>');</script>
+<script src="/static/site.js"></script>
+<script src="/static/common.js"></script>
+<script src="/static/warehouse.js"></script>
+</body>
+</html>

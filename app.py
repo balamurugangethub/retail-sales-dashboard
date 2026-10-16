@@ -15,6 +15,7 @@ import accounts
 import cloud
 import datasets
 import forecast
+import marts
 import sqlbench
 import workspace
 from ai import Assistant, ChatClient
@@ -411,6 +412,7 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
     forecast.register(app, db=db, filters=filters, error_cls=ApiError)
     datasets.register(app, db=db, error_cls=ApiError)
     sqlbench.register(app, db=db, error_cls=ApiError)
+    marts.register(app, error_cls=ApiError)
     return app
 
 
