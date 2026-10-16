@@ -26,7 +26,7 @@ START = datetime(2010, 11, 28, 9)
 
 def has_dbt():
     try:
-        transform.dbt_executable()
+        transform.dbt_command()
         return True
     except transform.TransformError:
         return False

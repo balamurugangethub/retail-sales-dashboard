@@ -116,6 +116,8 @@ def describe_failure(error):
         return (f"File {error.report['file']} was rejected and moved to quarantine. Nothing was loaded.",
                 "\n".join(error.report["failures"]))
     if isinstance(error, transform.TransformError):
+        if "not installed" in str(error) or "does not start" in str(error):
+            return "dbt could not be started.", str(error)
         return "dbt build failed: a model or data test did not pass.", str(error)
     return f"Pipeline step failed: {type(error).__name__}", str(error)
 
