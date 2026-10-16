@@ -92,7 +92,7 @@ window.Mono = (function () {
     d.font.family = css("--chart-font") || getComputedStyle(document.body).fontFamily || d.font.family;
     d.font.size = 12;
     d.color = muted(); d.borderColor = css("--chart-grid") || fg;
-    d.elements.bar.borderRadius = 5;
+    d.elements.bar.borderRadius = 0;
     d.elements.bar.borderSkipped = false;
     Object.assign(d.animation, { duration: 650, easing: "easeOutQuart" });
     d.transitions.active.animation.duration = 200;
@@ -105,7 +105,7 @@ window.Mono = (function () {
     d.elements.arc.borderColor = fg;
     d.elements.arc.borderWidth = 1;
     Object.assign(d.plugins.tooltip, { backgroundColor: bg, titleColor: css("--text") || ink(), bodyColor: css("--text") || ink(),
-      borderColor: css("--line") || fg, borderWidth: 1, cornerRadius: 10, padding: 10, displayColors: true, boxPadding: 4, caretSize: 6 });
+      borderColor: css("--line") || fg, borderWidth: 1, cornerRadius: 0, padding: 10, displayColors: true, boxPadding: 4, caretSize: 6 });
     Object.assign(d.plugins.legend.labels, { boxWidth: 12, boxHeight: 12, color: text() });
   }
 
