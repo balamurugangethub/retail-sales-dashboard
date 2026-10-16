@@ -3,15 +3,19 @@
 [![Tests](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/tests.yml/badge.svg)](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/tests.yml)
 [![Pylint](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/pylint.yml/badge.svg)](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/pylint.yml)
 [![Warehouse pipeline](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/warehouse.yml/badge.svg)](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/warehouse.yml)
+[![Cloud pipeline](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/cloud-pipeline.yml/badge.svg)](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/cloud-pipeline.yml)
 
 **Live demo: https://retail-sales-dashboard-sigma.vercel.app** (click *Try with sample data* on the sign-in page)
 
 A small data platform that started as a sales dashboard for a 5-store retail chain. It replaces the weekly
 "merge Excel files from every store" routine with one live source of truth, and it works with any CSV or Excel
 file: read it, clean it, check its quality, store it, query it with SQL, chart it and forecast it.
-Behind it sits a **scheduled batch pipeline**: about a million order lines of till files, validated and loaded by
-**Airflow** into a **DuckDB** warehouse, modelled by **dbt** into a star schema, and read by the Warehouse page
-(see [Data warehouse pipeline](#data-warehouse-pipeline)).
+Behind it sits a **scheduled batch pipeline** with two feeds, about a million synthetic till lines and the real
+**UCI Online Retail II** dataset (about a million invoice lines). Every morning **GitHub Actions** lands the files in a
+**Supabase Storage** bucket, loads them into **MotherDuck** (cloud DuckDB), models them with **dbt** into two star
+schemas, checks source freshness, records the run, and publishes a **data catalog** (dbt docs with lineage) to
+GitHub Pages. The same steps run on a laptop with **Airflow** in Docker
+(see [Data warehouse pipeline](#data-warehouse-pipeline) and the [data catalog](https://balamurugangethub.github.io/retail-sales-dashboard/)).
 
 Built as the working prototype for the problem statement:
 *"A retail chain with 5 stores cannot see its sales clearly or quickly."*
@@ -30,8 +34,11 @@ Built as the working prototype for the problem statement:
 
 | Skill | Where to look |
 |---|---|
-| Batch pipeline and orchestration | `warehouse/`: Airflow DAG in Docker Compose, daily files, idempotent loads, quarantine and alerts |
-| Data warehouse and modelling | DuckDB with raw, staging and mart layers; dbt star schema (`fct_sales` + store, product, date dimensions), incremental fact, 30 dbt tests |
+| Batch pipeline and orchestration | `warehouse/`: a daily GitHub Actions run in the cloud and an Airflow DAG in Docker Compose, idempotent loads, quarantine and alerts |
+| Cloud data platform | object-storage landing zone (Supabase Storage, S3-style), cloud warehouse (MotherDuck), secrets in GitHub, all on free plans (`warehouse/cloud_run.py`, `object_store.py`) |
+| Real data | UCI Online Retail II (1.07M real invoice lines) as a second feed with its own validation rules (`warehouse/online_retail.py`, `feeds.py`) |
+| Data warehouse and modelling | raw, staging and mart layers; dbt star schemas (`fct_sales`, `fct_online_sales` and their dimensions), incremental fact, 51 dbt tests |
+| Data catalog and observability | dbt docs with lineage on GitHub Pages; run history, step timings, dbt results and source freshness in the warehouse (`warehouse/observe.py`), shown on the Warehouse page |
 | Ingestion from files and web links | `cleaning.py`, `datasets.py`, `sources.py` (links are checked so the server cannot be pointed at private addresses) |
 | Data cleaning and type detection | `cleaning.py`, `typed_rows` in `datasets.py` |
 | Data quality checks and scoring | `quality.py` |
@@ -217,7 +224,9 @@ Every file with the steps it went through (read, detect types, clean, load, qual
 ### Warehouse (`/warehouse`)
 Two years of sales for the 5 stores, read from the dbt marts rather than the app's own table: KPIs, monthly trend,
 stores, categories, top products, row counts at each layer, dbt test results and the latest pipeline loads.
-Filter by store and month. See [Data warehouse pipeline](#data-warehouse-pipeline).
+Filter by store and month. Below that: **Pipeline health** (the last runs with their duration, rows, rejected files,
+dbt tests, success rate, the steps of the last run and dbt source freshness), the **real data** section for the online
+shop (net sales, returns, countries, best sellers), and a link to the data catalog. See [Data warehouse pipeline](#data-warehouse-pipeline).
 
 ### Demo accounts
 The sign-in page has **Try with sample data**: a private demo shop with sample sales and three sample files,
@@ -300,7 +309,7 @@ All GET endpoints accept `start`, `end` (YYYY-MM-DD), `store`, `category`.
 | `GET /api/datasets/<id>/quality` | data quality score and problems |
 | `POST /api/datasets/<id>/query`, `/forecast` | chart data and forecast for any file |
 | `GET /api/pipeline` | steps each file went through |
-| `GET /api/warehouse?store=&start=YYYY-MM&end=YYYY-MM` | Warehouse page: KPIs, trend, stores, categories, top products and load history from the dbt marts |
+| `GET /api/warehouse?store=&start=YYYY-MM&end=YYYY-MM` | Warehouse page: KPIs, trend, stores, categories, top products, the online shop's real data, pipeline health (runs, steps, freshness) and load history from the dbt marts |
 | `GET /api/sql/schema`, `POST /api/sql/run` | tables you can query, run a read-only query |
 | `POST /api/auth/demo` | open a demo account |
 | `POST /api/consent` (`{"accept": true/false}`) | accept or decline the privacy policy and cookies |
@@ -339,7 +348,7 @@ cleaning.py       reads CSV/Excel, guesses columns, cleans rows
 queries.py        field catalog and the generic chart query
 ai.py             AI chat client (Gemini/Groq/Ollama), rule-based assistant, action validation
 seed.py           sample-data generator (calibrated to the deck)
-marts.py          Warehouse page: reads the dbt marts (live DuckDB, or the committed snapshot)
+marts.py          Warehouse page: reads the dbt marts (live DuckDB, the snapshot published to GitHub Pages, or the committed one)
 warehouse/        batch pipeline: generator, validation, loading, alerts, dbt project, Airflow DAG (see warehouse/README.md)
 data/targets.csv  store x month targets used by the generator
 static/           index/builder/data, welcome/privacy/sign-in/account pages, JS, style.css, vendor/chart.umd.min.js
@@ -350,30 +359,76 @@ docs/             screenshots, hosting notes
 ## Data warehouse pipeline
 
 The app above stores what people upload. The warehouse answers the original problem at a realistic size: each store's
-till sends one file a day, and the chain needs one trusted set of numbers every morning. Everything runs on free tools.
+till sends one file a day, and the chain needs one trusted set of numbers every morning. It runs in the cloud every
+day, and the same code runs on a laptop. Everything is on free plans with no credit card.
 
 | | |
 |---|---|
-| Data | `warehouse/generate.py`: seeded synthetic tills, 5 stores x 60 products, 730 daily files, **1,050,477 order lines** with seasonality, weekends, growth and a little dirt (repeated lines, blank payment methods) |
-| Orchestration | Airflow 3 in Docker Compose, DAG `retail_daily_warehouse` at 06:00 daily |
-| Validation | `warehouse/validate.py` reuses the app's `quality.py` checks plus schema and business rules. A failing file stops the run, moves to quarantine and sends an alert (Discord/Slack webhook, or a log) |
-| Warehouse | DuckDB file with `raw`, `staging` and `marts` schemas |
-| Transformations and tests | dbt: typed and de-duplicated staging, a star schema with an incremental fact table, reporting marts, 30 tests |
-| Serving | the Warehouse page reads the marts live when the DuckDB file is there, otherwise a committed snapshot (`warehouse/snapshot/`, which is what the Vercel site shows, because Vercel has no always-on server for a warehouse or Airflow) |
+| Data | Two feeds, one CSV per day each. **Tills** (`warehouse/generate.py`): seeded synthetic data, 5 stores x 60 products, 730 daily files, **1,050,477 order lines** with seasonality, weekends, growth and a little dirt. **Online shop** (`warehouse/online_retail.py`): the real [UCI Online Retail II](https://archive.ics.uci.edu/dataset/502/online+retail+ii) dataset (CC BY 4.0), a UK gift shop's **1,067,371 invoice lines** from Dec 2009 to Dec 2011, downloaded by a script and split by day |
+| Orchestration | Cloud: a GitHub Actions workflow (`cloud-pipeline.yml`) at 06:15 UTC daily. Laptop: Airflow 3 in Docker Compose, DAG `retail_daily_warehouse` |
+| Landing zone | Cloud: a private **Supabase Storage** bucket (`landing/`, `quarantine/`), used the way S3 or GCS would be. Laptop: a folder |
+| Validation | `warehouse/validate.py` with per-feed rules (`feeds.py`) and the app's `quality.py` score. A failing file stops the run, moves to quarantine and sends an alert (Discord/Slack webhook, or a log) |
+| Warehouse | Cloud: **MotherDuck** (DuckDB as a service). Laptop: a DuckDB file. Both have `raw`, `staging` and `marts` schemas |
+| Transformations and tests | dbt: typed and de-duplicated staging, two star schemas (one with an incremental fact table), reporting marts, 51 tests |
+| Data catalog | `dbt docs generate --static`, published to [GitHub Pages](https://balamurugangethub.github.io/retail-sales-dashboard/) after every run: every model and column described, the lineage graph, column types from the warehouse |
+| Observability | Every run writes `raw.pipeline_runs`, `raw.pipeline_steps`, `raw.dbt_results` and `raw.source_freshness` (`warehouse/observe.py`): status, duration per step, files found, loaded and rejected, rows, dbt models and tests, and `dbt source freshness` (warn after 30 hours, error after 72). Stale data sends an alert. The Warehouse page shows it as Pipeline health |
+| Serving | The Warehouse page reads the marts live when the DuckDB file is there. On Vercel it reads the snapshot each cloud run publishes to GitHub Pages, and falls back to the copy committed in `warehouse/snapshot/` |
 
-How to run it, on Windows or with Docker: [warehouse/README.md](warehouse/README.md).
+How to run it, on Windows, with Docker, or in the cloud: [warehouse/README.md](warehouse/README.md).
 
-### Architecture
+### Cloud architecture
+
+```mermaid
+flowchart LR
+    subgraph gha["GitHub Actions: cloud-pipeline.yml (06:15 UTC daily)"]
+        direction LR
+        land["land<br/>new till days +<br/>Online Retail II once"] --> sync["sync<br/>download files not<br/>yet in the warehouse"]
+        sync --> validate["validate<br/>per-feed rules +<br/>quality.py score"]
+        validate --> loadraw["load_raw<br/>idempotent per file"]
+        loadraw --> dbt["dbt build<br/>models + 51 tests"]
+        dbt --> fresh["dbt source<br/>freshness"]
+        fresh --> publish["publish<br/>dbt docs + marts<br/>+ run history"]
+    end
+    uci["UCI Online Retail II<br/>(real, 1.07M lines)"] --> land
+    tills["5 store tills<br/>(synthetic)"] --> land
+    land --> bucket[("Supabase Storage<br/>landing/")]
+    bucket --> sync
+    validate -- "fails" --> quarantine[("quarantine/")]
+    validate -- "fails" --> alert["Alert<br/>Discord / Slack"]
+    fresh -- "stale" --> alert
+    loadraw --> md[("MotherDuck<br/>raw / staging / marts<br/>+ run history")]
+    dbt --> md
+    publish --> pages["GitHub Pages<br/>data catalog + /data"]
+    pages --> vercel["Vercel site<br/>/warehouse"]
+```
+
+The same design on the big clouds:
+
+| Here (free) | AWS | Google Cloud | Azure |
+|---|---|---|---|
+| Supabase Storage bucket | S3 | Cloud Storage (GCS) | Blob Storage / ADLS |
+| MotherDuck | Redshift, or Snowflake / Athena on Iceberg | BigQuery | Synapse / Fabric |
+| GitHub Actions schedule | MWAA (managed Airflow) or Step Functions | Cloud Composer or Workflows | Data Factory |
+| GitHub secrets | Secrets Manager | Secret Manager | Key Vault |
+| dbt docs on GitHub Pages | dbt docs on S3 + CloudFront, or DataHub | Dataplex catalog | Purview |
+| `raw.pipeline_runs` + webhook alerts | CloudWatch metrics and alarms | Cloud Monitoring | Azure Monitor |
+
+Moving to one of them means swapping `object_store.py` for the provider's SDK and the dbt profile for its adapter
+(`dbt-bigquery`, `dbt-snowflake`, `dbt-redshift`); validation, the models, the tests and the run history stay the same.
+
+### Laptop architecture (Airflow)
 
 ```mermaid
 flowchart LR
     tills["5 store tills<br/>one CSV per day"] --> landing[("landing/")]
+    uci["Online Retail II"] --> landing
     subgraph airflow["Airflow DAG: retail_daily_warehouse (06:00 daily)"]
         direction LR
         find["find_new_files"] --> validate["validate<br/>schema, rules,<br/>quality.py score"]
         validate --> loadraw["load_raw<br/>idempotent per file"]
-        loadraw --> dbt["dbt_build<br/>models + 30 tests"]
-        dbt --> snap["export_snapshot"]
+        loadraw --> dbt["dbt_build<br/>models + tests"]
+        dbt --> fresh["source_freshness"]
+        fresh --> snap["export_snapshot"]
     end
     landing --> find
     validate -- "fails" --> quarantine[("quarantine/")]
@@ -381,15 +436,14 @@ flowchart LR
     dbt -- "test fails" --> alert
     subgraph duck["DuckDB warehouse"]
         direction TB
-        raw["raw<br/>sales_lines, load_audit,<br/>stores, products"] --> stg["staging<br/>stg_sales_lines (typed, de-duplicated)"]
-        stg --> star["marts: star schema<br/>fct_sales + dim_store, dim_product, dim_date"]
-        star --> rep["marts: reporting<br/>mart_store_daily, mart_category_monthly,<br/>mart_product_monthly"]
+        raw["raw<br/>sales_lines, online_retail_lines,<br/>load_audit, pipeline_runs, seeds"] --> stg["staging<br/>stg_sales_lines, stg_online_retail_lines"]
+        stg --> star["marts: star schemas<br/>fct_sales + dim_store, dim_product, dim_date<br/>fct_online_sales + dim_customer, dim_date"]
+        star --> rep["marts: reporting<br/>mart_store_daily, mart_online_daily, ..."]
     end
     loadraw --> raw
     dbt --> stg
     rep --> page["Flask /warehouse page<br/>(local: live DuckDB)"]
     snap --> snapshot[("warehouse/snapshot/<br/>committed CSVs")]
-    snapshot --> vercel["Vercel site<br/>/warehouse"]
 ```
 
 ### Star schema
@@ -448,6 +502,11 @@ erDiagram
 The fact table's grain is one order line. It is incremental: each run adds only lines loaded since the last run, and
 a file that is loaded again replaces its earlier lines (`delete+insert` on `sales_line_id`).
 
+The online shop has its own star: `fct_online_sales` (one row per invoice line, with `is_cancellation` and
+`is_product` flags) joins to `dim_date` and `dim_customer`, and feeds `mart_online_daily`,
+`mart_online_country_monthly` and `mart_online_top_products`. Its own tests check that cancellations never add
+units and that the marts add up to the fact table.
+
 ### What I'd do at 100x scale
 
 100x is 500 stores, or about 100 million order lines over two years (roughly 150,000 a day). DuckDB on one machine
@@ -456,14 +515,14 @@ validation, and one big daily batch.
 
 | Area | Today | At 100x |
 |---|---|---|
-| Landing | CSV files in a local folder | Files land in object storage (S3 or GCS) as Parquet, partitioned by `date/store`, written by the stores' POS export. CSV is converted once on arrival |
+| Landing | CSV files in a bucket (Supabase Storage) or a local folder | Files land in object storage (S3 or GCS) as Parquet, partitioned by `date/store`, written by the stores' POS export. CSV is converted once on arrival |
 | Ingestion | One run picks up all new files | One task per store partition with Airflow dynamic task mapping, triggered by the file arriving (Airflow assets or an object-storage event) instead of a fixed 06:00 batch. Late files reprocess only their own partition |
 | Validation | Python reads each file and runs `quality.py` in SQLite | The same rules as SQL in the warehouse (dbt tests or Soda/Great Expectations on the raw partition), plus a data contract on the file schema. Quarantine per partition, so one bad store doesn't hold back 499 good ones |
-| Warehouse | One DuckDB file, one writer at a time | A shared warehouse with concurrent readers and writers: BigQuery, Snowflake or Postgres with partitioning, or Iceberg tables on object storage queried by DuckDB/Trino. Raw tables partitioned by date and clustered by store |
+| Warehouse | MotherDuck or one DuckDB file, one writer at a time | A shared warehouse with concurrent readers and writers: BigQuery, Snowflake or Postgres with partitioning, or Iceberg tables on object storage queried by DuckDB/Trino. Raw tables partitioned by date and clustered by store |
 | Transformations | Incremental fact on `_loaded_at` | Incremental `insert_overwrite` by date partition with a few days of lookback for late data; dbt snapshots (SCD type 2) for product prices and store attributes; slim CI that builds only changed models (`state:modified+`) |
-| Orchestration | Airflow standalone, SQLite metadata DB | Managed Airflow (MWAA, Cloud Composer or Astronomer) or Celery/Kubernetes executors with a Postgres metadata DB, SLAs per task, retries with backoff |
+| Orchestration | A GitHub Actions schedule, or Airflow standalone with a SQLite metadata DB | Managed Airflow (MWAA, Cloud Composer or Astronomer) or Celery/Kubernetes executors with a Postgres metadata DB, SLAs per task, retries with backoff |
 | Serving | Flask reads small marts into memory | Dashboards hit pre-aggregated marts or a semantic layer with caching; the fact table is never scanned by a page view |
-| Observability | Alert on failure, audit table | Source freshness checks, row-count and revenue anomaly detection per store, lineage with OpenLineage, alerts routed to an on-call channel with a runbook link |
+| Observability | Run history, step timings, dbt results and source freshness in the warehouse; alerts on failure and stale data; dbt docs as the catalog | Row-count and revenue anomaly detection per store, lineage with OpenLineage, alerts routed to an on-call channel with a runbook link |
 | Cost and governance | Free tools | Partition pruning and clustering to keep scans small, separate dev and prod targets, role-based access to customer-level data |
 
 ## Ideas for next steps

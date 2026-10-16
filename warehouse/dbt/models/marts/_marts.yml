@@ -2,55 +2,288 @@ version: 2
 
 models:
   - name: dim_date
-    description: Calendar dimension, one row per day.
+    description: Calendar dimension, one row per day from 2009 to 2027. Shared by both feeds.
     columns:
       - name: date_key
+        description: The day as a number, YYYYMMDD.
         tests: [unique, not_null]
+      - name: date_day
+        description: The day.
+      - name: year
+        description: Calendar year.
+      - name: quarter
+        description: Quarter, 1 to 4.
+      - name: month
+        description: Month number, 1 to 12.
+      - name: year_month
+        description: Month as YYYY-MM, what the dashboard filters on.
+      - name: month_name
+        description: Month name, January to December.
+      - name: month_start
+        description: First day of the month.
+      - name: iso_week
+        description: ISO week number.
+      - name: day_of_week
+        description: ISO day of week, 1 Monday to 7 Sunday.
+      - name: day_name
+        description: Monday to Sunday.
+      - name: is_weekend
+        description: True on Saturday and Sunday.
   - name: dim_store
-    description: The five stores.
+    description: The five stores of the chain.
     columns:
       - name: store_key
+        description: Surrogate key.
         tests: [unique, not_null]
+      - name: store_id
+        description: Store code S01 to S05, as on the till files.
+      - name: store_name
+        description: Store A to Store E.
+      - name: city
+        description: City the store is in.
       - name: region
+        description: South or West.
         tests:
           - accepted_values:
               arguments:
                 values: [South, West]
+      - name: opened_on
+        description: Opening date.
+      - name: size_sqm
+        description: Floor area in square metres.
   - name: dim_product
-    description: The product catalogue.
+    description: The chain's product catalogue, 60 products in 5 categories.
     columns:
       - name: product_key
+        description: Surrogate key.
         tests: [unique, not_null]
+      - name: sku
+        description: Product code, as on the till files.
+      - name: product_name
+        description: Product name.
       - name: category
+        description: Grocery, Electronics, Apparel, Home or Beauty.
         tests:
           - accepted_values:
               arguments:
                 values: [Grocery, Electronics, Apparel, Home, Beauty]
+      - name: list_price
+        description: Shelf price.
+      - name: unit_cost
+        description: What one unit costs the chain, used for profit.
   - name: fct_sales
-    description: Sales fact. Grain is one order line; joins to dim_date, dim_store and dim_product.
+    description: Store sales fact. Grain is one order line; joins to dim_date, dim_store and dim_product. Incremental.
     columns:
       - name: sales_line_id
+        description: order_id + line number.
         tests: [unique, not_null]
+      - name: order_id
+        description: Till order number; count distinct for orders.
       - name: date_key
+        description: Day of the sale, joins to dim_date.
         tests:
           - not_null
           - relationships:
                 arguments: {to: ref('dim_date'), field: date_key}
       - name: store_key
+        description: Joins to dim_store.
         tests:
           - not_null
           - relationships:
                 arguments: {to: ref('dim_store'), field: store_key}
       - name: product_key
+        description: Joins to dim_product.
         tests:
           - not_null
           - relationships:
                 arguments: {to: ref('dim_product'), field: product_key}
+      - name: sold_at
+        description: When the order was rung up.
+      - name: payment_method
+        description: card, cash, upi, wallet or unknown.
       - name: quantity
+        description: Units sold.
         tests: [not_null]
+      - name: unit_price
+        description: Price per unit before discount.
+      - name: discount_pct
+        description: Discount in percent.
+      - name: gross_amount
+        description: quantity x unit_price.
+      - name: discount_amount
+        description: Money taken off by the discount.
+      - name: net_amount
+        description: What the customer paid for the line (sales).
+      - name: cost_amount
+        description: quantity x unit_cost.
+      - name: profit_amount
+        description: net_amount - cost_amount.
+      - name: _loaded_at
+        description: When the line was loaded; drives the incremental build.
   - name: mart_store_daily
-    description: Sales, profit and orders per store per day. The dashboard's Warehouse page reads this.
+    description: Sales, profit and orders per store per day. The Warehouse page reads this for KPIs, trend and stores.
+    columns:
+      - name: date_day
+        description: The day.
+      - name: year_month
+        description: Month as YYYY-MM.
+      - name: store_name
+        description: Store A to Store E.
+      - name: region
+        description: Store region.
+      - name: orders
+        description: Distinct orders.
+      - name: order_lines
+        description: Order lines.
+      - name: units
+        description: Units sold.
+      - name: revenue
+        description: Net sales.
+      - name: cost
+        description: Cost of the units sold.
+      - name: profit
+        description: revenue - cost.
+      - name: discounts
+        description: Money given in discounts.
   - name: mart_category_monthly
     description: Sales and profit per category, store and month.
+    columns:
+      - name: year_month
+        description: Month as YYYY-MM.
+      - name: store_name
+        description: Store A to Store E.
+      - name: category
+        description: Product category.
+      - name: units
+        description: Units sold.
+      - name: revenue
+        description: Net sales.
+      - name: profit
+        description: Profit.
   - name: mart_product_monthly
     description: Sales and profit per product, store and month.
+    columns:
+      - name: year_month
+        description: Month as YYYY-MM.
+      - name: store_name
+        description: Store A to Store E.
+      - name: sku
+        description: Product code.
+      - name: product_name
+        description: Product name.
+      - name: category
+        description: Product category.
+      - name: units
+        description: Units sold.
+      - name: revenue
+        description: Net sales.
+      - name: profit
+        description: Profit.
+  - name: fct_online_sales
+    description: Online shop sales fact (real data, UCI Online Retail II). Grain is one invoice line; joins to dim_date and dim_customer.
+    columns:
+      - name: sales_line_id
+        description: Unique line id from staging.
+        tests: [unique, not_null]
+      - name: invoice
+        description: Invoice number; count distinct for orders.
+      - name: date_key
+        description: Day of the invoice, joins to dim_date.
+        tests:
+          - not_null
+          - relationships:
+                arguments: {to: ref('dim_date'), field: date_key}
+      - name: customer_id
+        description: Joins to dim_customer; null for guest checkouts.
+        tests:
+          - relationships:
+                arguments: {to: ref('dim_customer'), field: customer_id}
+      - name: country
+        description: Customer's country.
+      - name: stock_code
+        description: Product or fee code.
+      - name: description
+        description: Product name.
+      - name: invoiced_at
+        description: When the invoice was created.
+      - name: quantity
+        description: Units, negative on cancellations.
+      - name: unit_price
+        description: Price per unit in GBP.
+      - name: line_amount
+        description: quantity x unit_price in GBP, negative on cancellations.
+      - name: is_cancellation
+        description: True when the invoice was cancelled (number starts with C).
+      - name: is_product
+        description: True for products, false for postage, fees and adjustments.
+      - name: _loaded_at
+        description: When the line was loaded.
+  - name: dim_customer
+    description: One row per online customer with country, first and last order, orders and sales.
+    columns:
+      - name: customer_id
+        description: Customer number.
+        tests: [unique, not_null]
+      - name: country
+        description: Country on the customer's latest invoice.
+      - name: first_order_date
+        description: Day of the first invoice.
+      - name: last_order_date
+        description: Day of the latest invoice.
+      - name: orders
+        description: Invoices that were not cancelled.
+      - name: gross_sales
+        description: Sales before cancellations, GBP.
+      - name: net_sales
+        description: Sales after cancellations, GBP.
+  - name: mart_online_daily
+    description: Online shop orders, customers, sales and returns per day. The Warehouse page reads this for the real-data section.
+    columns:
+      - name: date_day
+        description: The day.
+        tests: [unique, not_null]
+      - name: year_month
+        description: Month as YYYY-MM.
+      - name: orders
+        description: Invoices that were not cancelled.
+      - name: customers
+        description: Distinct known customers who ordered.
+      - name: units
+        description: Units sold (not counting cancellations).
+      - name: sales
+        description: Sales before cancellations, GBP.
+      - name: returns
+        description: Value of cancelled lines, GBP, as a positive number.
+      - name: net_sales
+        description: sales - returns.
+  - name: mart_online_country_monthly
+    description: Online shop orders, customers, sales and returns per country per month.
+    columns:
+      - name: year_month
+        description: Month as YYYY-MM.
+      - name: country
+        description: Customer's country.
+      - name: orders
+        description: Invoices that were not cancelled.
+      - name: customers
+        description: Distinct known customers.
+      - name: sales
+        description: Sales before cancellations, GBP.
+      - name: returns
+        description: Value of cancelled lines, GBP.
+      - name: net_sales
+        description: sales - returns.
+  - name: mart_online_top_products
+    description: The 50 best-selling online products over the whole history, by net sales.
+    columns:
+      - name: stock_code
+        description: Product code.
+        tests: [unique, not_null]
+      - name: description
+        description: Product name.
+      - name: units
+        description: Units sold.
+      - name: orders
+        description: Invoices that included the product.
+      - name: net_sales
+        description: Sales after cancellations, GBP.

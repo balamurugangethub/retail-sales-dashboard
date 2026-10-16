@@ -2,13 +2,79 @@ version: 2
 
 sources:
   - name: raw
-    description: Till files exactly as they arrived, loaded by warehouse/load.py after validation.
+    description: >
+      Files exactly as they arrived, loaded by warehouse/load.py after validation (every value is text),
+      plus the pipeline's own run history. Nothing here is changed by dbt.
     schema: raw
     tables:
       - name: sales_lines
-        description: One row per order line, every value as text, plus the source file and load time.
+        description: Store till files (synthetic, warehouse/generate.py). One row per order line, one file per day.
+        config:
+          loaded_at_field: _loaded_at
+          # the pipeline runs every morning, so a day and a bit without new lines means a missed run
+          freshness:
+            warn_after: {count: 30, period: hour}
+            error_after: {count: 72, period: hour}
         columns:
+          - name: order_id
+            description: Till order number, store id + day + sequence (S01-20260314-0042).
+          - name: line_number
+            description: Position of the line in the order, from 1.
+          - name: sold_at
+            description: When the order was rung up, store local time.
+          - name: store_id
+            description: Store code S01 to S05.
+          - name: sku
+            description: Product code, matches the products seed.
+          - name: quantity
+            description: Units sold on the line.
+          - name: unit_price
+            description: Shelf price per unit before discount.
+          - name: discount_pct
+            description: Discount on the line in percent (0, 5, 10 or 20).
+          - name: payment_method
+            description: card, cash, upi or wallet; sometimes blank in the export.
           - name: _source_file
+            description: The daily file the row came from.
             tests: [not_null]
+          - name: _file_date
+            description: The day in the file name.
+          - name: _loaded_at
+            description: When the pipeline loaded the file (UTC).
+      - name: online_retail_lines
+        description: >
+          UCI Online Retail II, real invoice lines of a UK online gift shop from 2009-12-01 to 2011-12-09
+          (Chen, D. 2012, CC BY 4.0, https://archive.ics.uci.edu/dataset/502/online+retail+ii), split into one file
+          per day by warehouse/online_retail.py. Historical, so it has no freshness rule.
+        columns:
+          - name: invoice
+            description: Invoice number. Starts with C when the invoice is a cancellation.
+          - name: stock_code
+            description: Product code (5 digits, sometimes a letter); other codes are postage, fees and adjustments.
+          - name: description
+            description: Product name as typed in the shop's system.
+          - name: quantity
+            description: Units on the line, negative on cancellations.
+          - name: invoice_date
+            description: When the invoice was created.
+          - name: unit_price
+            description: Price per unit in pounds sterling.
+          - name: customer_id
+            description: Customer number, blank for guest checkouts.
+          - name: country
+            description: Country the customer lives in.
+          - name: _source_file
+            description: The daily file the row came from.
+            tests: [not_null]
+          - name: _loaded_at
+            description: When the pipeline loaded the file (UTC).
       - name: load_audit
-        description: One row per file the pipeline loaded or rejected.
+        description: One row per file the pipeline loaded or rejected, with its quality score.
+      - name: pipeline_runs
+        description: One row per pipeline run, written by warehouse/observe.py. Status, duration, files, rows, dbt tests, freshness.
+      - name: pipeline_steps
+        description: One row per step of each pipeline run, with its duration.
+      - name: dbt_results
+        description: Every dbt seed, model and test of each run with its duration and status (from run_results.json).
+      - name: source_freshness
+        description: Result of dbt source freshness for each raw table on each run.

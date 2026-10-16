@@ -28,3 +28,15 @@ MAX_BAD_VALUE_PCT = 0.5
 
 def file_name(day):
     return f"{FILE_PREFIX}{day.isoformat()}.csv"
+
+
+def is_motherduck(path):
+    """A MotherDuck cloud database is named like md:retail_warehouse instead of a file path."""
+    return str(path or "").startswith("md:")
+
+
+def share_motherduck_token():
+    """DuckDB's MotherDuck extension reads motherduck_token; GitHub secrets are usually upper case."""
+    token = os.environ.get("MOTHERDUCK_TOKEN", "").strip()
+    if token and not os.environ.get("motherduck_token"):
+        os.environ["motherduck_token"] = token

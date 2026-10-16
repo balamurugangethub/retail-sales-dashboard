@@ -2,22 +2,86 @@ version: 2
 
 models:
   - name: stg_sales_lines
-    description: Order lines with proper types, blank payment methods set to "unknown", and repeated lines removed.
+    description: Till order lines with proper types, blank payment methods set to "unknown", and repeated lines removed (the latest copy wins).
     columns:
       - name: sales_line_id
+        description: order_id + line number. Unique per order line.
         tests: [unique, not_null]
+      - name: order_id
+        description: Till order number.
+      - name: line_number
+        description: Position of the line in the order.
+      - name: sold_at
+        description: When the order was rung up.
+      - name: sale_date
+        description: Day of the sale.
+      - name: store_id
+        description: Store code, upper case.
+      - name: sku
+        description: Product code, upper case.
       - name: quantity
+        description: Units sold.
         tests: [not_null]
+      - name: unit_price
+        description: Price per unit before discount.
+      - name: discount_pct
+        description: Discount in percent, 0 when blank.
       - name: payment_method
+        description: How the customer paid.
         tests:
           - accepted_values:
               arguments:
                 values: [card, cash, upi, wallet, unknown]
+      - name: _source_file
+        description: The daily file the row came from.
+      - name: _loaded_at
+        description: When it was loaded.
+  - name: stg_online_retail_lines
+    description: Online shop invoice lines (real data) with proper types, flags for cancellations and products, and exact repeated lines removed.
+    columns:
+      - name: sales_line_id
+        description: Hash of invoice, item, quantity, time, price and customer. Unique per line.
+        tests: [unique, not_null]
+      - name: invoice
+        description: Invoice number.
+        tests: [not_null]
+      - name: stock_code
+        description: Product or fee code, upper case.
+      - name: description
+        description: Product name, null when blank.
+      - name: quantity
+        description: Units, negative on cancellations.
+        tests: [not_null]
+      - name: invoiced_at
+        description: When the invoice was created.
+        tests: [not_null]
+      - name: invoice_date
+        description: Day of the invoice.
+      - name: unit_price
+        description: Price per unit in GBP.
+        tests: [not_null]
+      - name: customer_id
+        description: Customer number, null for guest checkouts.
+      - name: country
+        description: Customer's country.
+        tests: [not_null]
+      - name: is_cancellation
+        description: True when the invoice number starts with C.
+      - name: is_product
+        description: True for real products (code starts with 5 digits), false for postage, fees and adjustments.
+      - name: _source_file
+        description: The daily file the row came from.
+      - name: _loaded_at
+        description: When it was loaded.
   - name: stg_stores
+    description: The five stores from the stores seed, codes upper-cased.
     columns:
       - name: store_id
+        description: Store code.
         tests: [unique, not_null]
   - name: stg_products
+    description: The 60 products from the products seed, codes upper-cased.
     columns:
       - name: sku
+        description: Product code.
         tests: [unique, not_null]

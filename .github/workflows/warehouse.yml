@@ -30,7 +30,7 @@ jobs:
         test -f warehouse/data/landing/quarantine/sales_2026-07-01.csv
         cat warehouse/data/alerts.log
     - name: Warehouse tests
-      run: python -m pytest -q tests/test_warehouse.py
+      run: python -m pytest -q tests/test_warehouse.py tests/test_warehouse_cloud.py
 
   airflow:
     name: Build the Airflow image and parse the DAG
