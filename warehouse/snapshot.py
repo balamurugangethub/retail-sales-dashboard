@@ -30,11 +30,30 @@ LAYERS = {"pos": {"raw": "raw.sales_lines", "staging": "staging.stg_sales_lines"
                             "fact": "marts.fct_online_sales"}}
 
 
+def has_table(con, qualified):
+    schema, name = qualified.split(".")
+    return con.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?",
+                       [schema, name]).fetchone()[0] > 0
+
+
+def count(con, qualified):
+    return con.execute(f"SELECT COUNT(*) FROM {qualified}").fetchone()[0] if has_table(con, qualified) else 0
+
+
 def layer_counts(con, feed="pos"):
-    return {k: con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0] for k, t in LAYERS[feed].items()}
+    return {k: count(con, t) for k, t in LAYERS[feed].items()}
+
+
+def day_range(con, mart):
+    if not has_table(con, f"marts.{mart}"):
+        return None, None
+    lo, hi = con.execute(f"SELECT MIN(date_day), MAX(date_day) FROM marts.{mart}").fetchone()
+    return lo and str(lo), hi and str(hi)
 
 
 def files_loaded(con, feed):
+    if not has_table(con, f"raw.{feed.table}"):
+        return 0
     return con.execute(f"SELECT COUNT(DISTINCT _source_file) FROM raw.{feed.table}").fetchone()[0]
 
 
@@ -54,19 +73,22 @@ def export(warehouse_path=None, out_dir=None):
     con = load.connect(warehouse_path, read_only=True)
     try:
         for mart in MARTS:
+            # a failed dbt test skips the marts built on it; publish the rest so the failure is visible
+            if not has_table(con, f"marts.{mart}"):
+                continue
             write_csv(con, f"SELECT * FROM marts.{mart} ORDER BY ALL", os.path.join(out_dir, f"{mart}.csv"))
         write_csv(con, f"SELECT * FROM raw.load_audit ORDER BY run_at DESC, file_name DESC LIMIT {AUDIT_ROWS}",
                   os.path.join(out_dir, "load_audit.csv"))
-        lo, hi = con.execute("SELECT MIN(date_day), MAX(date_day) FROM marts.mart_store_daily").fetchone()
-        olo, ohi = con.execute("SELECT MIN(date_day), MAX(date_day) FROM marts.mart_online_daily").fetchone()
+        lo, hi = day_range(con, "mart_store_daily")
+        olo, ohi = day_range(con, "mart_online_daily")
         manifest = {"exported_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "target": observe.target_name(warehouse_path),
-                    "first_day": str(lo), "last_day": str(hi), "rows": layer_counts(con),
+                    "first_day": lo, "last_day": hi, "rows": layer_counts(con),
                     "files_loaded": files_loaded(con, feeds.POS),
-                    "online_retail": {"first_day": olo and str(olo), "last_day": ohi and str(ohi),
+                    "online_retail": {"first_day": olo, "last_day": ohi,
                                       "rows": layer_counts(con, "online_retail"),
                                       "files_loaded": files_loaded(con, feeds.ONLINE_RETAIL),
-                                      "customers": con.execute("SELECT COUNT(*) FROM marts.dim_customer").fetchone()[0]},
+                                      "customers": count(con, "marts.dim_customer")},
                     "dbt": dbt_test_summary()}
         health = observe.summary(con)
         last = next((r for r in health["runs"] if r.get("dbt_tests")), None)
