@@ -21,7 +21,7 @@ DAY = date(2026, 3, 14)
 
 def has_dbt():
     try:
-        transform.dbt_executable()
+        transform.dbt_command()
         return True
     except transform.TransformError:
         return False

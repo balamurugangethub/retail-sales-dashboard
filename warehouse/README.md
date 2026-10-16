@@ -31,6 +31,12 @@ Run each line on its own, from the `retail-sales-dashboard` folder.
 pip install -r warehouse\requirements.txt
 ```
 
+Only if `python --version` says 3.14: dbt's mashumaro package is too old for Python 3.14, so also run
+
+```powershell
+pip install --no-deps "mashumaro[msgpack]==3.17"
+```
+
 ```powershell
 python -m warehouse.generate
 ```
