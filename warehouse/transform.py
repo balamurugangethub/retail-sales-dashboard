@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 import sys
+import sysconfig
 
 from warehouse import config
 
@@ -17,10 +18,13 @@ def dbt_executable():
     found = shutil.which("dbt")
     if found:
         return found
-    folder = os.path.dirname(sys.executable)          # the dbt that was installed next to this Python
-    for name in ("dbt", "dbt.exe"):
-        if os.path.exists(os.path.join(folder, name)):
-            return os.path.join(folder, name)
+    # pip puts dbt in this Python's Scripts (Windows) or bin folder, which is often not on PATH
+    folders = [os.path.dirname(sys.executable), sysconfig.get_path("scripts"),
+               sysconfig.get_path("scripts", f"{os.name}_user")]
+    for folder in folders:
+        for name in ("dbt.exe", "dbt"):
+            if folder and os.path.isfile(os.path.join(folder, name)):
+                return os.path.join(folder, name)
     raise TransformError("dbt is not installed. Run: pip install -r warehouse/requirements.txt")
 
 
@@ -36,6 +40,9 @@ def run_dbt(args, warehouse_path=None):
     result = subprocess.run(cmd, cwd=config.DBT_DIR, env=dbt_env(warehouse_path), capture_output=True,
                             text=True, check=False)
     sys.stdout.write(result.stdout)
+    if result.returncode != 0 and "UnserializableField" in result.stderr:
+        raise TransformError("dbt does not start on this Python version yet (its mashumaro package is too old for "
+                             "Python 3.14). Fix: pip install --no-deps \"mashumaro[msgpack]==3.17\"")
     if result.returncode != 0:
         failed = [line.strip() for line in result.stdout.splitlines() if "FAIL" in line or "ERROR" in line]
         raise TransformError("dbt " + args[0] + " failed:\n" + "\n".join(failed[-10:] or [result.stderr[-1500:]]))
