@@ -37,6 +37,10 @@
     link("/privacy", "Privacy");
     if (me.user) link("/account", me.user.shop || me.user.name, "account nav-right");
     if (window.ChartStyle && ["/", "/builder"].includes(location.pathname)) nav.append(ChartStyle.button());
+    const find = document.createElement("button");
+    find.type = "button"; find.className = "theme-btn"; find.append("Search ");
+    const kbd = document.createElement("kbd"); kbd.textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? "⌘K" : "Ctrl K"; find.append(kbd);
+    find.onclick = () => window.Palette && Palette.open(); nav.append(find);
     if (window.Theme) nav.append(Theme.button());
     const here = nav.querySelector("a.on");                // on a phone the row scrolls: show the current page
     if (here && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = Math.max(0, here.offsetLeft - 16);
@@ -48,7 +52,7 @@
 window.Mono = (function () {
   const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const ink = () => css("--ink") || "#000";
-  const paper = () => css("--paper") || "#fff";
+  const paper = () => css("--surface") || css("--paper") || "#fff";   // charts sit on cards
   const chart = () => css("--chart-color") || ink();
   const DASHES = [[], [6, 4], [2, 3], [10, 4, 2, 4], [1, 5], [14, 4]];
   const POINTS = ["circle", "rect", "triangle", "rectRot", "crossRot", "star"];
@@ -88,7 +92,10 @@ window.Mono = (function () {
     d.font.family = css("--chart-font") || getComputedStyle(document.body).fontFamily || d.font.family;
     d.font.size = 12;
     d.color = muted(); d.borderColor = css("--chart-grid") || fg;
-    d.elements.bar.borderRadius = 0;
+    d.elements.bar.borderRadius = 5;
+    d.elements.bar.borderSkipped = false;
+    Object.assign(d.animation, { duration: 650, easing: "easeOutQuart" });
+    d.transitions.active.animation.duration = 200;
     d.elements.bar.borderColor = fg;
     d.elements.bar.borderWidth = 1;
     d.elements.line.borderWidth = 2;
@@ -97,8 +104,8 @@ window.Mono = (function () {
     d.elements.point.borderWidth = 1.5;
     d.elements.arc.borderColor = fg;
     d.elements.arc.borderWidth = 1;
-    Object.assign(d.plugins.tooltip, { backgroundColor: ink(), titleColor: bg, bodyColor: bg, borderColor: bg, borderWidth: 1,
-      cornerRadius: 0, displayColors: true, boxPadding: 4 });
+    Object.assign(d.plugins.tooltip, { backgroundColor: bg, titleColor: css("--text") || ink(), bodyColor: css("--text") || ink(),
+      borderColor: css("--line") || fg, borderWidth: 1, cornerRadius: 10, padding: 10, displayColors: true, boxPadding: 4, caretSize: 6 });
     Object.assign(d.plugins.legend.labels, { boxWidth: 12, boxHeight: 12, color: text() });
   }
 
@@ -113,3 +120,88 @@ window.Mono = (function () {
 })();
 window.Mono.applyDefaults();
 window.addEventListener("themechange", () => window.Mono.applyDefaults());
+
+// ---- motion and quick navigation ---------------------------------------------------
+(function () {
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Numbers in KPI tiles count up from zero when they first appear or change
+  const seen = new Map();
+  function countUp(node) {
+    const text = node.textContent, m = text.match(/-?[\d,]+(\.\d+)?/);
+    const label = node.parentElement.querySelector(".label"), key = label ? label.textContent : text;
+    if (reduce || !m || seen.get(key) === text) return;       // same figure as before (a theme change redraws the tiles): leave it
+    seen.set(key, text);
+    const target = parseFloat(m[0].replace(/,/g, "")), decimals = m[1] ? m[1].length - 1 : 0, useCommas = m[0].includes(",") || Math.abs(target) >= 1000;
+    const pre = text.slice(0, m.index), post = text.slice(m.index + m[0].length), t0 = performance.now(), ms = 800;
+    const show = (v) => (node.textContent = pre + v.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals, useGrouping: useCommas }) + post);
+    const tick = (now) => {
+      const p = Math.min(1, (now - t0) / ms), eased = 1 - Math.pow(1 - p, 4);
+      if (p < 1) { show(target * eased); requestAnimationFrame(tick); } else node.textContent = text;
+    };
+    show(0); requestAnimationFrame(tick);
+  }
+  new MutationObserver((list) => {
+    for (const rec of list) rec.addedNodes.forEach((n) => {
+      if (n.nodeType !== 1) return;
+      if (n.matches(".kpi .value, .kpi-cell .value")) countUp(n);
+      else n.querySelectorAll && n.querySelectorAll(".kpi .value, .kpi-cell .value").forEach(countUp);
+    });
+  }).observe(document.documentElement, { childList: true, subtree: true });
+
+  // Buttons ripple from the pointer
+  document.addEventListener("pointerdown", (e) => {
+    const b = e.target.closest && e.target.closest(".btn");
+    if (!b || reduce || b.disabled) return;
+    const r = b.getBoundingClientRect(), size = Math.max(r.width, r.height), s = document.createElement("span");
+    s.className = "ripple"; s.style.width = s.style.height = size + "px";
+    s.style.left = e.clientX - r.left - size / 2 + "px"; s.style.top = e.clientY - r.top - size / 2 + "px";
+    b.append(s); setTimeout(() => s.remove(), 650);
+  });
+
+  // Command palette: Ctrl/Cmd + K, or the Search button in the header
+  let open = null;
+  function items() {
+    const pages = [...document.querySelectorAll(".nav a")].map((a) => ({ kind: "Go to", label: a.textContent.trim(), run: () => (location.href = a.href) }));
+    const themes = window.Theme ? Theme.list().map((t) => ({ kind: "Theme", label: `${t.name} ${t.mode.toLowerCase()}`, dot: t.accent, run: () => Theme.apply(t.id) })) : [];
+    return [...pages, ...themes];
+  }
+  function close() { if (open) { open.remove(); open = null; } }
+  function openPalette() {
+    if (open) return close();
+    const all = items(); let shown = all, at = 0;
+    const back = document.createElement("div"); back.className = "cmdk-back";
+    const box = document.createElement("div"); box.className = "cmdk"; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "Search pages and themes");
+    const input = document.createElement("input"); input.placeholder = "Jump to a page or switch theme…"; input.setAttribute("aria-label", "Search");
+    const list = document.createElement("ul"), foot = document.createElement("div");
+    foot.className = "foot"; foot.textContent = "↑ ↓ to move   ↵ to open   esc to close";
+    const draw = () => {
+      list.replaceChildren(...shown.map((it, i) => {
+        const li = document.createElement("li"); li.className = i === at ? "on" : "";
+        const name = document.createElement("span"); name.textContent = it.label;
+        const kind = document.createElement("span"); kind.className = "kind";
+        if (it.dot) { const d = document.createElement("i"); d.style.background = it.dot; kind.append(d); }
+        kind.append(it.kind); li.append(name, kind);
+        li.onmousemove = () => { if (at !== i) { at = i; draw(); } };
+        li.onclick = () => { close(); it.run(); };
+        return li;
+      }));
+      if (!shown.length) { const n = document.createElement("li"); n.className = "none"; n.textContent = "Nothing matches."; list.replaceChildren(n); }
+      const cur = list.querySelector(".on"); if (cur) cur.scrollIntoView({ block: "nearest" });
+    };
+    input.oninput = () => { const q = input.value.trim().toLowerCase(); shown = all.filter((it) => (it.kind + " " + it.label).toLowerCase().includes(q)); at = 0; draw(); };
+    input.onkeydown = (e) => {
+      if (e.key === "ArrowDown") { at = Math.min(shown.length - 1, at + 1); draw(); e.preventDefault(); }
+      else if (e.key === "ArrowUp") { at = Math.max(0, at - 1); draw(); e.preventDefault(); }
+      else if (e.key === "Enter" && shown[at]) { const it = shown[at]; close(); it.run(); }
+      else if (e.key === "Escape") close();
+    };
+    back.onclick = (e) => { if (e.target === back) close(); };
+    box.append(input, list, foot); back.append(box); document.body.append(back); open = back; draw(); input.focus();
+  }
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); openPalette(); }
+    else if (e.key === "Escape") close();
+  });
+  window.Palette = { open: openPalette };
+})();

@@ -6,23 +6,32 @@
 //               background, chart font), like the chart properties in Cognos. It never
 //               touches the rest of the interface.
 (function () {
-  const COLOURS = [
-    // name, shade used on white, shade used on black
-    ["Purple", "#6d28d9", "#b794ff"],
-    ["Pink", "#c2185b", "#ff7eb6"],
-    ["Dark blue", "#0b2a6f", "#5b8cff"],
-    ["Red", "#c62828", "#ff5a5a"],
-    ["Yellow", "#8a6d00", "#ffd400"],
-    ["Green", "#1b7a3a", "#3ddc84"],
-    ["Light blue", "#0277bd", "#6cc6ff"],
-    ["Orange", "#c75000", "#ff9a3c"],
+  // Curated palettes. Each family has a dark and a light version built from one hue: a tinted
+  // background, a slightly lifted surface for cards, soft text and one accent. The accent drives
+  // buttons, the active page, hover edges and charts.   name, hue, saturation, dark accent, light accent
+  const FAMILIES = [
+    ["Obsidian", 40, 6, "#ebe7de", "#1d1b18"],
+    ["Sapphire", 222, 42, "#6e98f0", "#1d3f94"],
+    ["Amethyst", 268, 32, "#b89cf2", "#5f3fb0"],
+    ["Garnet", 350, 34, "#e57a86", "#962235"],
+    ["Rose Quartz", 340, 30, "#eb9bb9", "#a62d5c"],
+    ["Champagne", 42, 30, "#e6c878", "#80601a"],
+    ["Emerald", 160, 38, "#52c8a0", "#15694c"],
+    ["Glacier", 198, 40, "#7cc9ea", "#17708f"],
+    ["Copper", 24, 36, "#e69d62", "#a24c14"],
   ];
-  const THEMES = [
-    { id: "black-white", name: "Black & white", paper: "#000000", ink: "#ffffff" },
-    { id: "white-black", name: "White & black", paper: "#ffffff", ink: "#000000" },
-    ...COLOURS.map(([n, onWhite]) => ({ id: n.toLowerCase().replace(" ", "-") + "-white", name: n + " & white", paper: "#ffffff", ink: onWhite })),
-    ...COLOURS.map(([n, , onBlack]) => ({ id: n.toLowerCase().replace(" ", "-") + "-black", name: n + " & black", paper: "#000000", ink: onBlack })),
-  ];
+  function hsl(h, s, l) {      // hue 0-360, saturation and lightness in percent -> #rrggbb
+    s /= 100; l /= 100;
+    const k = (n) => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+    const f = (n) => Math.round(255 * (l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))))).toString(16).padStart(2, "0");
+    return "#" + f(0) + f(8) + f(4);
+  }
+  const THEMES = FAMILIES.flatMap(([name, h, s, dark, light]) => [
+    { id: name.toLowerCase().replace(" ", "-") + "-dark", name, mode: "Dark", accent: dark,
+      paper: hsl(h, s * 0.85, 6), surface: hsl(h, s * 0.75, 9.5), text: hsl(h, Math.min(s, 16), 94) },
+    { id: name.toLowerCase().replace(" ", "-") + "-light", name, mode: "Light", accent: light,
+      paper: hsl(h, s * 0.45, 95.5), surface: "#ffffff", text: hsl(h, s * 0.8, 10) },
+  ]);
   const DEFAULT = THEMES[0];
   const FONTS = [
     ["Same as the app", null],
@@ -35,8 +44,7 @@
     ["Consolas (mono)", 'Consolas, "Lucida Console", Menlo, monospace'],
   ];
   // Suggested colours for the quick-pick rows
-  const SUGGESTED = ["#ffffff", "#000000", "#b794ff", "#6d28d9", "#ff7eb6", "#c2185b", "#5b8cff", "#0b2a6f", "#ff5a5a", "#c62828",
-                     "#ffd400", "#8a6d00", "#3ddc84", "#1b7a3a", "#6cc6ff", "#0277bd", "#ff9a3c", "#c75000"];
+  const SUGGESTED = ["#ffffff", "#000000", ...FAMILIES.flatMap((f) => [f[3], f[4]])];
 
   const hex = (s) => /^#[0-9a-f]{6}$/i.test(s || "") ? s.toLowerCase() : null;
   function mix(a, b, t) {   // t of a, the rest b
@@ -51,32 +59,50 @@
 
   // ---- theme: the whole app -------------------------------------------------
   let theme = THEMES.find((t) => t.id === (read("rsd-theme") || {}).id) || DEFAULT;
+  const rgba = (h, a) => { const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16}, ${(n >> 8) & 255}, ${n & 255}, ${a})`; };
   function applyTheme(t) {
-    root.setProperty("--paper", t.paper); root.setProperty("--ink", t.ink);
-    root.setProperty("--muted", mix(t.ink, t.paper, .65));
-    root.setProperty("--line", mix(t.ink, t.paper, .25));
-    root.setProperty("--wash", mix(t.ink, t.paper, .08));
-    root.setProperty("color-scheme", isDark(t.paper) ? "dark" : "light");
+    const dark = isDark(t.paper);
+    const set = (k, v) => root.setProperty(k, v);
+    set("--paper", t.paper); set("--surface", t.surface); set("--text", t.text); set("--ink", t.accent);
+    set("--on-accent", isDark(t.accent) ? "#ffffff" : t.paper === t.surface ? "#000000" : mix("#000000", t.paper, .85));
+    set("--muted", mix(t.text, t.paper, dark ? .62 : .66));
+    set("--line", mix(t.text, t.paper, dark ? .16 : .15));
+    set("--wash", mix(t.text, t.paper, dark ? .06 : .05));
+    set("--glow", rgba(t.accent, dark ? .16 : .12));
+    set("--shadow", dark ? "0 10px 30px rgba(0,0,0,.45)" : "0 10px 30px " + rgba(t.text, .10));
+    set("color-scheme", dark ? "dark" : "light");
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = t.paper;
   }
   applyTheme(theme);
   const fire = () => window.dispatchEvent(new CustomEvent("themechange"));
 
+  function pickTheme(t, grid) {
+    theme = t; write("rsd-theme", { id: t.id });
+    document.documentElement.classList.add("theme-fade");
+    applyTheme(t); fire();
+    setTimeout(() => document.documentElement.classList.remove("theme-fade"), 450);
+    if (grid) grid.querySelectorAll(".swatch").forEach((x) => x.classList.toggle("on", x.dataset.id === t.id));
+  }
+
   function themePicker() {
     const box = h("div", "theme-picker");
-    box.append(h("h3", null, "Colour theme"), h("p", "tp-note", "Changes the whole app."));
-    const grid = h("div", "swatches");
-    THEMES.forEach((t) => {
-      const b = h("button", "swatch"); b.type = "button"; b.title = t.name;
-      b.style.background = t.paper; b.style.color = t.ink; b.style.borderColor = t.ink;
-      b.classList.toggle("on", t.id === theme.id);
-      b.append(h("span", "aa", "Aa"), h("span", "nm", t.name));
-      b.onclick = () => {
-        theme = t; write("rsd-theme", { id: t.id }); applyTheme(t); fire();
-        grid.querySelectorAll(".swatch").forEach((s) => s.classList.toggle("on", s === b));
-      };
-      grid.append(b);
+    box.append(h("h3", null, "Colour theme"), h("p", "tp-note", "Changes the whole app. Each palette has a dark and a light version."));
+    ["Dark", "Light"].forEach((mode) => {
+      box.append(h("h3", "tp-mode", mode));
+      const grid = h("div", "swatches");
+      THEMES.filter((t) => t.mode === mode).forEach((t) => {
+        const b = h("button", "swatch"); b.type = "button"; b.title = t.name + " " + mode.toLowerCase(); b.dataset.id = t.id;
+        b.style.background = `linear-gradient(135deg, ${t.surface}, ${t.paper})`; b.style.color = t.text; b.style.borderColor = mix(t.text, t.paper, .2);
+        b.classList.toggle("on", t.id === theme.id);
+        const dot = h("span", "dot"); dot.style.background = t.accent;
+        const top = h("span", "sw-top"); top.append(h("span", "aa", "Aa"), dot);
+        b.append(top, h("span", "nm", t.name));
+        b.onclick = () => { pickTheme(t, box); };
+        grid.append(b);
+      });
+      box.append(grid);
     });
-    box.append(grid);
     return box;
   }
 
@@ -150,6 +176,7 @@
     return wrap;
   }
 
-  window.Theme = { picker: themePicker, button: () => button("Theme", themePicker) };
+  window.Theme = { picker: themePicker, button: () => button("Theme", themePicker), list: () => THEMES.map((t) => ({ id: t.id, name: t.name, mode: t.mode, accent: t.accent })),
+                 apply: (id) => { const t = THEMES.find((x) => x.id === id); if (t) pickTheme(t); }, current: () => theme.id };
   window.ChartStyle = { picker: stylePicker, button: () => button("Chart style", stylePicker), active: hasStyle };
 })();
