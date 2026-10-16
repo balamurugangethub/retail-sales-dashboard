@@ -72,6 +72,10 @@ def create_app(db_path=None, seed_if_missing=True, read_only=None, assistant=Non
     app.config["DB_PATH"] = db_path or os.path.join(HERE, "retail.db")
     app.config["READ_ONLY"] = (os.environ.get("READ_ONLY") == "1") if read_only is None else read_only
     app.config["MAX_CONTENT_LENGTH"] = MAX_UPLOAD_BYTES
+    # Browsers must check the scripts and styles on every visit (a cheap 304 when unchanged).
+    # Without this they guess a lifetime from Last-Modified and can keep an old theme.js or
+    # app.js after a deploy, which leaves the new pages without their buttons and charts.
+    app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 
     if seed_if_missing and not os.path.exists(app.config["DB_PATH"]):
         seed_database(app.config["DB_PATH"])

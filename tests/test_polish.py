@@ -26,6 +26,13 @@ def test_favicon_is_served(client):
     assert r.status_code == 200 and b"<svg" in r.data
 
 
+def test_scripts_are_rechecked_after_a_deploy(client):
+    # an old cached theme.js or app.js would leave new pages without the Theme button and charts
+    r = client.get("/static/theme.js")
+    assert "no-cache" in r.headers["Cache-Control"] and r.headers.get("ETag")
+    assert client.get("/static/theme.js", headers={"If-None-Match": r.headers["ETag"]}).status_code == 304
+
+
 @pytest.mark.parametrize("path", sorted(glob.glob(os.path.join(HERE, "static", "*.html"))))
 def test_every_page_has_icon_and_viewport(path):
     with open(path, encoding="utf-8") as f:
