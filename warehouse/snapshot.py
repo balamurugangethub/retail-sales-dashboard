@@ -8,9 +8,10 @@ import json
 import os
 from datetime import datetime, timezone
 
-from warehouse import config, load
+from warehouse import config, feeds, load, observe
 
-MARTS = ["mart_store_daily", "mart_category_monthly", "mart_product_monthly"]
+MARTS = ["mart_store_daily", "mart_category_monthly", "mart_product_monthly",
+         "mart_online_daily", "mart_online_country_monthly", "mart_online_top_products"]
 AUDIT_ROWS = 30
 TESTS_FILE = os.path.join(config.DBT_DIR, "target", "run_results.json")
 
@@ -24,9 +25,17 @@ def dbt_test_summary():
     return {"tests": len(tests), "passed": sum(1 for r in tests if r.get("status") == "pass")}
 
 
-def layer_counts(con):
-    tables = {"raw": "raw.sales_lines", "staging": "staging.stg_sales_lines", "fact": "marts.fct_sales"}
-    return {k: con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0] for k, t in tables.items()}
+LAYERS = {"pos": {"raw": "raw.sales_lines", "staging": "staging.stg_sales_lines", "fact": "marts.fct_sales"},
+          "online_retail": {"raw": "raw.online_retail_lines", "staging": "staging.stg_online_retail_lines",
+                            "fact": "marts.fct_online_sales"}}
+
+
+def layer_counts(con, feed="pos"):
+    return {k: con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0] for k, t in LAYERS[feed].items()}
+
+
+def files_loaded(con, feed):
+    return con.execute(f"SELECT COUNT(DISTINCT _source_file) FROM raw.{feed.table}").fetchone()[0]
 
 
 def write_csv(con, sql, path):
@@ -49,12 +58,24 @@ def export(warehouse_path=None, out_dir=None):
         write_csv(con, f"SELECT * FROM raw.load_audit ORDER BY run_at DESC, file_name DESC LIMIT {AUDIT_ROWS}",
                   os.path.join(out_dir, "load_audit.csv"))
         lo, hi = con.execute("SELECT MIN(date_day), MAX(date_day) FROM marts.mart_store_daily").fetchone()
+        olo, ohi = con.execute("SELECT MIN(date_day), MAX(date_day) FROM marts.mart_online_daily").fetchone()
         manifest = {"exported_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "target": observe.target_name(warehouse_path),
                     "first_day": str(lo), "last_day": str(hi), "rows": layer_counts(con),
-                    "files_loaded": con.execute("SELECT COUNT(DISTINCT _source_file) FROM raw.sales_lines").fetchone()[0],
+                    "files_loaded": files_loaded(con, feeds.POS),
+                    "online_retail": {"first_day": olo and str(olo), "last_day": ohi and str(ohi),
+                                      "rows": layer_counts(con, "online_retail"),
+                                      "files_loaded": files_loaded(con, feeds.ONLINE_RETAIL),
+                                      "customers": con.execute("SELECT COUNT(*) FROM marts.dim_customer").fetchone()[0]},
                     "dbt": dbt_test_summary()}
+        health = observe.summary(con)
+        last = next((r for r in health["runs"] if r.get("dbt_tests")), None)
+        if last:                            # run_results.json is overwritten by later dbt commands such as docs
+            manifest["dbt"] = {"tests": last["dbt_tests"], "passed": last["dbt_tests"] - (last["dbt_tests_failed"] or 0)}
     finally:
         con.close()
+    with open(os.path.join(out_dir, "observability.json"), "w", encoding="utf-8") as f:
+        json.dump(health, f, indent=1, default=str)
     with open(os.path.join(out_dir, "manifest.json"), "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=2)
     return manifest

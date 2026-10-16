@@ -21,6 +21,8 @@ services:
       WAREHOUSE_DATA_DIR: /opt/airflow/repo/warehouse/data
       # "1" makes each run drop the next day's till file first, so there is always something to load
       SIMULATE_ARRIVALS: "1"
+      # "1" also lands the real UCI Online Retail II dataset on the first run (a 45 MB download)
+      PUBLIC_DATASET: "${PUBLIC_DATASET:-1}"
       # Paste a Discord or Slack webhook URL into a .env file next to this one to get alerts in chat
       ALERT_WEBHOOK_URL: "${ALERT_WEBHOOK_URL:-}"
     volumes:

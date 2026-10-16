@@ -11,8 +11,8 @@ target-path: "target"
 clean-targets: ["target", "dbt_packages", "logs"]
 
 vars:
-  # dim_date covers every day the chain could have sold on
-  date_spine_start: "2024-01-01"
+  # dim_date covers every day either feed could have sold on (the online shop starts in Dec 2009)
+  date_spine_start: "2009-01-01"
   date_spine_end: "2027-12-31"
 
 seeds:

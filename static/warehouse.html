@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Warehouse | Retail Sales Dashboard</title>
-<meta name="description" content="Sales for the 5-store chain read from the dbt marts of the DuckDB warehouse: about a million order lines loaded by a scheduled pipeline.">
+<meta name="description" content="Sales read from the dbt marts of the warehouse: a million store order lines and a million real online-shop invoice lines, loaded by a scheduled pipeline with run history, freshness checks and a data catalog.">
 <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/static/style.css">
 <script src="/static/theme.js"></script>
@@ -14,7 +14,7 @@
   <div class="brand">
     <h1>Retail Sales Dashboard</h1>
     <nav class="nav"><a href="/">Overview</a><a href="/builder">Dashboard builder</a><a href="/explore">Explore any data</a><a href="/sql">SQL</a><a href="/pipeline">Pipeline</a><a href="/warehouse" class="on">Warehouse</a><a href="/forecast">Forecast</a><a href="/data">Data</a></nav>
-    <p>Two years of till data, loaded every morning and modelled with dbt <span class="badge" id="source-badge">Loading</span></p>
+    <p>Till data and a real public dataset, loaded every morning and modelled with dbt <span class="badge" id="source-badge">Loading</span></p>
   </div>
 </header>
 
@@ -28,7 +28,7 @@
 
 <main>
   <section class="card">
-    <div class="card-head"><h2>Where these numbers come from</h2></div>
+    <div class="card-head"><h2>Where these numbers come from</h2><a class="btn ghost small" id="catalog-link" target="_blank" rel="noopener">Data catalog</a></div>
     <p class="hint" id="source-note"></p>
     <ol class="pl-flow" id="layers"></ol>
   </section>
@@ -61,6 +61,47 @@
     </article>
   </section>
 
+  <section class="card" id="online-card">
+    <div class="card-head"><h2>Real data: an online gift shop</h2></div>
+    <p class="hint" id="online-note">UCI Online Retail II: real invoice lines of a UK online shop, loaded through the same checks and dbt tests as the tills.</p>
+    <section class="kpis" id="online-kpis" aria-label="Online shop key figures"></section>
+    <div class="grid two">
+      <div>
+        <h3>Monthly net sales and returns</h3>
+        <p class="hint">From <code>marts.mart_online_daily</code></p>
+        <div class="chart"><canvas id="chart-online"></canvas></div>
+      </div>
+      <div>
+        <h3>Top countries</h3>
+        <p class="hint">From <code>marts.mart_online_country_monthly</code></p>
+        <div class="chart"><canvas id="chart-country"></canvas></div>
+      </div>
+    </div>
+    <h3>Best-selling products</h3>
+    <div class="table-wrap"><table class="rows" id="online-products"></table></div>
+  </section>
+
+  <section class="card" id="health-card">
+    <div class="card-head"><h2>Pipeline health</h2></div>
+    <p class="hint" id="health-note">Every run records its steps, timings, rows, rejected files, dbt tests and source freshness in the warehouse.</p>
+    <ol class="pl-flow" id="health"></ol>
+    <div class="grid two">
+      <div>
+        <h3>Last runs</h3>
+        <p class="hint">Minutes per run; outlined bars failed.</p>
+        <div class="chart small"><canvas id="chart-runs"></canvas></div>
+      </div>
+      <div>
+        <h3>Steps of the last run</h3>
+        <div class="table-wrap"><table class="rows" id="steps"></table></div>
+        <h3>Source freshness</h3>
+        <div class="table-wrap"><table class="rows" id="freshness"></table></div>
+      </div>
+    </div>
+    <h3>Run history</h3>
+    <div class="table-wrap"><table class="rows" id="runs"></table></div>
+  </section>
+
   <section class="card">
     <div class="card-head"><h2>Latest pipeline loads</h2></div>
     <p class="hint">Each daily file is checked before it is loaded. A file that fails is moved to quarantine, the run stops and an alert is sent.</p>
@@ -68,7 +109,7 @@
   </section>
 </main>
 
-<footer>Pipeline code: <code>warehouse/</code> in the repository. Airflow runs it daily; dbt builds a star schema (fct_sales with store, product and date dimensions) and runs its tests on every load.</footer>
+<footer>Pipeline code: <code>warehouse/</code> in the repository. GitHub Actions runs it every morning in the cloud (Airflow runs the same steps on a laptop); dbt builds two star schemas and runs its tests on every load.</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>window.Chart || document.write('<script src="/static/vendor/chart.umd.min.js"><\/script>');</script>

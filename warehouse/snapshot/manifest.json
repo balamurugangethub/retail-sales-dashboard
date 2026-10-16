@@ -1,5 +1,6 @@
 {
-  "exported_at": "2026-10-16T11:56:15Z",
+  "exported_at": "2026-10-16T12:57:50Z",
+  "target": "DuckDB file",
   "first_day": "2024-07-01",
   "last_day": "2026-06-30",
   "rows": {
@@ -8,8 +9,19 @@
     "fact": 1048354
   },
   "files_loaded": 730,
+  "online_retail": {
+    "first_day": null,
+    "last_day": null,
+    "rows": {
+      "raw": 0,
+      "staging": 0,
+      "fact": 0
+    },
+    "files_loaded": 0,
+    "customers": 0
+  },
   "dbt": {
-    "tests": 30,
-    "passed": 30
+    "tests": 51,
+    "passed": 51
   }
 }

@@ -1,0 +1,119 @@
+name: Cloud pipeline
+
+# Every morning: land the new files in the object store, load them into the warehouse, run dbt and
+# its tests and freshness checks, then publish the data catalog (dbt docs) and the marts to GitHub Pages.
+#
+# With the repository secrets below the run uses free cloud accounts (no credit card):
+#   MOTHERDUCK_TOKEN                     the warehouse is MotherDuck (database retail_warehouse)
+#   SUPABASE_URL, SUPABASE_SECRET_KEY    the landing zone is a Supabase Storage bucket (warehouse-landing)
+#   ALERT_WEBHOOK_URL                    alerts go to a Discord or Slack channel
+# Without them it still runs: a DuckDB file and a landing folder, kept between runs by the Actions cache.
+# Only runs on main get the secrets, so a pull request can't touch the real warehouse.
+
+on:
+  schedule:
+    - cron: "15 6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["warehouse/**", ".github/workflows/cloud-pipeline.yml"]
+  pull_request:
+    paths: ["warehouse/**", ".github/workflows/cloud-pipeline.yml"]
+
+concurrency:
+  group: cloud-pipeline-${{ github.event_name == 'pull_request' && github.ref || 'main' }}
+  cancel-in-progress: false             # the warehouse takes one writer at a time
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    name: Land, load, dbt build and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      MOTHERDUCK_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.MOTHERDUCK_TOKEN || '' }}
+      SUPABASE_URL: ${{ github.ref == 'refs/heads/main' && secrets.SUPABASE_URL || '' }}
+      SUPABASE_SECRET_KEY: ${{ github.ref == 'refs/heads/main' && secrets.SUPABASE_SECRET_KEY || '' }}
+      ALERT_WEBHOOK_URL: ${{ github.ref == 'refs/heads/main' && secrets.ALERT_WEBHOOK_URL || '' }}
+      PIPELINE_TRIGGER: github-actions ${{ github.event_name }}
+      DBT_SEND_ANONYMOUS_USAGE_STATS: "false"
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: pip
+        cache-dependency-path: |
+          requirements.txt
+          warehouse/requirements.txt
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt -r warehouse/requirements.txt
+    - name: Where this run keeps its data
+      run: |
+        if [ -n "$MOTHERDUCK_TOKEN" ]; then echo "Warehouse: MotherDuck"; else echo "Warehouse: DuckDB file (Actions cache)"; fi
+        if [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_SECRET_KEY" ]; then echo "Landing zone: Supabase Storage"; else echo "Landing zone: folder (Actions cache)"; fi
+    - name: Restore the warehouse and landing folder from the last run
+      if: env.MOTHERDUCK_TOKEN == '' || env.SUPABASE_URL == ''
+      uses: actions/cache/restore@v4
+      with:
+        path: |
+          warehouse/data/landing
+          warehouse/data/warehouse.duckdb
+        key: warehouse-state-${{ github.run_id }}
+        restore-keys: warehouse-state-
+    - name: Keep the Online Retail II download
+      uses: actions/cache@v4
+      with:
+        path: warehouse/data/downloads
+        key: online-retail-ii-v1
+    - name: Land, load, dbt build, freshness, publish
+      run: python -m warehouse.cloud_run --site site
+    - name: Show alerts from this run
+      if: always()
+      run: cat warehouse/data/alerts.log 2>/dev/null || echo "No alerts"
+    - name: Save the warehouse and landing folder for the next run
+      if: always() && github.event_name != 'pull_request' && (env.MOTHERDUCK_TOKEN == '' || env.SUPABASE_URL == '')
+      uses: actions/cache/save@v4
+      with:
+        path: |
+          warehouse/data/landing
+          warehouse/data/warehouse.duckdb
+        key: warehouse-state-${{ github.run_id }}
+    - name: Summary
+      if: always()
+      run: |
+        python - <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+        import json, os
+        path = "site/data/observability.json"
+        if not os.path.exists(path):
+            print("No run history was published."); raise SystemExit
+        h = json.load(open(path))
+        print("| Started | Result | Seconds | Files | Rows | Rejected | Tests | Freshness |\n|---|---|---|---|---|---|---|---|")
+        for r in h["runs"][:10]:
+            print(f"| {r['started_at']} | {r['status']} | {r['seconds']} | {r['files_loaded']} | {r['rows_loaded']} | "
+                  f"{r['files_rejected']} | {(r['dbt_tests'] or 0) - (r['dbt_tests_failed'] or 0)}/{r['dbt_tests'] or 0} | {r['freshness']} |")
+        EOF
+    - name: Upload the site
+      if: always() && hashFiles('site/index.html') != ''
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: site
+
+  deploy:
+    name: Publish the data catalog to GitHub Pages
+    needs: run
+    if: always() && needs.run.result != 'cancelled' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - id: deployment
+      uses: actions/deploy-pages@v4

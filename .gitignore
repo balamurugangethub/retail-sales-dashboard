@@ -7,3 +7,4 @@ warehouse/data/
 warehouse/dbt/target/
 warehouse/dbt/logs/
 warehouse/dbt/.user.yml
+site/
