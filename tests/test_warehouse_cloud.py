@@ -302,6 +302,26 @@ def test_cloud_run_end_to_end_with_a_bucket_publishes_catalog_and_history(tmp_pa
     assert [r["status"] for r in health["runs"][:2]] == ["failed", "success"] and health["success_rate"] == 50
 
 
+def test_snapshot_still_publishes_when_a_failed_test_skipped_the_online_marts(tmp_path):
+    con = duckdb.connect(str(tmp_path / "wh.duckdb"))
+    for schema in ("raw", "staging", "marts"):
+        con.execute(f"CREATE SCHEMA {schema}")
+    con.execute("CREATE TABLE raw.sales_lines (_source_file VARCHAR)")
+    con.execute("INSERT INTO raw.sales_lines VALUES ('sales_2026-03-14.csv')")
+    con.execute("CREATE TABLE raw.load_audit (run_at TIMESTAMP, file_name VARCHAR)")
+    for table in ("staging.stg_sales_lines", "marts.fct_sales", "marts.mart_category_monthly",
+                  "marts.mart_product_monthly", "marts.fct_online_sales"):
+        con.execute(f"CREATE TABLE {table} (x INTEGER)")
+    con.execute("CREATE TABLE marts.mart_store_daily (date_day DATE)")
+    con.execute("INSERT INTO marts.mart_store_daily VALUES ('2026-03-14')")
+    con.close()
+    out = tmp_path / "data"
+    manifest = snapshot.export(str(tmp_path / "wh.duckdb"), str(out))
+    assert manifest["last_day"] == "2026-03-14" and manifest["online_retail"]["last_day"] is None
+    assert (out / "mart_store_daily.csv").exists() and not (out / "mart_online_daily.csv").exists()
+    assert manifest["online_retail"]["rows"] == {"raw": 0, "staging": 0, "fact": 0}
+
+
 # --- the hosted page reads the published snapshot ------------------------------------------------
 
 @pytest.fixture
@@ -326,6 +346,9 @@ def test_page_reads_the_published_snapshot_and_falls_back_to_the_committed_one(t
     m = marts.Marts(warehouse_path=str(tmp_path / "none.duckdb"), snapshot_url=url)
     con, source = m.connection()
     assert source["kind"] == "published" and source["rows"]["fact"] > 1_000_000
+    os.remove(folder / "mart_online_daily.csv")          # skipped by a failed test: still published
+    _, source = marts.Marts(warehouse_path=str(tmp_path / "none.duckdb"), snapshot_url=url).connection()
+    assert source["kind"] == "published"
     os.remove(folder / "manifest.json")
     m2 = marts.Marts(warehouse_path=str(tmp_path / "none.duckdb"), snapshot_url=url)
     _, source = m2.connection()

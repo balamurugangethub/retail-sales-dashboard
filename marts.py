@@ -16,6 +16,7 @@ import sqlite3
 import tempfile
 import threading
 import time
+import urllib.error
 import urllib.request
 
 from flask import jsonify, request, send_from_directory
@@ -28,6 +29,7 @@ TABLES = ["mart_store_daily", "mart_category_monthly", "mart_product_monthly", "
 NUMERIC = {"orders", "order_lines", "units", "revenue", "cost", "profit", "discounts", "rows_in_file", "quality_score",
            "customers", "sales", "returns", "net_sales"}
 SNAPSHOT_FILES = [f"{t}.csv" for t in TABLES] + ["manifest.json", "observability.json"]
+REQUIRED_FILES = {"mart_store_daily.csv", "manifest.json"}
 PAGES_URL = "https://balamurugangethub.github.io/retail-sales-dashboard/data/"
 CATALOG_URL = "https://balamurugangethub.github.io/retail-sales-dashboard/"
 REMOTE_TTL = 600             # seconds between fetches of the published snapshot
@@ -153,13 +155,20 @@ def read_json(path):
 
 
 def fetch_snapshot(url, folder):
-    """Downloads the published snapshot files into folder. Raises if any of them is missing."""
+    """Downloads the published snapshot files into folder. Raises if a required one is missing; a mart
+    that a failed dbt test skipped is simply left out of that run's snapshot."""
     base = url if url.endswith("/") else url + "/"
     for name in SNAPSHOT_FILES:
         req = urllib.request.Request(base + name, headers={"User-Agent": "retail-sales-dashboard"})
-        with urllib.request.urlopen(req, timeout=REMOTE_TIMEOUT) as r, \
-                open(os.path.join(folder, name), "wb") as f:   # nosec - fixed https URL from settings
-            f.write(r.read())
+        try:
+            with urllib.request.urlopen(req, timeout=REMOTE_TIMEOUT) as r:   # nosec - fixed https URL from settings
+                data = r.read()
+        except urllib.error.HTTPError as e:
+            if e.code == 404 and name not in REQUIRED_FILES:
+                continue
+            raise
+        with open(os.path.join(folder, name), "wb") as f:
+            f.write(data)
 
 
 def number(column, value):
