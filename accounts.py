@@ -79,13 +79,17 @@ def register(app, prepare_db, consent=True, auth=True, sync=None, seed_demo=None
     contact = os.environ.get("PRIVACY_CONTACT", "")
     fails = {}                      # email -> (count, locked_until); in memory is enough for one shop
 
+    def upgrade(c):
+        c.executescript(ACCOUNTS_SCHEMA)
+        if "demo" not in {row[1] for row in c.execute("PRAGMA table_info(users)")}:
+            c.execute("ALTER TABLE users ADD COLUMN demo INTEGER NOT NULL DEFAULT 0")     # accounts from older versions
+            c.commit()
+
     if auth:
         os.makedirs(folder, exist_ok=True)
         app.secret_key = _secret_key(folder)
         with sqlite3.connect(accounts_db) as c:
-            c.executescript(ACCOUNTS_SCHEMA)
-            if "demo" not in {row[1] for row in c.execute("PRAGMA table_info(users)")}:
-                c.execute("ALTER TABLE users ADD COLUMN demo INTEGER NOT NULL DEFAULT 0")     # accounts from older versions
+            upgrade(c)
         c.close()
     app.config.update(SESSION_COOKIE_NAME="rsd_session", SESSION_COOKIE_HTTPONLY=True,
                       SESSION_COOKIE_SAMESITE="Lax", SESSION_COOKIE_SECURE=bool(os.environ.get("VERCEL")),
@@ -95,6 +99,8 @@ def register(app, prepare_db, consent=True, auth=True, sync=None, seed_demo=None
         if "accounts" not in g:
             g.accounts = sqlite3.connect(accounts_db)
             g.accounts.row_factory = sqlite3.Row
+            # the copy from online storage may come from an older version of the app
+            upgrade(g.accounts)
         return g.accounts
 
     @app.teardown_appcontext
@@ -197,6 +203,11 @@ def register(app, prepare_db, consent=True, auth=True, sync=None, seed_demo=None
 
     @app.get("/api/auth/me")
     def me():
+        if sync and auth and "uid" in session:   # skipped by the gate, so a fresh server fetches the accounts here
+            try:
+                sync.ensure("accounts.db", accounts_db)
+            except StoreError as e:
+                return unavailable(e)
         return jsonify({"consent": has_consent(), "consent_required": consent, "auth_enabled": auth,
                         "read_only": app.config["READ_ONLY"], "policy_version": POLICY_VERSION,
                         "contact": contact, "demo_available": bool(auth and seed_demo), "user": public(current_user()) if has_consent() or not consent else None})

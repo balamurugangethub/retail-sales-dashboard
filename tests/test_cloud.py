@@ -162,3 +162,24 @@ def test_explore_uploads_survive_sign_out_sign_in_and_a_restart(tmp_path):
     assert second.get(f"/api/datasets/{dataset_id}").get_json()["rows"] == 2
     run = second.post("/api/sql/run", json={"sql": "SELECT COUNT(*) AS n FROM ward_visits"})
     assert run.get_json()["rows"] == [[2]]
+
+
+def test_accounts_saved_by_an_older_version_still_sign_in_on_a_fresh_server(tmp_path):
+    # accounts.db stored online before demo accounts existed has no demo column
+    import sqlite3
+    store = MemoryStore()
+    assert sign_up(server(tmp_path / "one", store)).status_code == 200
+    old = tmp_path / "old.db"
+    old.write_bytes(store.files["accounts.db"][1])
+    con = sqlite3.connect(old)
+    con.execute("ALTER TABLE users DROP COLUMN demo")
+    con.commit()
+    con.close()
+    store.put("accounts.db", old.read_bytes())
+    fresh = server(tmp_path / "two", store)
+    assert fresh.post("/api/auth/login", json={"email": "o@shop.com", "password": "correct horse"}).status_code == 200
+    other = server(tmp_path / "three", store)        # another server instance answers the next request
+    with other.session_transaction() as s, fresh.session_transaction() as f:
+        s.update(f)
+    me = other.get("/api/auth/me")
+    assert me.status_code == 200 and me.get_json()["user"]["shop"] == "S" and me.get_json()["user"]["demo"] is False
