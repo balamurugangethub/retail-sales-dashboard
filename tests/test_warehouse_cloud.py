@@ -111,7 +111,9 @@ def test_feeds_are_told_apart_by_file_name():
     assert feeds.feed_for("notes.csv") is None and feeds.feed_for("sales_2026-01-01.txt") is None
 
 
-def test_a_failed_run_is_recorded_with_its_rejected_file(tmp_path, landing):
+def test_a_failed_run_is_recorded_with_its_rejected_file(tmp_path, landing, monkeypatch):
+    for name in ("PIPELINE_TRIGGER", "GITHUB_ACTIONS", "AIRFLOW_CTX_DAG_ID"):
+        monkeypatch.delenv(name, raising=False)
     generate.write_day(date(2026, 3, 14), landing, generate.load_products(), corrupt=True)
     wh = str(tmp_path / "wh.duckdb")
     with pytest.raises(ValidationError):

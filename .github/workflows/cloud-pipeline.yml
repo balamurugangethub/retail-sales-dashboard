@@ -8,7 +8,7 @@ name: Cloud pipeline
 #   SUPABASE_URL, SUPABASE_SECRET_KEY    the landing zone is a Supabase Storage bucket (warehouse-landing)
 #   ALERT_WEBHOOK_URL                    alerts go to a Discord or Slack channel
 # Without them it still runs: a DuckDB file and a landing folder, kept between runs by the Actions cache.
-# Pull requests never use the secrets, so they can't touch the real warehouse.
+# Only runs on main get the secrets, so a pull request can't touch the real warehouse.
 
 on:
   schedule:
@@ -33,10 +33,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     env:
-      MOTHERDUCK_TOKEN: ${{ github.event_name != 'pull_request' && secrets.MOTHERDUCK_TOKEN || '' }}
-      SUPABASE_URL: ${{ github.event_name != 'pull_request' && secrets.SUPABASE_URL || '' }}
-      SUPABASE_SECRET_KEY: ${{ github.event_name != 'pull_request' && secrets.SUPABASE_SECRET_KEY || '' }}
-      ALERT_WEBHOOK_URL: ${{ github.event_name != 'pull_request' && secrets.ALERT_WEBHOOK_URL || '' }}
+      MOTHERDUCK_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.MOTHERDUCK_TOKEN || '' }}
+      SUPABASE_URL: ${{ github.ref == 'refs/heads/main' && secrets.SUPABASE_URL || '' }}
+      SUPABASE_SECRET_KEY: ${{ github.ref == 'refs/heads/main' && secrets.SUPABASE_SECRET_KEY || '' }}
+      ALERT_WEBHOOK_URL: ${{ github.ref == 'refs/heads/main' && secrets.ALERT_WEBHOOK_URL || '' }}
       PIPELINE_TRIGGER: github-actions ${{ github.event_name }}
       DBT_SEND_ANONYMOUS_USAGE_STATS: "false"
     steps:
