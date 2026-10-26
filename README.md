@@ -1,4 +1,4 @@
-# Antares
+# StarTill
 
 *Retail sales analytics and a small data platform. (Formerly "Retail Sales Dashboard"; the repo and live URL keep the old name for now.)*
 
