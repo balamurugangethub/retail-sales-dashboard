@@ -1,4 +1,6 @@
-# Retail Sales Dashboard
+# Antares
+
+*Retail sales analytics and a small data platform. (Formerly "Retail Sales Dashboard"; the repo and live URL keep the old name for now.)*
 
 [![Tests](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/tests.yml/badge.svg)](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/tests.yml)
 [![Pylint](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/pylint.yml/badge.svg)](https://github.com/balamurugangethub/retail-sales-dashboard/actions/workflows/pylint.yml)
